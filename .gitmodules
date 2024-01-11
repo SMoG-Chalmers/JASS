@@ -1,6 +1,7 @@
 [submodule "external/zipxlib"]
 	path = external/zipxlib
 	url = https://github.com/martin-fitger/zipxlib.git
+
 [submodule "external/qapplib"]
 	path = external/qapplib
 	url = https://github.com/martin-fitger/qapplib.git

@@ -1,0 +1,14 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+  <file>logo/logo_64x64.png</file>
+  <file alias="selecttool.png"     >../external/fatcow/16x16/select.png</file>
+  <file alias="movetool.png"       >../external/fatcow/16x16/transform_move.png</file>
+  <file alias="nodetool.png"       >../external/fatcow/16x16/bullet_green.png</file>
+  <file alias="edgetool.png"       >../external/fatcow/16x16/draw_line.png</file>
+  <file alias="duplicate.png"      >actions/duplicate.png</file>
+  <file alias="flip_horizontal.png">../external/fatcow/16x16/shape_flip_horizontal.png</file>
+  <file alias="flip_vertical.png"  >../external/fatcow/16x16/shape_flip_vertical.png</file>
+  <file alias="image_add.png"      >../external/fatcow/16x16/photo_add.png</file>
+  <file alias="image_remove.png"   >../external/fatcow/16x16/photo_delete.png</file>
+</qresource>
+</RCC>

@@ -1,0 +1,51 @@
+{
+	"xmnproj" : "../jass.xmnproj",
+
+	"properties" : {
+		"ProductUpgradeId"  : "7761F5F1-DC65-4E39-B42C-7BC7A2F2B9F0[JASS]",
+		"ProductHelpURL"    : "",
+		"ProductInfoURL"    : "",
+		"LaunchCommandLine" : "\"$(InstallLocation)jass.exe\""
+	},
+
+	"filesets" : {
+		"main" : [
+			{ "src" : "../build/vc2022/x64/Release/JASS64_vc2022.exe", "dst" : "jass.exe" }
+		],
+		"qt" : [
+			{ "src" : "$(QTPATH)/plugins/platforms/qwindows.dll", "dst" : "platforms/" },
+			{ "src" : "$(QTPATH)/plugins/imageformats/qjpeg.dll", "dst" : "imageformats/" },
+			{ "src" : "$(QTPATH)/plugins/styles/qwindowsvistastyle.dll", "dst" : "styles/" },
+			"$(QTPATH)/bin/Qt5Core.dll",
+			"$(QTPATH)/bin/Qt5Gui.dll",
+			"$(QTPATH)/bin/Qt5Network.dll",
+			"$(QTPATH)/bin/Qt5OpenGL.dll",
+			"$(QTPATH)/bin/Qt5PrintSupport.dll",
+			"$(QTPATH)/bin/Qt5Widgets.dll"
+		],
+		"vcredist" : [
+			"$(MSVC2022_REDIST_PATH)/concrt140.dll",
+			"$(MSVC2022_REDIST_PATH)/msvcp140.dll",
+			"$(MSVC2022_REDIST_PATH)/msvcp140_1.dll",
+			"$(MSVC2022_REDIST_PATH)/vcruntime140.dll",
+			"$(MSVC2022_REDIST_PATH)/vcruntime140_1.dll"
+		]
+	},
+
+	"components" : {
+		"main" : {
+			"files" : [ 
+				{ "fileset" : "main",     "destination" : "$(InstallLocation)" },
+				{ "fileset" : "qt",       "destination" : "$(InstallLocation)" },
+				{ "fileset" : "vcredist", "destination" : "$(InstallLocation)" }
+			],
+			"shortcuts" : [
+				{ "name" : "$(ProductName)", "source" : "$(MenuPath)",      "target" : "$(InstallLocation)jass.exe" },
+				{ "name" : "$(ProductName)", "source" : "$(DesktopFolder)", "target" : "$(InstallLocation)jass.exe" }
+			],
+			"folders" : [
+				"$(AppDataPath)"
+			]
+		}
+	}
+}

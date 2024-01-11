@@ -1,0 +1,83 @@
+/*
+Copyright XMN Software AB 2023
+
+JASS is free software: you can redistribute it and/or modify it under the
+terms of the GNU Lesser General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option)
+any later version. The GNU Lesser General Public License is intended to
+guarantee your freedom to share and change all versions of a program --
+to make sure it remains free software for all its users.
+
+JASS is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with JASS. If not, see <http://www.gnu.org/licenses/>.
+*/
+
+// Microsoft Visual C++ generated resource script.
+//
+//#include "resource.h"
+#include <windows.h>
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+
+//#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+//#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "..\\res\\logo\\logo.ico"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+#include <JASS_version.h>  // Located in intermediate directory. Generated from .xmnproj file by versionc-tool
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION VERC_VERSION_DATA
+ PRODUCTVERSION VERC_VERSION_DATA
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "Comments", VERC_DESCRIPTION
+			VALUE "CompanyName", VERC_COMPANY
+			VALUE "FileDescription", VERC_DESCRIPTION
+			VALUE "FileVersion", VERC_VERSION
+            VALUE "InternalName", "Jass.exe"
+            VALUE "LegalCopyright", "(c) Chalmers"
+            VALUE "OriginalFilename", "Jass.exe"
+			VALUE "ProductId", "{" VERC_PROJECT_GUID "}"
+            VALUE "ProductName", VERC_PROJECT_NAME
+			VALUE "ProductVersion", VERC_VERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+#endif    // Swedish (Sweden) resources
