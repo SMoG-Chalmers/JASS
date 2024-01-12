@@ -26,6 +26,9 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	const CGraphModel::node_index_t CGraphModel::NO_NODE = (CGraphModel::node_index_t)-1;
+	const CGraphModel::category_index_t CGraphModel::NO_CATEGORY = (CGraphModel::category_index_t)-1;
+
 	CGraphModel::CGraphModel()
 	{
 		m_FirstEdgePerNode.push_back(0);  // has one extra element!

@@ -23,8 +23,10 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <array>
 #include <bit>
 #include <concepts>
+#include <cstdint>
 
-namespace jass
+
+namespace std
 {
     template<std::integral T>
     constexpr T byteswap(T value) noexcept
@@ -34,32 +36,35 @@ namespace jass
         std::ranges::reverse(value_representation);
         return std::bit_cast<T>(value_representation);
     }
+}
 
+namespace jass
+{
     template<std::integral T>
     constexpr T be(T value) noexcept
     {
         if constexpr (std::endian::native == std::endian::little)
         {
-            return byteswap(value);
+            return std::byteswap(value);
         }
         return value;
     }
 
-    constexpr float be(float value) noexcept
+    inline float be(float value) noexcept
     {
         if constexpr (std::endian::native == std::endian::little)
         {
-            auto x = byteswap(*(uint32_t*)&value);
+            auto x = std::byteswap(*(uint32_t*)&value);
             return *(float*)&x;
         }
         return value;
     }
 
-    constexpr double be(double value) noexcept
+    inline double be(double value) noexcept
     {
         if constexpr (std::endian::native == std::endian::little)
         {
-            auto x = byteswap(*(uint64_t*)&value);
+            auto x = std::byteswap(*(uint64_t*)&value);
             return *(double*)&x;
         }
         return value;

@@ -80,8 +80,8 @@ namespace jass
 		typedef std::span<const node_index_t> node_remap_table_t;
 		typedef std::span<const node_pair_t> const_node_pairs_t;
 
-		static const node_index_t NO_NODE = (node_index_t)-1;
-		static const category_index_t NO_CATEGORY = (category_index_t)-1;
+		static const node_index_t NO_NODE;
+		static const category_index_t NO_CATEGORY;
 
 		struct SCategory
 		{

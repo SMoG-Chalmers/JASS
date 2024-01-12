@@ -17,6 +17,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtCore/qdir.h>
 #include <QtCore/qsettings.h>
 #include <QtCore/qstandardpaths.h>
 #include <QtWidgets/qapplication.h>
@@ -49,7 +50,15 @@ namespace jass
 	static qapp::TStdPageAllocator<4 * 1024 * 1024> s_PageAllocator;
 	static qapp::CPagePool s_PagePool(s_PageAllocator);
 
-	CJass::CJass(int argc, char** argv)
+	CJass::CJass()
+	{
+	}
+
+	CJass::~CJass()
+	{
+	}
+
+	int CJass::Run(int argc, char** argv)
 	{
 		qapp::CPagePool::SetDefaultPagePool(&s_PagePool);
 
@@ -59,14 +68,16 @@ namespace jass
 		m_App->setOrganizationDomain("www.chalmers.se");
 		m_App->setApplicationName(VERC_PROJECT_NAME);
 		m_App->setApplicationVersion(VERC_VERSION);
-	}
 
-	CJass::~CJass()
-	{
-	}
-
-	int CJass::Run()
-	{
+		// Make sure app data folder exists
+		const auto appDataPath = AppDataPath();
+		QDir appDataDir(appDataPath);
+		if (!appDataDir.exists())
+		{
+			LOG_INFO("Creating app data path '%s'", appDataPath.toStdString().c_str());
+			appDataDir.mkpath(".");
+		}
+		
 		QSettings settings(SettingsPath(), QSettings::IniFormat);
 
 		qapp::CActionManager action_manager;
@@ -89,7 +100,7 @@ namespace jass
 
 		// New document
 		//workbench.New(*document_manager.DocumentTypes().front().Handler);
-		workbench.Open("C:\\p4\\projects\\jass\\material\\Old_files\\spatrel_graph_students_upd");
+		//workbench.Open("C:\\p4\\projects\\jass\\material\\Old_files\\spatrel_graph_students_upd");
 		//workbench.Open("C:\\p4\\projects\\jass\\test\\9.jass");
 
 		action_manager.UpdateActions();
@@ -121,4 +132,12 @@ namespace jass
 	}
 }
 
-#include <qrc_resources.cpp>
+// Stupid hack needed to avoid "duplicate symbol" linker error when using multiple .qrc files
+bool qRegisterResourceData(int, const unsigned char *, const unsigned char *, const unsigned char *);
+bool qUnregisterResourceData(int, const unsigned char *, const unsigned char *, const unsigned char *);
+namespace jass
+{
+	bool qRegisterResourceData(int a, const unsigned char * b, const unsigned char * c, const unsigned char * d)   { return ::qRegisterResourceData(a, b, c, d); }
+	bool qUnregisterResourceData(int a, const unsigned char * b, const unsigned char * c, const unsigned char * d) { return ::qUnregisterResourceData(a, b, c, d); }
+	#include <qrc_resources.cpp>
+}

@@ -124,17 +124,15 @@ namespace jass
 		restoreState(settings.value("windowState").toByteArray(), JASS_UI_VERSION);
 	}
 
-	QMenu* CMainWindow::Menu(const char* name)
+	QMenu* CMainWindow::Menu(const QString& name)
 	{
 		for (const auto& m : m_Menus)
-			if (_stricmp(name, m.first.c_str()) == 0)
+			if (name.compare(m.first, Qt::CaseInsensitive) == 0)
 				return m.second;
-		char buffer[256];
-		strcpy_s(buffer + 1, sizeof(buffer) - 1, name);
-		buffer[1] = toupper(buffer[1]);
-		buffer[0] = '&';
-		auto* menu = menuBar()->addMenu(buffer);
-		m_Menus.push_back(std::pair<std::string, QMenu*>(buffer + 1, menu));
+		QString prettyName = QString("&%1").arg(name);
+		prettyName[1] = prettyName.at(1).toUpper();
+		auto* menu = menuBar()->addMenu(prettyName);
+		m_Menus.push_back(std::make_pair(name, menu));
 		return menu;
 	}
 

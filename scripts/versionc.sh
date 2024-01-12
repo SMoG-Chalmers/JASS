@@ -1,0 +1,1 @@
+python3 ~/p4/projects/versionc/src/versionc.py ../jass.xmnproj --cheader ../generated/jass_version.h

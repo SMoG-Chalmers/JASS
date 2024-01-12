@@ -17,12 +17,16 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef _WINDOWS
+
 #include <memory>
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
 
+#include <QtWidgets/qmessagebox.h>
+#include <jass/Debug.h>
 #include <jass_version.h>  // Located in intermediate directory. Generated from .xmnproj file by versionc-tool
 #include "jass.h"
 
@@ -62,22 +66,20 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #endif
 #endif
 
-
-#include <fstream>
-#include "JassDocument.hpp"
-#include "LegacyJassFileFormat.h"
-
 int WINAPI WinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPSTR /*lpCmdLine*/, int /*nShowCmd*/)
 {
+	jass::CJass app;
 	try
 	{
-		jass::CJass app(__argc, __argv);
-		return app.Run();
+		return app.Run(__argc, __argv);
 	}
 	catch (const std::exception& e)
 	{
-		MessageBox(NULL, e.what(), VERC_PROJECT_NAME " (" VERC_VERSION ")", MB_ICONERROR);
+		LOG_ERROR("Exception: %s", e.what());
+		QMessageBox::critical(nullptr, VERC_PROJECT_NAME " (" VERC_VERSION ")", e.what());
 	}
 
 	return 1;
 }
+
+#endif

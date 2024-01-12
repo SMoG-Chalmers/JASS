@@ -39,16 +39,25 @@ namespace jass
 		const auto currentTime = QDateTime::currentDateTime();
 		const auto date = currentTime.date();
 		const auto time = currentTime.time();
-		sprintf_s(at, sizeof(buf) - (at - buf), "%.4d-%.2d-%.2d %.2d:%.2d:%.2d.%.3d: ",
+		snprintf(at, sizeof(buf) - (at - buf), "%.4d-%.2d-%.2d %.2d:%.2d:%.2d.%.3d: ",
 			date.year(), date.month(), date.day(),
 			time.hour(), time.minute(), time.second(), time.msec());
 		at += strlen(at);
 
 		// Format text
+#ifdef _MSC_VER
 		vsnprintf_s(at, sizeof(buf) - (at - buf), sizeof(buf) - (at - buf), fmt, args);
+#else
+		vsnprintf(at, sizeof(buf) - (at - buf), fmt, args);
+#endif
+		
 
 		// Apopend line break
+#ifdef _MSC_VER
 		strcat_s(at, sizeof(buf) - (at - buf), "\n");
+#else
+		strcat(at, "\n");
+#endif
 
 		qDebug() << buf;
 	}
@@ -57,6 +66,6 @@ namespace jass
 	{
 		va_list args;
 		va_start(args, fmt);
-		return vsprintf_s(buffer, buffer_size, fmt, args);
+		return vsnprintf(buffer, buffer_size, fmt, args);
 	}
 }

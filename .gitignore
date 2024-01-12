@@ -2,3 +2,4 @@
 **/bin/
 **/vc/
 *.pyc
+.DS_Store

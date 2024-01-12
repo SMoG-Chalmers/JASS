@@ -52,7 +52,7 @@ namespace jass
 		void OnOpen();
 
 	private:
-		QMenu* Menu(const char* name);
+		QMenu* Menu(const QString& name);
 
 		bool Save(qapp::IEditor& editor);
 		bool SaveAs(qapp::IEditor& editor);
@@ -61,7 +61,7 @@ namespace jass
 		qapp::CWorkbench& m_Workbench;
 
 		QToolBar* m_MainToolBar = nullptr;
-		std::vector<std::pair<std::string, QMenu*>> m_Menus;
+		std::vector<std::pair<QString, QMenu*>> m_Menus;
 		qapp::CWorkbenchWidget* m_WorkbenchWidget = nullptr;
 	};
 }

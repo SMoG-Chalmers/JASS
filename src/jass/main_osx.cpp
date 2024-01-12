@@ -17,23 +17,28 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#ifdef __APPLE__
 
-#include <memory>
+#include <stdexcept>
+#include <QtWidgets/qmessagebox.h>
+#include <jass/Debug.h>
+#include <jass/jass.h>
+#include <jass_version.h>
 
-class QApplication;
-
-namespace jass
+int main(int argc, char** argv)
 {
-	class CJass
+	jass::CJass app;
+	try
 	{
-	public:
-		CJass();
-		~CJass();
+		return app.Run(argc, argv);
+	}
+	catch (const std::exception& e)
+	{
+		LOG_ERROR("Exception: %s", e.what());
+		QMessageBox::critical(nullptr, VERC_PROJECT_NAME " (" VERC_VERSION ")", e.what());
+	}
 
-		int Run(int argc, char** argv);
-
-	private:
-		std::unique_ptr<QApplication> m_App;
-	};
+	return 1;
 }
+
+#endif
