@@ -84,7 +84,6 @@ namespace jass
 		m_MainToolBar->addAction(qapp::s_StandardActions.About);
 
 		// Actions
-		VERIFY(connect(qapp::s_StandardActions.New,    &QAction::triggered, this, &CMainWindow::OnNew));
 		VERIFY(connect(qapp::s_StandardActions.Open,   SIGNAL(triggered(bool)), SLOT(OnOpen())));
 
 		// Status Bar
@@ -134,11 +133,6 @@ namespace jass
 		auto* menu = menuBar()->addMenu(prettyName);
 		m_Menus.push_back(std::make_pair(name, menu));
 		return menu;
-	}
-
-	void CMainWindow::OnNew()
-	{
-		m_Workbench.New(*m_DocumentManager.DocumentTypes().front().Handler);
 	}
 
 	void CMainWindow::OnOpen()

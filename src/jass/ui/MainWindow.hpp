@@ -48,7 +48,6 @@ namespace jass
 		void RestoreLayout(QSettings& settings);
 
 	private Q_SLOTS:
-		void OnNew();
 		void OnOpen();
 
 	private:
