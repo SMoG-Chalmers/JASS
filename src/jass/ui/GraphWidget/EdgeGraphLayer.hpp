@@ -29,7 +29,7 @@ namespace jass
 	{
 		Q_OBJECT
 	public:
-		CEdgeGraphLayer(CGraphModel& graph_model, CGraphSelectionModel& selection_model);
+		CEdgeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CGraphSelectionModel& selection_model);
 
 		void SetTempLine(const QLineF& line);
 		void HideTempLine();

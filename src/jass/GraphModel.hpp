@@ -54,7 +54,7 @@ namespace jass
 	{
 		uint32_t Index;
 		uint32_t Category;
-		QPoint Pos;
+		QPointF  PositionF;
 	};
 
 	struct SEdgeDesc
@@ -102,6 +102,7 @@ namespace jass
 		void EndModifyNodes();
 
 		inline const position_t& NodePosition(node_index_t node_index) const { return m_NodePositions[node_index]; }
+		inline const QPointF NodePositionF(node_index_t node_index) const { return QPointF(m_NodePositions[node_index]); }
 
 		inline void SetNodePosition(node_index_t node_index, const position_t& position) { m_NodePositions[node_index] = position; SetNodeModified(node_index); }
 		inline void SetNodePosition(node_index_t node_index, const QPointF& position) { m_NodePositions[node_index] = QPoint((int)std::round(position.x()), (int)std::round(position.y())); SetNodeModified(node_index); }

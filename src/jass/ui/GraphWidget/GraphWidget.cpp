@@ -20,6 +20,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <QtGui/qevent.h>
 #include <QtGui/qpainter.h>
 
+#include <jass/math/Geometry.h>
 #include <jass/utils/bitvec.h>
 #include <jass/Debug.h>
 
@@ -27,15 +28,38 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	const int MOUSE_WHEEL_NOTCH_SIZE = 120;  // Is there no better way of doing this?
+
+	static const uint8_t DEFAULT_ZOOM_LEVEL = 9;
+	static const float s_ZoomLevels[] =
+	{
+		500,
+		400,
+		300,
+		250,
+		200,
+		175,
+		150,
+		125,
+		110,
+		100,
+		90,
+		80,
+		200.0f / 3,
+		50,
+		100.f / 3,
+		25,
+	};
+
 	CGraphWidget::CGraphWidget(QWidget* parent)
+		: m_ZoomLevel(DEFAULT_ZOOM_LEVEL)
 	{
 		setMouseTracking(true);
 
 		// Set the focus policy to accept keyboard focus
 		setFocusPolicy(Qt::StrongFocus);
 
-		//SetScreenToModelScale(2);
-		//SetScreenTranslation(QPoint(300, 300));
+		SetScreenToModelScale(s_ZoomLevels[m_ZoomLevel] * .01f);
 	}
 
 	CGraphWidget::~CGraphWidget()
@@ -102,8 +126,6 @@ namespace jass
 
 	void CGraphWidget::AppendLayer(std::unique_ptr<CGraphLayer>&& layer)
 	{
-		ASSERT(!layer->m_Widget);
-		layer->m_Widget = this;
 		InsertLayer(m_Layers.size(), std::move(layer));
 	}
 
@@ -143,12 +165,76 @@ namespace jass
 
 	bool CGraphWidget::event(QEvent* event)
 	{
-		if (m_InputProcessor && CInputEventProcessor::IsInputEvent(*event))
+		if (CInputEventProcessor::IsInputEvent(*event))
 		{
-			m_InputProcessor->ProcessInputEvent(*event);
+			if (QEvent::Wheel == event->type())
+			{
+				auto& mouseEvent = (QWheelEvent&)*event;
+				if (mouseEvent.modifiers() == Qt::ControlModifier && mouseEvent.buttons() == Qt::NoButton)
+				{
+					const int delta_steps = mouseEvent.angleDelta().y() / MOUSE_WHEEL_NOTCH_SIZE;
+					const auto new_zoom_level = (uint8_t)std::min(std::max(0, (int)m_ZoomLevel + delta_steps), (int)std::size(s_ZoomLevels) - 1);
+					if (new_zoom_level != m_ZoomLevel)
+					{
+						m_ZoomLevel = new_zoom_level;
+						const auto mouse_pos_model = ModelFromScreen(mouseEvent.position());
+						SetScreenToModelScale(s_ZoomLevels[m_ZoomLevel] * .01f);
+
+						const auto model_space_delta = ModelFromScreen(mouseEvent.position()) - mouse_pos_model;
+						const auto screen_space_translation_f = (ModelTranslation() + model_space_delta) * ModelToScreenScale();
+						SetScreenTranslation(QPointFromRoundedQPointF(screen_space_translation_f));
+
+						NotifyViewChanged();
+
+						update();
+					}
+				}
+			}
+
+			switch (m_State)
+			{
+			case EState::Idle:
+				if (event->type() == QEvent::MouseButtonPress)
+				{
+					auto& mouseEvent = (QMouseEvent&)*event;
+					if (mouseEvent.buttons() == Qt::MiddleButton && mouseEvent.modifiers() == Qt::NoModifier)  // Only middle mouse button, no modifier
+					{
+						m_MouseRef = mouseEvent.pos();
+						m_State = EState::Panning;
+					}
+				}
+				break;
+			case EState::Panning:
+				if (event->type() == QEvent::MouseButtonRelease)
+				{
+					m_State = EState::Idle;
+				}
+				else if (event->type() == QEvent::MouseMove)
+				{
+					auto& mouseEvent = (QMouseEvent&)*event;
+					const auto delta = mouseEvent.pos() - m_MouseRef;
+					m_MouseRef = mouseEvent.pos();
+					SetScreenTranslation(m_ScreenTranslation + delta);
+					update();
+				}
+				break;
+			}
+
+			if (EState::Idle == m_State && m_InputProcessor)
+			{
+				m_InputProcessor->ProcessInputEvent(*event);
+			}
 		}
 		
 		return QWidget::event(event);
+	}
+
+	void CGraphWidget::NotifyViewChanged()
+	{
+		for (auto& layer : m_Layers)
+		{
+			layer->OnViewChanged(rect(), ScreenToModelScale());
+		}
 	}
 }
 

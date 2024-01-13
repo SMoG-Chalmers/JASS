@@ -73,7 +73,7 @@ namespace jass
 	class CGraphToolLayer : public CGraphLayer
 	{
 	public:
-		CGraphToolLayer(CJassEditor& editor) : m_Editor(editor) {}
+		CGraphToolLayer(CGraphWidget& graphWidget, CJassEditor& editor) : CGraphLayer(graphWidget), m_Editor(editor) {}
 
 		void Paint(QPainter& painter, const QRect& rc) override
 		{
@@ -182,24 +182,24 @@ namespace jass
 		m_GraphWidget = new CGraphWidget(parent);
 		
 		{
-			auto image_layer = std::make_unique<CImageGraphLayer>();
+			auto image_layer = std::make_unique<CImageGraphLayer>(*m_GraphWidget);
 			m_ImageLayer = image_layer.get();
 			m_GraphWidget->AppendLayer(std::move(image_layer));
 			SetBackgroundImage(m_Document.ImageData(), m_Document.ImageExtensionNoDot());
 		}
 
 		{
-			auto edge_layer = std::make_unique<CEdgeGraphLayer>(DataModel(), SelectionModel());
+			auto edge_layer = std::make_unique<CEdgeGraphLayer>(*m_GraphWidget, DataModel(), SelectionModel());
 			m_GraphWidget->AppendLayer(std::move(edge_layer));
 		}
 
 		{
-			auto node_layer = std::make_unique<CNodeGraphLayer>(DataModel(), SelectionModel());
+			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, DataModel(), SelectionModel());
 			m_GraphWidget->AppendLayer(std::move(node_layer));
 		}
 
 		{
-			auto tool_layer = std::make_unique<CGraphToolLayer>(*this);
+			auto tool_layer = std::make_unique<CGraphToolLayer>(*m_GraphWidget, *this);
 			m_GraphWidget->AppendLayer(std::move(tool_layer));
 		}
 

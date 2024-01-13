@@ -99,7 +99,7 @@ namespace jass
 			{
 				const auto delta_move_screen = event.pos() - m_RefPoint;
 				m_RefPoint += delta_move_screen;
-				const QPointF delta_move_model = QPointF(delta_move_screen);
+				const QPointF delta_move_model = QPointF(delta_move_screen) * GraphWidget().ScreenToModelScale();
 
 				// TODO: Defer this to the layer instead? e.g. introduce a MoveSelectedNodes(const QPointF& delta_move) method?
 				DataModel().BeginModifyNodes();

@@ -24,6 +24,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <QtGui/qimage.h>
 #include <QtGui/qpixmap.h>
 
+#include <jass/math/Geometry.h>
 #include <jass/ui/ImageFx.h>
 #include "NodeGraphLayer.hpp"
 
@@ -84,8 +85,9 @@ namespace jass
 		painter.drawPixmap(at - this->Origin, this->Pixmap);
 	}
 
-	CNodeGraphLayer::CNodeGraphLayer(CGraphModel& graph_model, CGraphSelectionModel& selection_model)
-		: m_GraphModel(graph_model)
+	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CGraphSelectionModel& selection_model)
+		: CGraphLayer(graphWidget)
+		, m_GraphModel(graph_model)
 		, m_SelectionModel(selection_model)
 	{
 		// Google Maps Blue
@@ -146,27 +148,22 @@ namespace jass
 		connect(&graph_model, &CGraphModel::NodesRemoved, this, &CNodeGraphLayer::OnNodesRemoved);
 		connect(&graph_model, &CGraphModel::NodesInserted, this, &CNodeGraphLayer::OnNodesInserted);
 		connect(&graph_model, &CGraphModel::NodesModified, this, &CNodeGraphLayer::OnNodesModified);
+
+		RebuildNodes();
 	}
 
 	QPoint CNodeGraphLayer::NodeScreenPos(element_t node) const
 	{
-		return m_Nodes[node].Position;
+		return m_Nodes[node].Position + GraphWidget().ScreenTranslation();
 	}
 
 	void CNodeGraphLayer::Paint(QPainter& painter, const QRect& rcClip)
 	{
-		// TEMP TEMP TEMP
-		if (m_Nodes.size() != m_GraphModel.NodeCount())
-		{
-			RebuildNodes();
-		}
-		// TEMP TEMP TEMP
-
 		for (size_t node_index = 0; node_index < m_Nodes.size(); ++node_index)
 		{
 			const auto& node = m_Nodes[node_index];
 			const auto& sprite = NodeSprite(node);
-			const auto nodeRect = sprite.Rect().translated(node.Position);
+			const auto nodeRect = NodeRect(node);
 			const auto rcVis = nodeRect.intersected(rcClip);
 			if (rcVis.isEmpty())
 			{
@@ -196,7 +193,7 @@ namespace jass
 		bool any_hit = false;
 		out_hit_elements.clear();
 		out_hit_elements.resize(m_Nodes.size());
-		const auto hitRect = rc.adjusted(-m_HitRadius, -m_HitRadius, m_HitRadius, m_HitRadius);
+		const auto hitRect = rc.adjusted(-m_HitRadius, -m_HitRadius, m_HitRadius, m_HitRadius).translated(-GraphWidget().ScreenTranslation());
 		for (size_t node_index = 0; node_index < m_Nodes.size(); ++node_index)
 		{
 			const auto& node = m_Nodes[node_index];
@@ -275,10 +272,12 @@ namespace jass
 
 	void CNodeGraphLayer::OnNodesModified(const bitvec& node_mask)
 	{
+		const auto model_to_screen_scale = GraphWidget().ModelToScreenScale();
+
 		node_mask.for_each_set_bit([&](const size_t node_index)
 			{
 				const auto category = m_GraphModel.NodeCategory((CGraphModel::node_index_t)node_index);
-				const auto pos = NodeScreenPosFromModelPos(m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index));
+				const auto pos = QPointFromRoundedQPointF(m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index) * model_to_screen_scale);
 				auto& node = m_Nodes[node_index];
 				if (category == node.Category && pos == node.Position)
 				{
@@ -310,9 +309,10 @@ namespace jass
 
 	QRect CNodeGraphLayer::NodeRect(const SNode& node) const
 	{
+		const auto translation = GraphWidget().ScreenTranslation();
 		const auto& sprite = NodeSprite(node);
 		const auto size = sprite.Pixmap.size();
-		return QRect(node.Position.x() - sprite.Origin.x(), node.Position.y() - sprite.Origin.y(), sprite.Pixmap.width(), sprite.Pixmap.height());
+		return QRect(node.Position.x() + translation.x() - sprite.Origin.x(), node.Position.y() + translation.y() - sprite.Origin.y(), sprite.Pixmap.width(), sprite.Pixmap.height());
 	}
 
 	static std::span<const vec2> GetShapePoints(EShape shape, float& out_scale)
@@ -438,19 +438,16 @@ namespace jass
 		return { {origin.x - desc.Offset.x, origin.y - desc.Offset.y}, QPixmap::fromImage(image) };
 	}
 
-	QPoint CNodeGraphLayer::NodeScreenPosFromModelPos(const QPointF& model_pos) const
-	{
-		const QPointF screen_pos_f = GraphWidget().ScreenFromModel(model_pos);
-		return QPoint((int)std::round(screen_pos_f.x()), (int)std::round(screen_pos_f.y()));
-	}
-
 	void CNodeGraphLayer::RebuildNodes()
 	{
 		m_Nodes.clear();
 
+		const auto model_to_screen_scale = GraphWidget().ModelToScreenScale();
+
 		for (CGraphModel::node_index_t node_index = 0; node_index < m_GraphModel.NodeCount(); ++node_index)
 		{
-			const auto screen_pos = NodeScreenPosFromModelPos(m_GraphModel.NodePosition(node_index));
+			const auto screen_pos_f = m_GraphModel.NodePositionF(node_index) * model_to_screen_scale;
+			const auto screen_pos = QPointFromRoundedQPointF(screen_pos_f);
 			const auto node_category = m_GraphModel.NodeCategory(node_index);
 			m_Nodes.push_back({ { screen_pos.x(), screen_pos.y() }, node_category });
 		}

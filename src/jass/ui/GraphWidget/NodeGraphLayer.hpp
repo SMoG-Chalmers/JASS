@@ -70,7 +70,7 @@ namespace jass
 			void Draw(QPainter& painter, const QPoint& at) const;
 		};
 
-		CNodeGraphLayer(CGraphModel& graph_model, CGraphSelectionModel& selection_model);
+		CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CGraphSelectionModel& selection_model);
 
 		QPoint NodeScreenPos(element_t node) const;
 
@@ -97,7 +97,7 @@ namespace jass
 
 		struct SNode
 		{
-			QPoint   Position;
+			QPoint   Position;  // Position on screen space, but not affected by screen translation (panning)
 			uint32_t Category;
 		};
 
@@ -110,8 +110,6 @@ namespace jass
 
 		SSprite CreateSprite(const SShapeSpriteDesc& desc);
 
-		QPoint NodeScreenPosFromModelPos(const QPointF& model_pos) const;
-			
 		void RebuildNodes();
 
 		CGraphModel& m_GraphModel;

@@ -90,7 +90,7 @@ namespace jass
 			SNodeDesc desc;
 			desc.Index = DataModel().NodeCount();
 			desc.Category = m_CurrentCategory;
-			desc.Pos = m_StampPos;
+			desc.PositionF = GraphWidget().ModelFromScreen(m_StampPos);
 			CommandHistory().NewCommand<CCmdCreateNode>(DataModel(), desc);
 			SetHoverNode(desc.Index);
 			HideStamp();

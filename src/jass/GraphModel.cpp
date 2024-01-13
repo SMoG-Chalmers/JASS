@@ -84,11 +84,11 @@ namespace jass
 		expand(m_NodeCategories, new_node_indices);
 		expand(m_FirstEdgePerNode, new_node_indices, (node_index_t)-1);
 
-		for (auto& node : new_nodes)
+		for (auto& new_node : new_nodes)
 		{
-			m_NodeNames[node.Index] = QString();  // TODO: Fix
-			m_NodePositions[node.Index] = node.Pos;
-			m_NodeCategories[node.Index] = node.Category;  // TODO: Fix
+			m_NodeNames[new_node.Index] = QString();  // TODO: Fix
+			m_NodePositions[new_node.Index] = QPoint((int)std::round(new_node.PositionF.x()), (int)std::round(new_node.PositionF.y()));
+			m_NodeCategories[new_node.Index] = new_node.Category;  // TODO: Fix
 		}
 		
 		for (auto it = new_node_indices.rbegin(); new_node_indices.rend() != it; ++it)

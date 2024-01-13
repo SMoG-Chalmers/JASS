@@ -25,7 +25,12 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
-	QRect QRectFromLine(const QLine& line)
+	inline QPoint QPointFromRoundedQPointF(const QPointF& pt)
+	{
+		return QPoint((int)std::round(pt.x()), (int)std::round(pt.y()));
+	}
+
+	inline QRect QRectFromLine(const QLine& line)
 	{
 		return QRect(
 			std::min(line.p1().x(), line.p2().x()),
@@ -34,7 +39,7 @@ namespace jass
 			std::abs(line.p2().y() - line.p1().y()));
 	}
 
-	QRectF QRectFFromLine(const QLineF& line)
+	inline QRectF QRectFFromLine(const QLineF& line)
 	{
 		return QRectF(
 			std::min(line.p1().x(), line.p2().x()),
@@ -43,7 +48,7 @@ namespace jass
 			std::abs(line.p2().y() - line.p1().y()));
 	}
 
-	bool Intersects(const QRectF& rc, const QLineF& line)
+	inline bool Intersects(const QRectF& rc, const QLineF& line)
 	{
 		// Test AABB intersection
 		const auto line_bb = QRectFFromLine(line);

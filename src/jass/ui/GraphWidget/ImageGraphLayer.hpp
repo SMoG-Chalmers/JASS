@@ -29,6 +29,8 @@ namespace jass
 	class CImageGraphLayer: public CGraphLayer
 	{
 	public:
+		CImageGraphLayer(CGraphWidget& graphWidget) : CGraphLayer(graphWidget) {}
+
 		void SetImage(QPixmap&& image);
 		inline QPixmap& Image() { return m_Image; }
 

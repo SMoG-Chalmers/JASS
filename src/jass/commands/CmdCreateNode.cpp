@@ -30,7 +30,7 @@ namespace jass
 	{
 		WriteInsertGraphNodesOp(ctx.m_Data, [&](auto&& add)
 			{
-				add(node_desc.Index, node_desc.Category, node_desc.Pos.x(), node_desc.Pos.y());
+				add(node_desc.Index, node_desc.Category, node_desc.PositionF.x(), node_desc.PositionF.y());
 			});
 	}
 }

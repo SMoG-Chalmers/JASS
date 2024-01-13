@@ -47,7 +47,7 @@ namespace jass
 		typedef uintptr_t element_t;
 		static const element_t NO_ELEMENT = (element_t)-1;
 
-		CGraphLayer() {}
+		CGraphLayer(CGraphWidget& graphWidget) : m_GraphWidget(graphWidget) {}
 		virtual ~CGraphLayer() {}
 
 		virtual void Paint(QPainter& painter, const QRect& rc) {}
@@ -61,12 +61,11 @@ namespace jass
 		inline void Update();
 		inline void Update(const QRect& rc);
 
-		inline CGraphWidget& GraphWidget() { return *m_Widget; }
-		inline const CGraphWidget& GraphWidget() const { return *m_Widget; }
+		inline CGraphWidget& GraphWidget() { return m_GraphWidget; }
+		inline const CGraphWidget& GraphWidget() const { return m_GraphWidget; }
 
 	private:
-		friend CGraphWidget;
-		CGraphWidget* m_Widget = nullptr;
+		CGraphWidget& m_GraphWidget;
 	};
 
 	class CGraphWidget : public QWidget
@@ -115,12 +114,23 @@ namespace jass
 		void paintEvent(QPaintEvent* event) override;
 
 	private:
+		enum class EState
+		{
+			Idle,
+			Panning,
+		};
+
+		void NotifyViewChanged();
+
 		CInputEventProcessor* m_InputProcessor = nullptr;
 		std::vector<std::unique_ptr<CGraphLayer>> m_Layers;
+		uint8_t m_ZoomLevel;
 		QPoint m_ScreenTranslation;
 		QPointF m_ModelTranslation;
 		float m_ScreenToModelScale = 1;
 		float m_ModelToScreenScale = 1;
+		EState m_State = EState::Idle;
+		QPoint m_MouseRef;
 	};
 
 	inline const QPoint& CGraphWidget::ScreenTranslation() const
@@ -170,6 +180,6 @@ namespace jass
 
 	// CGraphLayer Implementation
 
-	inline void CGraphLayer::Update() { if (m_Widget) m_Widget->update(); }
-	inline void CGraphLayer::Update(const QRect& rc) { if (m_Widget) m_Widget->update(rc); }
+	inline void CGraphLayer::Update() { m_GraphWidget.update(); }
+	inline void CGraphLayer::Update(const QRect& rc) { m_GraphWidget.update(rc); }
 }

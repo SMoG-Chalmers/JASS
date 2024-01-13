@@ -48,8 +48,9 @@ namespace jass
 		}
 	}
 
-	CEdgeGraphLayer::CEdgeGraphLayer(CGraphModel& graph_model, CGraphSelectionModel& selection_model)
-		: m_GraphModel(graph_model)
+	CEdgeGraphLayer::CEdgeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CGraphSelectionModel& selection_model)
+		: CGraphLayer(graphWidget)
+		, m_GraphModel(graph_model)
 		, m_SelectionModel(selection_model)
 	{
 		connect(&graph_model, &CGraphModel::EdgesInserted, this, &CEdgeGraphLayer::OnEdgesInserted);
@@ -246,11 +247,10 @@ namespace jass
 		QRect rc, rcUpdate;
 		nodes_mask.for_each_set_bit([&](const size_t node_index)
 			{
-				const auto node_pos = GraphWidget().ScreenFromModel(m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index));
+				const auto node_pos = m_GraphModel.NodePositionF((CGraphModel::node_index_t)node_index);
 				m_GraphModel.ForEachEdgeFromNode((CGraphModel::node_index_t)node_index, [&](auto edge_index, auto neighbour_index)
 				{
-					const auto neighbour_pos = GraphWidget().ScreenFromModel(m_GraphModel.NodePosition(neighbour_index));
-					if (MoveEdge(edge_index, node_pos, neighbour_pos, rc))
+					if (MoveEdge(edge_index, node_pos, m_GraphModel.NodePositionF(neighbour_index), rc))
 					{
 						rcUpdate = rcUpdate.united(rc);
 					}
@@ -273,7 +273,7 @@ namespace jass
 
 	void CEdgeGraphLayer::RebuildEdges()
 	{
-		const float CUT_END_LENGTH = 8;
+		const float CUT_END_LENGTH = 8 * GraphWidget().ScreenToModelScale();
 
 		m_Edges.clear();
 		m_Edges.resize(m_GraphModel.EdgeCount());

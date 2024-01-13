@@ -45,7 +45,7 @@ namespace jass
 					SNodeDesc node_desc;
 					node_desc.Index = node.Index;
 					node_desc.Category = node.Category;
-					node_desc.Pos = QPoint(node.X, node.Y);
+					node_desc.PositionF = QPointF(node.X, node.Y);
 					insert_nodes.push_back(node_desc);
 				});
 			jass_editor->DataModel().InsertNodes(insert_nodes);
