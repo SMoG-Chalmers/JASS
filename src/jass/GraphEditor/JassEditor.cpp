@@ -361,7 +361,7 @@ namespace jass
 
 	void CJassEditor::OnSaved()
 	{
-		m_CommandHistory->Clear();
+		m_CommandHistory->SetCleanAtCurrentPosition();
 	}
 
 	CGraphModel& CJassEditor::DataModel()
