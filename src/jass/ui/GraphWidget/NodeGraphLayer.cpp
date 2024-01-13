@@ -446,7 +446,7 @@ namespace jass
 
 		for (CGraphModel::node_index_t node_index = 0; node_index < m_GraphModel.NodeCount(); ++node_index)
 		{
-			const auto screen_pos_f = m_GraphModel.NodePositionF(node_index) * model_to_screen_scale;
+			const auto screen_pos_f = m_GraphModel.NodePosition(node_index) * model_to_screen_scale;
 			const auto screen_pos = QPointFromRoundedQPointF(screen_pos_f);
 			const auto node_category = m_GraphModel.NodeCategory(node_index);
 			m_Nodes.push_back({ { screen_pos.x(), screen_pos.y() }, node_category });

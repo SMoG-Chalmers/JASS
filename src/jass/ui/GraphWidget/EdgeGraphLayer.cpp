@@ -247,10 +247,10 @@ namespace jass
 		QRect rc, rcUpdate;
 		nodes_mask.for_each_set_bit([&](const size_t node_index)
 			{
-				const auto node_pos = m_GraphModel.NodePositionF((CGraphModel::node_index_t)node_index);
+				const auto node_pos = m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index);
 				m_GraphModel.ForEachEdgeFromNode((CGraphModel::node_index_t)node_index, [&](auto edge_index, auto neighbour_index)
 				{
-					if (MoveEdge(edge_index, node_pos, m_GraphModel.NodePositionF(neighbour_index), rc))
+					if (MoveEdge(edge_index, node_pos, m_GraphModel.NodePosition(neighbour_index), rc))
 					{
 						rcUpdate = rcUpdate.united(rc);
 					}
@@ -280,8 +280,8 @@ namespace jass
 		for (CGraphModel::edge_index_t edge_index = 0; edge_index < m_GraphModel.EdgeCount(); ++edge_index)
 		{
 			const auto& node_pair = m_GraphModel.EdgeNodePair(edge_index);
-			const auto p0 = QPointF(m_GraphModel.NodePosition(node_pair.first));
-			const auto p1 = QPointF(m_GraphModel.NodePosition(node_pair.second));
+			const auto p0 = m_GraphModel.NodePosition(node_pair.first);
+			const auto p1 =m_GraphModel.NodePosition(node_pair.second);
 			m_Edges[edge_index].Line = CutEnds(QLineF(p0, p1), CUT_END_LENGTH);
 		}
 

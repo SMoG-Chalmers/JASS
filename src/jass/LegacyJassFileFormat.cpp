@@ -315,7 +315,7 @@ namespace jass
 				auto* node = (Node*)obj;
 
 				graphModel.SetNodeName(node->index, node->name);
-				graphModel.SetNodePosition(node->index, QPoint(node->point->x, node->point->y));
+				graphModel.SetNodePosition(node->index, CGraphModel::position_t(node->point->x, node->point->y));
 				if (node->category)
 				{
 					graphModel.SetNodeCategory(node->index, node->category->index);

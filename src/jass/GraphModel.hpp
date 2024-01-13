@@ -73,7 +73,7 @@ namespace jass
 		typedef index_t node_index_t;
 		typedef index_t edge_index_t;
 		typedef uint32_t category_index_t;
-		typedef QPoint position_t;
+		typedef QPointF position_t;
 		typedef std::pair<node_index_t, node_index_t> node_pair_t;
 		typedef std::span<const node_index_t> const_node_indices_t;
 		typedef std::span<const edge_index_t> const_edge_indices_t;
@@ -102,10 +102,8 @@ namespace jass
 		void EndModifyNodes();
 
 		inline const position_t& NodePosition(node_index_t node_index) const { return m_NodePositions[node_index]; }
-		inline const QPointF NodePositionF(node_index_t node_index) const { return QPointF(m_NodePositions[node_index]); }
 
 		inline void SetNodePosition(node_index_t node_index, const position_t& position) { m_NodePositions[node_index] = position; SetNodeModified(node_index); }
-		inline void SetNodePosition(node_index_t node_index, const QPointF& position) { m_NodePositions[node_index] = QPoint((int)std::round(position.x()), (int)std::round(position.y())); SetNodeModified(node_index); }
 
 		inline category_index_t NodeCategory(node_index_t node_index) const { return m_NodeCategories[node_index]; }
 
