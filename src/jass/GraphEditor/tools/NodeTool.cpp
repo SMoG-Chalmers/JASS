@@ -85,15 +85,41 @@ namespace jass
 
 	void CNodeTool::mousePressEvent(QMouseEvent& event)
 	{
-		if (event.button() == Qt::LeftButton && m_Stamping)
+		// We first simulate a move event, to make sure hover state is correct. In some cases,
+		// for example when context menu is showing, move events are not processed, which is why
+		// this is needed.
+		mouseMoveEvent(event);
+
+		if (event.button() == Qt::LeftButton)
 		{
-			SNodeDesc desc;
-			desc.Index = DataModel().NodeCount();
-			desc.Category = m_CurrentCategory;
-			desc.PositionF = GraphWidget().ModelFromScreen(m_StampPos);
-			CommandHistory().NewCommand<CCmdCreateNode>(DataModel(), desc);
-			SetHoverNode(desc.Index);
-			HideStamp();
+			if (m_Stamping)
+			{
+				SNodeDesc desc;
+				desc.Index = DataModel().NodeCount();
+				desc.Category = m_CurrentCategory;
+				desc.PositionF = GraphWidget().ModelFromScreen(m_StampPos);
+				CommandHistory().NewCommand<CCmdCreateNode>(DataModel(), desc);
+				SetHoverNode(desc.Index);
+				HideStamp();
+			}
+		}
+		else if (event.buttons() == Qt::RightButton)
+		{
+			if (m_HoverNode == CGraphLayer::NO_ELEMENT)
+			{
+				GraphWidget().DeselectAll();
+			}
+			else
+			{
+				m_NodeLayer->GetSelection(m_TempBitVec);
+				if (!m_TempBitVec.get(m_HoverNode))
+				{
+					m_TempBitVec.clearAll();
+					m_TempBitVec.set(m_HoverNode);
+					GraphWidget().DeselectAll();
+					m_NodeLayer->SetSelection(m_TempBitVec);
+				}
+			}
 		}
 	}
 

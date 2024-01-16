@@ -43,6 +43,7 @@ namespace jass
 
 		CNodeGraphLayer* m_NodeLayer = nullptr;
 		CGraphLayer::element_t m_HoverNode = CGraphLayer::NO_ELEMENT;
+		bitvec m_TempBitVec;
 		int m_CurrentCategory = 0;
 		bool m_Stamping = false;
 		QPoint m_StampPos;

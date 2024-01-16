@@ -25,6 +25,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets/qfiledialog.h>
 #include <QtWidgets/qmainwindow.h>
 #include <QtWidgets/qtoolbar.h>
+#include <QtWidgets/qmenu.h>
 
 #include <jass/utils/range_utils.h>
 #include <jass/Debug.h>
@@ -182,7 +183,10 @@ namespace jass
 		m_GraphWidget = new CGraphWidget(parent);
 		m_GraphWidget->SetDelegate(this);
 		m_GraphWidget->EnableTooltips();
-		
+	
+		m_GraphWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+		connect(m_GraphWidget, &CGraphWidget::customContextMenuRequested, this, &CJassEditor::OnCustomContextMenuRequested);
+
 		{
 			auto image_layer = std::make_unique<CImageGraphLayer>(*m_GraphWidget);
 			m_ImageLayer = image_layer.get();
@@ -409,6 +413,17 @@ namespace jass
 	void CJassEditor::OnCommandHistoryDirtyChanged(bool dirty)
 	{
 		emit DirtyChanged(dirty);
+	}
+
+	void CJassEditor::OnCustomContextMenuRequested(const QPoint& pos)
+	{
+		QMenu menu;
+		menu.addAction(qapp::s_StandardActions.Cut);
+		menu.addAction(qapp::s_StandardActions.Copy);
+		menu.addAction(qapp::s_StandardActions.Paste);
+		menu.addAction(qapp::s_StandardActions.Delete);
+
+		menu.exec(m_GraphWidget->mapToGlobal(pos));
 	}
 
 	void CJassEditor::OnSelectTool(int tool_index)

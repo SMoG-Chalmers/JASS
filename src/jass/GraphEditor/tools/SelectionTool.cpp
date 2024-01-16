@@ -120,6 +120,12 @@ namespace jass
 
 	void CSelectionTool::mousePressEvent(QMouseEvent& event)
 	{
+		// We first simulate a move event, to make sure hover state is correct. In some cases,
+		// for example when context menu is showing, move events are not processed, which is why
+		// this is needed.
+		mouseMoveEvent(event);
+
+
 		if (event.button() == Qt::LeftButton)
 		{
 			if (m_SelectionLayer != (size_t)-1 && event.modifiers() & Qt::ControlModifier)
@@ -170,6 +176,24 @@ namespace jass
 			{
 				m_RefPoint = event.pos();
 				SetState(EState_BoxSelection);
+			}
+		}
+		else if (event.buttons() == Qt::RightButton)
+		{
+			if (HasHilightedElement())
+			{
+				auto* layer = &GraphWidget().Layer(m_HilightedLayerIndex);
+				layer->GetSelection(m_TempSelectionMask);
+				if (!m_TempSelectionMask.get(m_HilightedElement))
+				{
+					m_TempSelectionMask.clearAll();
+					m_TempSelectionMask.set(m_HilightedElement);
+					SetSelection(m_HilightedLayerIndex, m_TempSelectionMask);
+				}
+			}
+			else if (!(event.modifiers() & Qt::ControlModifier))
+			{
+				DeselectAll();
 			}
 		}
 	}

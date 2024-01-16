@@ -88,6 +88,7 @@ namespace jass
 
 	private Q_SLOTS:
 		void OnCommandHistoryDirtyChanged(bool dirty);
+		void OnCustomContextMenuRequested(const QPoint& pos);
 
 	private:
 		CJassDocument& m_Document;

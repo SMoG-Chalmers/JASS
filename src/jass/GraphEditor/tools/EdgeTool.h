@@ -57,5 +57,6 @@ namespace jass
 		EState m_State = EState_Hover;
 		CNodeGraphLayer* m_NodeLayer = nullptr;
 		CEdgeGraphLayer* m_EdgeLayer = nullptr;
+		bitvec m_TempBitVec;
 	};
 }

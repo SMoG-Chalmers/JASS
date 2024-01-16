@@ -89,7 +89,7 @@ namespace jass
 		// Status Bar
 		auto* status_bar = statusBar();
 	
-		// Menu
+		// File Menu
 		auto* fileMenu = Menu("file");
 		fileMenu->addAction(qapp::s_StandardActions.New);
 		fileMenu->addSeparator();
@@ -100,6 +100,13 @@ namespace jass
 		fileMenu->addAction(qapp::s_StandardActions.SaveAs);
 		fileMenu->addSeparator();
 		fileMenu->addAction(qapp::s_StandardActions.Exit);
+
+		// Edit Menu
+		auto* editMenu = Menu("edit");
+		fileMenu->addAction(qapp::s_StandardActions.Cut);
+		fileMenu->addAction(qapp::s_StandardActions.Copy);
+		fileMenu->addAction(qapp::s_StandardActions.Paste);
+		fileMenu->addAction(qapp::s_StandardActions.Delete);
 
 		// Workbench widget
 		m_WorkbenchWidget = new qapp::CWorkbenchWidget(this, workbench);

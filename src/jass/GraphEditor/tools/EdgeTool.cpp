@@ -126,6 +126,11 @@ namespace jass
 
 	void CEdgeTool::mousePressEvent(QMouseEvent& event)
 	{
+		// We first simulate a move event, to make sure hover state is correct. In some cases,
+		// for example when context menu is showing, move events are not processed, which is why
+		// this is needed.
+		mouseMoveEvent(event);
+
 		if (event.button() == Qt::LeftButton)
 		{
 			if (CGraphLayer::NO_ELEMENT != m_FromNode)
@@ -140,6 +145,24 @@ namespace jass
 			else
 			{
 				GraphWidget().DeselectAll();
+			}
+		}
+		else if (event.buttons() == Qt::RightButton)
+		{
+			if (m_FromNode == CGraphLayer::NO_ELEMENT)
+			{
+				GraphWidget().DeselectAll();
+			}
+			else
+			{
+				m_NodeLayer->GetSelection(m_TempBitVec);
+				if (!m_TempBitVec.get(m_FromNode))
+				{
+					m_TempBitVec.clearAll();
+					m_TempBitVec.set(m_FromNode);
+					GraphWidget().DeselectAll();
+					m_NodeLayer->SetSelection(m_TempBitVec);
+				}
 			}
 		}
 	}

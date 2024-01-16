@@ -196,28 +196,32 @@ namespace jass
 	{
 		if (CInputEventProcessor::IsInputEvent(*event))
 		{
-			if (QEvent::Wheel == event->type())
+			switch (event->type())
 			{
-				auto& mouseEvent = (QWheelEvent&)*event;
-				if (mouseEvent.modifiers() == Qt::ControlModifier && mouseEvent.buttons() == Qt::NoButton)
+			case QEvent::Wheel:
 				{
-					const int delta_steps = mouseEvent.angleDelta().y() / MOUSE_WHEEL_NOTCH_SIZE;
-					const auto new_zoom_level = (uint8_t)std::min(std::max(0, (int)m_ZoomLevel + delta_steps), (int)std::size(s_ZoomLevels) - 1);
-					if (new_zoom_level != m_ZoomLevel)
+					auto& mouseEvent = (QWheelEvent&)*event;
+					if (mouseEvent.modifiers() == Qt::ControlModifier && mouseEvent.buttons() == Qt::NoButton)
 					{
-						m_ZoomLevel = new_zoom_level;
-						const auto mouse_pos_model = ModelFromScreen(mouseEvent.position());
-						SetScreenToModelScale(s_ZoomLevels[m_ZoomLevel] * .01f);
+						const int delta_steps = mouseEvent.angleDelta().y() / MOUSE_WHEEL_NOTCH_SIZE;
+						const auto new_zoom_level = (uint8_t)std::min(std::max(0, (int)m_ZoomLevel + delta_steps), (int)std::size(s_ZoomLevels) - 1);
+						if (new_zoom_level != m_ZoomLevel)
+						{
+							m_ZoomLevel = new_zoom_level;
+							const auto mouse_pos_model = ModelFromScreen(mouseEvent.position());
+							SetScreenToModelScale(s_ZoomLevels[m_ZoomLevel] * .01f);
 
-						const auto model_space_delta = ModelFromScreen(mouseEvent.position()) - mouse_pos_model;
-						const auto screen_space_translation_f = (ModelTranslation() + model_space_delta) * ModelToScreenScale();
-						SetScreenTranslation(QPointFromRoundedQPointF(screen_space_translation_f));
+							const auto model_space_delta = ModelFromScreen(mouseEvent.position()) - mouse_pos_model;
+							const auto screen_space_translation_f = (ModelTranslation() + model_space_delta) * ModelToScreenScale();
+							SetScreenTranslation(QPointFromRoundedQPointF(screen_space_translation_f));
 
-						NotifyViewChanged();
+							NotifyViewChanged();
 
-						update();
+							update();
+						}
 					}
 				}
+				break;
 			}
 
 			switch (m_State)
