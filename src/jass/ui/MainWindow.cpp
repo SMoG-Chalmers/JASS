@@ -106,6 +106,7 @@ namespace jass
 		fileMenu->addAction(qapp::s_StandardActions.Cut);
 		fileMenu->addAction(qapp::s_StandardActions.Copy);
 		fileMenu->addAction(qapp::s_StandardActions.Paste);
+		fileMenu->addAction(qapp::s_StandardActions.Duplicate);
 		fileMenu->addAction(qapp::s_StandardActions.Delete);
 
 		// Workbench widget

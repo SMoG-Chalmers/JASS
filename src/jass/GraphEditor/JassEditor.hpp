@@ -145,7 +145,6 @@ namespace jass
 
 		struct SActionHandles
 		{
-			qapp::HAction Duplicate = 0;
 			qapp::HAction FlipHorizontal = 0;
 			qapp::HAction FlipVertical = 0;
 			qapp::HAction AddImage = 0;

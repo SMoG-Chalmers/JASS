@@ -112,7 +112,6 @@ namespace jass
 		s_CurrentTool = 0;
 		s_Tools[s_CurrentTool].Action->setChecked(true);
 
-		s_ActionHandles.Duplicate      = action_manager.NewAction(nullptr, "Duplicate",               ":/duplicate.png",       QKeySequence(Qt::CTRL + Qt::Key_D), false, &s_Actions.Duplicate);
 		s_ActionHandles.FlipHorizontal = action_manager.NewAction(nullptr, "Flip Horizontal",         ":/flip_horizontal.png", QKeySequence(Qt::Key_H), false, &s_Actions.FlipHorizontal);
 		s_ActionHandles.FlipVertical   = action_manager.NewAction(nullptr, "Flip Vertical",           ":/flip_vertical.png",   QKeySequence(Qt::Key_V), false, &s_Actions.FlipVertical);
 		s_ActionHandles.AddImage       = action_manager.NewAction(nullptr, "Load Background Image",   ":/image_add.png",       QKeySequence(), false, &s_Actions.AddImage);
@@ -125,7 +124,6 @@ namespace jass
 		for (const auto& tool : s_Tools)
 			s_Toolbar->addAction(tool.Action);
 		s_Toolbar->addSeparator();
-		s_Toolbar->addAction(s_Actions.Duplicate);
 		s_Toolbar->addAction(s_Actions.FlipHorizontal);
 		s_Toolbar->addAction(s_Actions.FlipVertical);
 		s_Toolbar->addSeparator();
@@ -235,7 +233,7 @@ namespace jass
 		if (hasSelectedNodes)
 		{
 			ctx.Enable(qapp::s_StandardActionHandles.Copy);
-			ctx.Enable(s_ActionHandles.Duplicate);
+			ctx.Enable(qapp::s_StandardActionHandles.Duplicate);
 			ctx.Enable(s_ActionHandles.FlipHorizontal);
 			ctx.Enable(s_ActionHandles.FlipVertical);
 		}
@@ -279,7 +277,7 @@ namespace jass
 				SelectionModel().NodeMask(),
 				(action_handle == s_ActionHandles.FlipHorizontal) ? CCmdFilpNodes::Horizontal : CCmdFilpNodes::Vertical);
 		}
-		else if (action_handle == s_ActionHandles.Duplicate)
+		else if (action_handle == qapp::s_StandardActionHandles.Duplicate)
 		{
 			if (!SelectionModel().AnyNodesSelected())
 			{
@@ -424,6 +422,7 @@ namespace jass
 		menu.addAction(qapp::s_StandardActions.Cut);
 		menu.addAction(qapp::s_StandardActions.Copy);
 		menu.addAction(qapp::s_StandardActions.Paste);
+		menu.addAction(qapp::s_StandardActions.Duplicate);
 		menu.addAction(qapp::s_StandardActions.Delete);
 
 		menu.exec(m_GraphWidget->mapToGlobal(pos));
