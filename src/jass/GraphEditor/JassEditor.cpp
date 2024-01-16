@@ -229,6 +229,7 @@ namespace jass
 		if (hasSelectedNodes || hasSelectedEdges)
 		{
 			ctx.Enable(qapp::s_StandardActionHandles.Delete);
+			ctx.Enable(qapp::s_StandardActionHandles.Cut);
 		}
 
 		if (hasSelectedNodes)
@@ -266,13 +267,6 @@ namespace jass
 				{
 					return CCmdDeleteGraphElements::Create(ctx, DataModel(), SelectionModel());
 				});
-			//std::vector<CGraphModel::node_index_t> node_indices;
-			//node_indices.reserve(SelectionModel().SelectedNodeCount());
-			//SelectionModel().NodeMask().for_each_set_bit([&](auto node_index)
-			//	{
-			//		node_indices.push_back((CGraphModel::node_index_t)node_index);
-			//	});
-			//DataModel().RemoveNodes(node_indices);
 		}
 		else if (action_handle == s_ActionHandles.FlipHorizontal || action_handle == s_ActionHandles.FlipVertical)
 		{
@@ -319,6 +313,15 @@ namespace jass
 		else if (action_handle == s_ActionHandles.RemoveImage)
 		{
 			m_CommandHistory->NewCommand<CCmdSetBackgroundImage>(*this, QByteArray(), QString());
+		}
+		else if (action_handle == qapp::s_StandardActionHandles.Cut)
+		{
+			CGraphModelSubGraphView subGraphView(DataModel(), SelectionModel().NodeMask());
+			SetGraphClipboardData(subGraphView);
+			m_CommandHistory->NewCommandOptional([&](auto& ctx)
+				{
+					return CCmdDeleteGraphElements::Create(ctx, DataModel(), SelectionModel());
+				});
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.Copy)
 		{
