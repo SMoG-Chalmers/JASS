@@ -17,8 +17,10 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtCore/qtimer.h>
 #include <QtGui/qevent.h>
 #include <QtGui/qpainter.h>
+#include <QtWidgets/qtooltip.h>
 
 #include <jass/math/Geometry.h>
 #include <jass/utils/bitvec.h>
@@ -29,6 +31,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 namespace jass
 {
 	const int MOUSE_WHEEL_NOTCH_SIZE = 120;  // Is there no better way of doing this?
+	const int TOOLTIP_DELAY_MSEC = 500;
 
 	static const uint8_t DEFAULT_ZOOM_LEVEL = 9;
 	static const float s_ZoomLevels[] =
@@ -64,6 +67,32 @@ namespace jass
 
 	CGraphWidget::~CGraphWidget()
 	{
+	}
+
+	void CGraphWidget::SetDelegate(IGraphWidgetDelegate* dlgt)
+	{
+		m_Delegate = dlgt;
+	}
+
+	void CGraphWidget::EnableTooltips(bool enable)
+	{
+		if (enable)
+		{
+			if (!m_ToolTip.Timer)
+			{
+				m_ToolTip.Timer = new QTimer(this);
+				m_ToolTip.Timer->setSingleShot(true);
+				connect(m_ToolTip.Timer, &QTimer::timeout, this, &CGraphWidget::OnTooltipTimer);
+			}
+		}
+		else
+		{
+			if (m_ToolTip.Timer)
+			{
+				delete m_ToolTip.Timer;
+				m_ToolTip.Timer = nullptr;
+			}
+		}
 	}
 
 	size_t CGraphWidget::LayerCount() const
@@ -229,12 +258,105 @@ namespace jass
 		return QWidget::event(event);
 	}
 
+	void CGraphWidget::mouseMoveEvent(QMouseEvent* event)
+	{
+		UpdateTooltip(*event);
+	}
+
+	void CGraphWidget::OnTooltipTimer()
+	{
+		TryShowTooltip(m_ToolTip.MousePos);
+
+	}
+
 	void CGraphWidget::NotifyViewChanged()
 	{
 		for (auto& layer : m_Layers)
 		{
 			layer->OnViewChanged(rect(), ScreenToModelScale());
 		}
+	}
+
+	void CGraphWidget::UpdateTooltip(const QMouseEvent& event)
+	{
+		if (!m_ToolTip.Timer)
+		{
+			return;
+		}
+		
+		m_ToolTip.MousePos = event.pos();
+
+		size_t layer_index = (size_t)-1;
+		element_t layer_element = CGraphLayer::NO_ELEMENT;
+		HitTest(event.pos(), layer_index, layer_element);
+		if (m_ToolTip.HoverLayer == layer_index && m_ToolTip.HoverElement == layer_element)
+		{
+			return;
+		}
+
+		if (QToolTip::isVisible())
+		{
+			QToolTip::hideText();
+		}
+
+		m_ToolTip.HoverLayer = layer_index;
+		m_ToolTip.HoverElement = layer_element;
+
+		if (CGraphLayer::NO_ELEMENT == m_ToolTip.HoverElement)
+		{
+			if (m_ToolTip.Timer)
+			{
+				m_ToolTip.Timer->stop();
+			}
+			return;
+		}
+
+		if (!QToolTip::isVisible())
+		{
+			if (m_ToolTip.Timer)
+			{
+				m_ToolTip.Timer->start(TOOLTIP_DELAY_MSEC);
+			}
+			return;
+		}
+
+		TryShowTooltip(event.pos());
+	}
+
+	bool CGraphWidget::TryShowTooltip(const QPoint& pos)
+	{
+		if (!m_Delegate)
+		{
+			return false;
+		}
+
+		size_t layer_index;
+		element_t layer_element;
+		if (!HitTest(pos, layer_index, layer_element))
+		{
+			return false;
+		}
+
+		m_ToolTip.HoverLayer = layer_index;
+		m_ToolTip.HoverElement = layer_element;
+
+		QString text = m_Delegate->ToolTipText(layer_index, layer_element);
+		if (text.isEmpty())
+		{
+			return false;
+		}
+
+		// HACK: Without this hack, the tooltip position won't update if text is the same as last time
+		static bool every_other = false;
+		every_other = !every_other;
+		if (every_other)
+		{
+			text += " ";
+		}
+
+		QToolTip::showText(mapToGlobal(pos), text, this);
+		
+		return true;
 	}
 }
 

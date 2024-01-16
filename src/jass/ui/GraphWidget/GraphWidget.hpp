@@ -21,9 +21,12 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <stack>
 #include <vector>
-#include <QtWidgets/QWidget>
+#include <QtWidgets/qwidget.h>
 #include <jass/ui/InputEventProcessor.h>
 #include <jass/utils/bitvec.h>
+
+class QTimer;
+class QToolTip;
 
 namespace jass
 {
@@ -68,6 +71,12 @@ namespace jass
 		CGraphWidget& m_GraphWidget;
 	};
 
+	class IGraphWidgetDelegate
+	{
+	public:
+		virtual QString ToolTipText(size_t layer_index, CGraphLayer::element_t element) = 0;
+	};
+
 	class CGraphWidget : public QWidget
 	{
 		Q_OBJECT
@@ -76,6 +85,10 @@ namespace jass
 
 		CGraphWidget(QWidget* parent);
 		~CGraphWidget();
+
+		void SetDelegate(IGraphWidgetDelegate* dlgt);
+
+		void EnableTooltips(bool enable = true);
 
 		size_t LayerCount() const;
 
@@ -112,6 +125,10 @@ namespace jass
 		// Events
 		bool event(QEvent* ev) override;
 		void paintEvent(QPaintEvent* event) override;
+		void mouseMoveEvent(QMouseEvent* event) override;
+
+	private Q_SLOTS:
+		void OnTooltipTimer();
 
 	private:
 		enum class EState
@@ -122,6 +139,11 @@ namespace jass
 
 		void NotifyViewChanged();
 
+		void UpdateTooltip(const QMouseEvent& event);
+
+		bool TryShowTooltip(const QPoint& pos);
+		
+		IGraphWidgetDelegate* m_Delegate = nullptr;
 		CInputEventProcessor* m_InputProcessor = nullptr;
 		std::vector<std::unique_ptr<CGraphLayer>> m_Layers;
 		uint8_t m_ZoomLevel;
@@ -131,6 +153,15 @@ namespace jass
 		float m_ModelToScreenScale = 1;
 		EState m_State = EState::Idle;
 		QPoint m_MouseRef;
+
+		struct SToolTip
+		{
+			QTimer* Timer = nullptr;
+			QToolTip* ToolTip = nullptr;
+			QPoint MousePos;
+			size_t HoverLayer = (size_t)-1;
+			element_t HoverElement;
+		} m_ToolTip;
 	};
 
 	inline const QPoint& CGraphWidget::ScreenTranslation() const

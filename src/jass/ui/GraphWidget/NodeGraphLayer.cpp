@@ -129,7 +129,7 @@ namespace jass
 		ssdHilighted.OutlineColor2 = QColor::fromRgba(COLOR_HILIGHT);
 		ssdHilighted.OutlineWidth2 = 4;
 
-		for (int i = 0; i < (int)EShape_COUNT; ++i)
+		for (int i = 0; i < (int)EShape::_COUNT; ++i)
 		{
 			ssdNormal.Shape = (EShape)i;
 			ssdNormal.FillColor = palette[i];
@@ -319,25 +319,25 @@ namespace jass
 	{
 		switch (shape)
 		{
-		case EShape_Circle:
+		case EShape::Circle:
 			out_scale = 1.10f;
 			return std::span<const vec2>(s_TriangleCoords);
-		case EShape_Triangle:
+		case EShape::Triangle:
 			out_scale = 1.6f;
 			return std::span<const vec2>(s_TriangleCoords);
-		case EShape_Square:
+		case EShape::Square:
 			out_scale = 1.0f / sqrtf(.5f);
 			return std::span<const vec2>(s_SquareCoords);
-		case EShape_Diamond:
+		case EShape::Diamond:
 			out_scale = 1.0f / sqrtf(.5f);
 			return std::span<const vec2>(s_DiamondCoords);
-		case EShape_Pentagon:
+		case EShape::Pentagon:
 			out_scale = 1.4f;
 			return std::span<const vec2>(s_PentagonCoords);
-		case EShape_Hexagon:
+		case EShape::Hexagon:
 			out_scale = 1.35f;
 			return std::span<const vec2>(s_HexagonCoords);
-		case EShape_Star:
+		case EShape::Star:
 			out_scale = 1.6f;
 			return std::span<const vec2>(s_StartCoords);
 		}
@@ -374,7 +374,7 @@ namespace jass
 		painter.setRenderHint(QPainter::Antialiasing, true);
 
 		QPolygonF polygon;
-		if (EShape_Circle != desc.Shape)
+		if (EShape::Circle != desc.Shape)
 		{
 			polygon.reserve((int)points.size());
 			for (const auto& pt : points)
@@ -394,7 +394,7 @@ namespace jass
 
 			painter.setBrush(Qt::NoBrush);
 
-			if (EShape_Circle == desc.Shape)
+			if (EShape::Circle == desc.Shape)
 			{
 				painter.drawEllipse(QRectF(
 					(float)origin.x - radius,
@@ -419,7 +419,7 @@ namespace jass
 		QBrush brush(desc.FillColor);
 		painter.setBrush(brush);
 
-		if (EShape_Circle == desc.Shape)
+		if (EShape::Circle == desc.Shape)
 		{
 			painter.drawEllipse(QRectF(
 				(float)origin.x - radius,

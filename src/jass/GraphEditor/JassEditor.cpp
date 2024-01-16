@@ -180,6 +180,8 @@ namespace jass
 		ASSERT(!m_GraphWidget);
 
 		m_GraphWidget = new CGraphWidget(parent);
+		m_GraphWidget->SetDelegate(this);
+		m_GraphWidget->EnableTooltips();
 		
 		{
 			auto image_layer = std::make_unique<CImageGraphLayer>(*m_GraphWidget);
@@ -362,6 +364,21 @@ namespace jass
 	void CJassEditor::OnSaved()
 	{
 		m_CommandHistory->SetCleanAtCurrentPosition();
+	}
+
+	QString CJassEditor::ToolTipText(size_t layer_index, CGraphLayer::element_t element)
+	{
+		if (auto* node_layer = dynamic_cast<CNodeGraphLayer*>(&m_GraphWidget->Layer(layer_index)))
+		{
+			QString s;
+			s.reserve(128);
+			s += "<table>";
+			s += QString("<tr><td>Name:</td><td>%1</td></tr>").arg(DataModel().NodeName((CGraphModel::node_index_t)element));
+			s += QString("<tr><td>Category:</td><td>%1</td></tr>").arg((int)DataModel().NodeCategory((CGraphModel::node_index_t)element));
+			s += "</table>";
+			return s;
+		}
+		return QString();
 	}
 
 	CGraphModel& CJassEditor::DataModel()

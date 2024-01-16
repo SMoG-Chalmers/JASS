@@ -20,9 +20,11 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <memory>
+#include <span>
 #include <qapplib/Editor.hpp>
 #include <qapplib/actions/ActionManager.hpp>
 #include <jass/ui/InputEventProcessor.h>
+#include <jass/ui/GraphWidget/GraphWidget.hpp>
 
 class QActionGroup;
 class QMainWindow;
@@ -44,7 +46,7 @@ namespace jass
 	class CJassEditor;
 	class CImageGraphLayer;
 
-	class CJassEditor: public qapp::CEditor
+	class CJassEditor: public qapp::CEditor, public IGraphWidgetDelegate
 	{
 		Q_OBJECT
 	public:
@@ -66,6 +68,9 @@ namespace jass
 		void OnActivate() override;
 		void OnDeactivate() override;
 		void OnSaved() override;
+
+		//IGraphWidgetDelegate delegate
+		QString ToolTipText(size_t layer_index, CGraphLayer::element_t element) override;
 
 		inline CGraphWidget& GraphWidget() { return *m_GraphWidget; }
 
@@ -117,7 +122,6 @@ namespace jass
 			QAction* Action;
 			std::unique_ptr<CGraphTool> Tool;
 		};
-
 
 		// Common
 
