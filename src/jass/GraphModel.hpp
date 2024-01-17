@@ -34,22 +34,10 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/graphdata/GraphView.h>
 #include <jass/utils/bitvec.h>
 #include <jass/Debug.h>
+#include <jass/Shape.h>
 
 namespace jass
 {
-	enum EShape
-	{
-		EShape_Circle,
-		EShape_Triangle,
-		EShape_Square,
-		EShape_Diamond,
-		EShape_Pentagon,
-		EShape_Hexagon,
-		EShape_Star,
-
-		EShape_COUNT
-	};
-	
 	struct SNodeDesc
 	{
 		uint32_t Index;

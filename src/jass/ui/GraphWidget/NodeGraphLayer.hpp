@@ -27,6 +27,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	class CCategorySet;
 	class CJassDocument;
 
 	struct ivec2
@@ -70,7 +71,7 @@ namespace jass
 			void Draw(QPainter& painter, const QPoint& at) const;
 		};
 
-		CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CGraphSelectionModel& selection_model);
+		CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CCategorySet& categories, CGraphSelectionModel& selection_model);
 
 		QPoint NodeScreenPos(element_t node) const;
 
@@ -113,6 +114,7 @@ namespace jass
 		void RebuildNodes();
 
 		CGraphModel& m_GraphModel;
+		CCategorySet& m_Categories;
 		CGraphSelectionModel& m_SelectionModel;
 
 		int m_HitRadius = 5;

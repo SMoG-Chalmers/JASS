@@ -19,34 +19,27 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <jass/utils/bitvec.h>
-#include "../GraphTool.h"
+#include <span>
+#include <QtCore/qpoint.h>
+#include <qapplib/commands/Command.h>
+#include <jass/GraphModel.hpp>
 
 namespace jass
 {
-	class CNodeTool : public CGraphTool
+	class CGraphModel;
+	class bitvec;
+
+	class CCmdSetNodeCategory: public qapp::ICommand
 	{
 	public:
-		void Activate(CJassEditor& ctx) override;
-		void Deactivate() override;
-		void Paint(QPainter& painter, const QRect& rc) override;
-		void leaveEvent(QEvent& event) override;
-		void mouseMoveEvent(QMouseEvent& event) override;
-		void mousePressEvent(QMouseEvent& event) override;
-		void wheelEvent(QWheelEvent& event) override;
-		void keyPressEvent(QKeyEvent& event) override;
-
+		CCmdSetNodeCategory(qapp::SCommandCreationContext& ctx, CGraphModel& data_model, const bitvec& node_mask, CGraphModel::category_index_t category);
+		void Do(qapp::SCommandExecutionContext& ctx) override;
+		void Undo(qapp::SCommandExecutionContext& ctx) override;
 	private:
-		void SetCategory(int category);
-		void ShowStamp(const QPoint& pt);
-		void HideStamp();
-		void SetHoverNode(CGraphLayer::element_t node);
-
-		CNodeGraphLayer* m_NodeLayer = nullptr;
-		CGraphLayer::element_t m_HoverNode = CGraphLayer::NO_ELEMENT;
-		bitvec m_TempBitVec;
-		int m_CurrentCategory = 0;
-		bool m_Stamping = false;
-		QPoint m_StampPos;
+		struct SPerNodeData
+		{
+			CGraphModel::node_index_t     Index;
+			CGraphModel::category_index_t Category;
+		};
 	};
 }

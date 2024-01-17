@@ -38,6 +38,8 @@ namespace qapp
 
 namespace jass
 {
+	class CCategorySet;
+	class CCategoryView;
 	class CGraphModel;
 	class CGraphSelectionModel;
 	class CGraphTool;
@@ -45,6 +47,7 @@ namespace jass
 	class CJassDocument;
 	class CJassEditor;
 	class CImageGraphLayer;
+	class CMainWindow;
 
 	class CJassEditor: public qapp::CEditor, public IGraphWidgetDelegate
 	{
@@ -54,7 +57,7 @@ namespace jass
 		~CJassEditor();
 
 		// Common
-		static void InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, QMainWindow* mainWindow);
+		static void InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* mainWindow);
 		static void AddTool(qapp::CActionManager& action_manager, std::unique_ptr<CGraphTool> tool, QString title, const QIcon& icon, const QKeySequence& keys, qapp::HAction* ptrOutActionHandle);
 		static void RegisterTool(std::unique_ptr<CGraphTool> tool, QString title, QAction* action);
 
@@ -78,6 +81,8 @@ namespace jass
 
 		CGraphModel& DataModel();
 
+		CCategorySet& Categories();
+
 		CGraphSelectionModel& SelectionModel();
 
 		inline qapp::CCommandHistory& CommandHistory() { return *m_CommandHistory; }
@@ -85,6 +90,8 @@ namespace jass
 		inline static CGraphTool* CurrentTool() { return s_Tools[s_CurrentTool].Tool.get(); }
 
 		void SetBackgroundImage(const QByteArray& image_data, QString extension_no_dot);
+
+		void SetCategoryForSelectedNodes(int category);
 
 	private Q_SLOTS:
 		void OnCommandHistoryDirtyChanged(bool dirty);
@@ -132,6 +139,7 @@ namespace jass
 		static SToolActionHandles s_ToolActionHandles;
 		static std::vector<STool> s_Tools;
 		static int s_CurrentTool;
+		static CCategoryView* s_CategoryView;
 
 		struct SActions
 		{

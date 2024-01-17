@@ -40,12 +40,15 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/commands/CmdDuplicate.h>
 #include <jass/commands/CmdFilpNodes.h>
 #include <jass/commands/CmdSetBackgroundImage.h>
+#include <jass/commands/CmdSetNodeCategory.h>
 #include <jass/graphdata/GraphData.h>
 #include <jass/graphdata/GraphModelSubGraphView.h>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/ImageGraphLayer.hpp>
+#include <jass/ui/CategoryView.hpp>
+#include <jass/ui/MainWindow.hpp>
 
 #include "tools/EdgeTool.h"
 #include "tools/NodeTool.h"
@@ -68,6 +71,7 @@ namespace jass
 	CJassEditor::SToolActionHandles CJassEditor::s_ToolActionHandles;
 	std::vector<CJassEditor::STool> CJassEditor::s_Tools;
 	int CJassEditor::s_CurrentTool = 0;
+	CCategoryView* CJassEditor::s_CategoryView = nullptr;
 	CJassEditor::SActions CJassEditor::s_Actions;
 	CJassEditor::SActionHandles CJassEditor::s_ActionHandles;
 
@@ -101,7 +105,7 @@ namespace jass
 
 	}
 
-	void CJassEditor::InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, QMainWindow* main_window)
+	void CJassEditor::InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* main_window)
 	{
 		s_Workbench = &workbench;
 
@@ -130,6 +134,8 @@ namespace jass
 		s_Toolbar->addAction(s_Actions.AddImage);
 		s_Toolbar->addAction(s_Actions.RemoveImage);
 		s_Toolbar->setVisible(false);
+
+		s_CategoryView = &main_window->CategoryView();
 	}
 
 	void CJassEditor::AddTool(qapp::CActionManager& action_manager, std::unique_ptr<CGraphTool> tool, QString title, const QIcon& icon, const QKeySequence& keys, qapp::HAction* ptrOutActionHandle)
@@ -198,7 +204,7 @@ namespace jass
 		}
 
 		{
-			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, DataModel(), SelectionModel());
+			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, DataModel(), Categories(), SelectionModel());
 			m_GraphWidget->AppendLayer(std::move(node_layer));
 		}
 
@@ -355,10 +361,14 @@ namespace jass
 
 		s_Tools[s_CurrentTool].Tool.get()->Activate(*this);
 		m_GraphWidget->SetInputProcessor(s_Tools[s_CurrentTool].Tool.get());
+
+		s_CategoryView->setModel(&m_Document.Categories());
 	}
 
 	void CJassEditor::OnDeactivate()
 	{
+		s_CategoryView->setModel(nullptr);
+
 		m_GraphWidget->SetInputProcessor(nullptr);
 
 		s_Toolbar->setVisible(false);
@@ -378,8 +388,14 @@ namespace jass
 			QString s;
 			s.reserve(128);
 			s += "<table>";
+
 			s += QString("<tr><td>Name:</td><td>%1</td></tr>").arg(DataModel().NodeName((CGraphModel::node_index_t)element));
-			s += QString("<tr><td>Category:</td><td>%1</td></tr>").arg((int)DataModel().NodeCategory((CGraphModel::node_index_t)element));
+
+			s += "<tr><td>Category:< / td><td>";
+			const auto category = (size_t)DataModel().NodeCategory((CGraphModel::node_index_t)element);
+			s += category < m_Document.Categories().Size() ? m_Document.Categories().Name(category) : QString("None");
+			s += "</td></tr>";
+
 			s += "</table>";
 			return s;
 		}
@@ -389,6 +405,11 @@ namespace jass
 	CGraphModel& CJassEditor::DataModel()
 	{
 		return m_Document.GraphModel();
+	}
+
+	CCategorySet& CJassEditor::Categories()
+	{
+		return m_Document.Categories();
 	}
 
 	CGraphSelectionModel& CJassEditor::SelectionModel()
@@ -411,6 +432,20 @@ namespace jass
 		}
 	}
 
+	void CJassEditor::SetCategoryForSelectedNodes(int category)
+	{
+		CommandHistory().NewCommand<CCmdSetNodeCategory>(
+			DataModel(),
+			SelectionModel().NodeMask(),
+			(CGraphModel::category_index_t)category);
+		//DataModel().BeginModifyNodes();
+		//SelectionModel().NodeMask().for_each_set_bit([&](size_t node_index)
+		//{
+		//	DataModel().SetNodeCategory((CGraphModel::node_index_t)node_index, category);
+		//});
+		//DataModel().EndModifyNodes();
+	}
+
 	void CJassEditor::OnCommandHistoryDirtyChanged(bool dirty)
 	{
 		emit DirtyChanged(dirty);
@@ -418,14 +453,47 @@ namespace jass
 
 	void CJassEditor::OnCustomContextMenuRequested(const QPoint& pos)
 	{
-		QMenu menu;
-		menu.addAction(qapp::s_StandardActions.Cut);
-		menu.addAction(qapp::s_StandardActions.Copy);
-		menu.addAction(qapp::s_StandardActions.Paste);
-		menu.addAction(qapp::s_StandardActions.Duplicate);
-		menu.addAction(qapp::s_StandardActions.Delete);
+		QMenu contextMenu;
+		contextMenu.addAction(qapp::s_StandardActions.Cut);
+		contextMenu.addAction(qapp::s_StandardActions.Copy);
+		contextMenu.addAction(qapp::s_StandardActions.Paste);
+		contextMenu.addAction(qapp::s_StandardActions.Duplicate);
+		contextMenu.addAction(qapp::s_StandardActions.Delete);
 
-		menu.exec(m_GraphWidget->mapToGlobal(pos));
+		auto& categories = m_Document.Categories();
+		if (m_SelectionModel->AnyNodesSelected() && categories.Size() > 0)
+		{
+			int current_category = -2;
+			m_SelectionModel->NodeMask().for_each_set_bit([&](size_t node_index)
+				{
+					const int category = DataModel().NodeCategory((CGraphModel::node_index_t)node_index);
+					if (-2 == current_category) 
+					{
+						current_category = category;
+					}
+					else if (category != current_category)
+					{
+						current_category = -1;
+					}
+				});
+
+			auto category_menu = new QMenu("Set Category");
+			for (size_t category_index = 0; category_index < categories.Size(); ++category_index)
+			{
+				auto* action = new QAction(categories.Icon(category_index), categories.Name(category_index));
+				connect(action, &QAction::triggered, [this, category_index]() { SetCategoryForSelectedNodes((int)category_index); });
+				if ((size_t)current_category == category_index)
+				{
+					action->setCheckable(true);
+					action->setChecked(true);
+				}
+				category_menu->addAction(action);
+			}
+			contextMenu.addSeparator();
+			contextMenu.addMenu(category_menu);
+		}
+
+		contextMenu.exec(m_GraphWidget->mapToGlobal(pos));
 	}
 
 	void CJassEditor::OnSelectTool(int tool_index)

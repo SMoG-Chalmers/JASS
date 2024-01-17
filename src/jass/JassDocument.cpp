@@ -91,6 +91,12 @@ namespace jass
 
 	// CJassDocument
 
+
+	CJassDocument::CJassDocument()
+	{
+		m_Categories.SetDefaultCategories();  // Temp
+	}
+
 	void CJassDocument::SetImage(const QByteArray& image_data, QString extension_no_dot)
 	{
 		m_ImageData = image_data;

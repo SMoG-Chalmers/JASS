@@ -26,6 +26,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <jass/math/Geometry.h>
 #include <jass/ui/ImageFx.h>
+#include <jass/GraphEditor/CategorySet.hpp>
 #include "NodeGraphLayer.hpp"
 
 namespace jass
@@ -85,9 +86,10 @@ namespace jass
 		painter.drawPixmap(at - this->Origin, this->Pixmap);
 	}
 
-	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CGraphSelectionModel& selection_model)
+	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CCategorySet& categories, CGraphSelectionModel& selection_model)
 		: CGraphLayer(graphWidget)
 		, m_GraphModel(graph_model)
+		, m_Categories(categories)
 		, m_SelectionModel(selection_model)
 	{
 		// Google Maps Blue
@@ -129,18 +131,18 @@ namespace jass
 		ssdHilighted.OutlineColor2 = QColor::fromRgba(COLOR_HILIGHT);
 		ssdHilighted.OutlineWidth2 = 4;
 
-		for (int i = 0; i < (int)EShape::_COUNT; ++i)
+		for (size_t category_index = 0; category_index < m_Categories.Size(); ++category_index)
 		{
-			ssdNormal.Shape = (EShape)i;
-			ssdNormal.FillColor = palette[i];
+			ssdNormal.Shape = m_Categories.Shape(category_index);
+			ssdNormal.FillColor = QColor::fromRgba(m_Categories.Color(category_index));
 			m_Sprites.push_back(CreateSprite(ssdNormal));
 
-			ssdSelected.Shape = (EShape)i;
+			ssdSelected.Shape = ssdNormal.Shape;
 			ssdSelected.FillColor = ssdNormal.FillColor;
 			m_Sprites.push_back(CreateSprite(ssdSelected));
 
-			ssdHilighted.Shape = (EShape)i;
-			ssdHilighted.FillColor = Blend(palette[i].rgba(), 0xFFFFFFFF, 64);
+			ssdHilighted.Shape = ssdNormal.Shape;
+			ssdHilighted.FillColor = Blend(m_Categories.Color(category_index), 0xFFFFFFFF, 64);
 			m_Sprites.push_back(CreateSprite(ssdHilighted));
 		}
 

@@ -22,6 +22,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore/QObject>
 #include <QtWidgets/QMainWindow>
 
+class QDockWidget;
 class QMenu;
 class QSettings;
 class QToolBar;
@@ -36,6 +37,9 @@ namespace qapp
 
 namespace jass
 {
+	class CCategoryView;
+	struct SToolViewDesc;
+
 	class CMainWindow : public QMainWindow
 	{
 		Q_OBJECT
@@ -47,6 +51,8 @@ namespace jass
 
 		void RestoreLayout(QSettings& settings);
 
+		CCategoryView& CategoryView() { return *m_CategoryView; }
+
 	private Q_SLOTS:
 		void OnOpen();
 
@@ -56,11 +62,15 @@ namespace jass
 		bool Save(qapp::IEditor& editor);
 		bool SaveAs(qapp::IEditor& editor);
 
+		QDockWidget* AddToolView(QWidget* widget, const SToolViewDesc& desc);
+
 		qapp::CDocumentManager& m_DocumentManager;
 		qapp::CWorkbench& m_Workbench;
 
 		QToolBar* m_MainToolBar = nullptr;
 		std::vector<std::pair<QString, QMenu*>> m_Menus;
 		qapp::CWorkbenchWidget* m_WorkbenchWidget = nullptr;
+
+		CCategoryView* m_CategoryView = nullptr;
 	};
 }

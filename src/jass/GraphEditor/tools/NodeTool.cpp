@@ -133,6 +133,14 @@ namespace jass
 		SetCategory(new_category);
 	}
 
+	void CNodeTool::keyPressEvent(QKeyEvent& event)
+	{
+		if (event.key() >= Qt::Key_1 && event.key() <= Qt::Key_9)
+		{
+			SetCategory((int)(event.key() - Qt::Key_1));
+		}
+	}
+
 	void CNodeTool::SetCategory(int category)
 	{
 		if (m_CurrentCategory == category)

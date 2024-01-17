@@ -19,6 +19,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore/qsettings.h>
 #include <QtWidgets/qapplication.h>
+#include <QtWidgets/qdockwidget.h>
 #include <QtWidgets/qmessagebox.h>
 #include <QtWidgets/qtoolbar.h>
 #include <QtWidgets/qtoolbutton.h>
@@ -38,11 +39,22 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include "../Debug.h"
 
 #include "MainWindow.hpp"
+#include "CategoryView.hpp"
 
 #define JASS_UI_VERSION 1
 
 namespace jass
 {
+	struct SToolViewDesc
+	{
+		QString m_Name;
+		QIcon   m_Icon;
+		bool m_InitiallyVisible = true;
+		bool m_InitiallyFloating = false;
+		QDockWidget::DockWidgetFeatures m_Features = QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable;
+		Qt::DockWidgetArea m_Area = Qt::RightDockWidgetArea;
+	};
+
 	CMainWindow::CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench)
 		: m_DocumentManager(document_manager)
 		, m_Workbench(workbench)
@@ -113,6 +125,19 @@ namespace jass
 		m_WorkbenchWidget = new qapp::CWorkbenchWidget(this, workbench);
 		m_WorkbenchWidget->show();
 		setCentralWidget(m_WorkbenchWidget);
+
+		// Category View
+		{
+			m_CategoryView = new CCategoryView(this);
+			SToolViewDesc desc;
+			desc.m_Name = "Categories";
+			desc.m_Icon = QIcon(":/categories.png");
+			desc.m_InitiallyVisible = true;
+			desc.m_InitiallyFloating = true;
+			desc.m_Features = QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable;
+			desc.m_Area = Qt::RightDockWidgetArea;
+			AddToolView(m_CategoryView, desc);
+		}
 	}
 
 	CMainWindow::~CMainWindow()
@@ -151,6 +176,30 @@ namespace jass
 			return;
 		}
 		m_Workbench.Open(path);
+	}
+
+	QDockWidget* CMainWindow::AddToolView(QWidget* widget, const SToolViewDesc& desc)
+	{
+		auto* dock_widget = new QDockWidget(desc.m_Name, this);
+
+		dock_widget->setObjectName(desc.m_Name);
+
+		auto* toggle_view_action = dock_widget->toggleViewAction();
+		toggle_view_action->setToolTip(QString("Show/hide %1 view").arg(desc.m_Name.toLower()));
+		toggle_view_action->setIcon(desc.m_Icon);
+		//if (!m_ViewsSeparatorAction)
+		//	m_ViewsSeparatorAction = m_MainToolBar->insertSeparator(m_MainToolBar->actions().back());
+		//m_MainToolBar->insertAction(m_ViewsSeparatorAction, toggle_view_action);
+		//m_ViewMenu->addAction(toggle_view_action);
+
+		dock_widget->setWindowFlags(Qt::Tool);
+		dock_widget->setWidget(widget);
+		dock_widget->setFeatures(desc.m_Features);
+		addDockWidget(desc.m_Area, dock_widget);
+		//if (!desc.m_InitiallyVisible)
+		//	SetInitiallyHidden(dock_widget);
+		dock_widget->setFloating(desc.m_InitiallyFloating);
+		return dock_widget;
 	}
 }
 

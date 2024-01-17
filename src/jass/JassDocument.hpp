@@ -21,7 +21,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <qapplib/Document.hpp>
 #include <qapplib/DocumentManager.hpp>
-
+#include "GraphEditor/CategorySet.hpp"
 #include "GraphModel.hpp"
 
 namespace jass
@@ -52,8 +52,13 @@ namespace jass
 	class CJassDocument: public qapp::CDocument
 	{
 	public:
+		CJassDocument();
+
 		CGraphModel& GraphModel() { return m_GraphModel; }
 		const CGraphModel& GraphModel() const { return m_GraphModel; }
+
+		inline CCategorySet& Categories() { return m_Categories; }
+		inline const CCategorySet& Categories() const { return m_Categories; }
 
 		void SetImage(const QByteArray& image_data, QString extension_no_dot);
 
@@ -67,5 +72,6 @@ namespace jass
 		CGraphModel m_GraphModel;
 		QByteArray m_ImageData;
 		QString m_ImageExtensionNoDot;
+		CCategorySet m_Categories;
 	};
 }
