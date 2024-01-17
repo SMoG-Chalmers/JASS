@@ -21,6 +21,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore/qsettings.h>
 #include <QtCore/qstandardpaths.h>
 #include <QtWidgets/qapplication.h>
+#include <QtWidgets/qstylefactory.h>
 
 #include <qapplib/actions/StandardActions.h>
 
@@ -69,6 +70,9 @@ namespace jass
 		m_App->setApplicationName(VERC_PROJECT_NAME);
 		m_App->setApplicationVersion(VERC_VERSION);
 
+		// Apply style
+		m_App->setStyle(QStyleFactory::create("Fusion"));
+		
 		// Make sure app data folder exists
 		const auto appDataPath = AppDataPath();
 		QDir appDataDir(appDataPath);
