@@ -1,5 +1,6 @@
 **/build/
 **/bin/
+**/dist/
 **/vc/
 *.pyc
 **/generated/
