@@ -178,7 +178,7 @@ namespace jass
 
 	const QString CJassEditor::Title() const
 	{
-		return QFileInfo(m_Document.Path()).baseName();
+		return m_Document.Title();
 	}
 
 	bool CJassEditor::Dirty() const

@@ -41,7 +41,9 @@ namespace jass
 
 	std::unique_ptr<qapp::CDocument> CJassDocumentTypeHandler::NewDocument()
 	{
-		return std::make_unique<CJassDocument>();
+		auto doc = std::make_unique<CJassDocument>();
+		doc->SetPath(QString("%1%2").arg(m_Description.FileNamePrefix).arg(++m_NewDocumentNamingCounter));
+		return doc;
 	}
 
 	std::unique_ptr<qapp::CDocument> CJassDocumentTypeHandler::LoadDocument(QIODevice& in)

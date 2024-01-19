@@ -47,6 +47,7 @@ namespace jass
 
 	private:
 		qapp::SDocumentTypeDesc m_Description;
+		int m_NewDocumentNamingCounter = 0;
 	};
 
 	class CJassDocument: public qapp::CDocument
