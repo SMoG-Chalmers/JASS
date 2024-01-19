@@ -141,6 +141,8 @@ namespace jass
 
 		void UpdateTooltip(const QMouseEvent& event);
 
+		void CancelTooltip();
+
 		bool TryShowTooltip(const QPoint& pos);
 		
 		IGraphWidgetDelegate* m_Delegate = nullptr;

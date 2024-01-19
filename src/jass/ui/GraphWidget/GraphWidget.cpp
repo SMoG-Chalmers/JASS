@@ -198,6 +198,9 @@ namespace jass
 		{
 			switch (event->type())
 			{
+			case QEvent::MouseButtonPress:
+				CancelTooltip();
+				break;
 			case QEvent::Wheel:
 				{
 					auto& mouseEvent = (QWheelEvent&)*event;
@@ -287,7 +290,13 @@ namespace jass
 		{
 			return;
 		}
-		
+
+		if (event.buttons() != Qt::NoButton)
+		{
+			CancelTooltip();
+			return;
+		}
+
 		m_ToolTip.MousePos = event.pos();
 
 		size_t layer_index = (size_t)-1;
@@ -308,23 +317,31 @@ namespace jass
 
 		if (CGraphLayer::NO_ELEMENT == m_ToolTip.HoverElement)
 		{
-			if (m_ToolTip.Timer)
-			{
-				m_ToolTip.Timer->stop();
-			}
+			m_ToolTip.Timer->stop();
 			return;
 		}
 
 		if (!QToolTip::isVisible())
 		{
-			if (m_ToolTip.Timer)
-			{
-				m_ToolTip.Timer->start(TOOLTIP_DELAY_MSEC);
-			}
+			m_ToolTip.Timer->start(TOOLTIP_DELAY_MSEC);
 			return;
 		}
 
 		TryShowTooltip(event.pos());
+	}
+
+	void CGraphWidget::CancelTooltip()
+	{
+		if (QToolTip::isVisible())
+		{
+			QToolTip::hideText();
+		}
+		if (m_ToolTip.Timer)
+		{
+			m_ToolTip.Timer->stop();
+		}
+		m_ToolTip.HoverLayer = (size_t)-1;
+		m_ToolTip.HoverElement = CGraphLayer::NO_ELEMENT;
 	}
 
 	bool CGraphWidget::TryShowTooltip(const QPoint& pos)
