@@ -34,6 +34,7 @@ namespace jass
 		std::unique_ptr<qapp::CDocument> NewDocument() override;
 		std::unique_ptr<qapp::CDocument> LoadDocument(QIODevice& in) override;
 		std::span<const qapp::SDocumentTypeDesc> SupportedSaveFormats() override;
+		std::span<const qapp::SDocumentTypeDesc> SupportedExportFormats() override;
 		void SaveDocument(qapp::CDocument& document, QIODevice& out, const qapp::SDocumentTypeDesc& format) override;
 		std::unique_ptr<qapp::CEditor>   CreateEditor(qapp::CDocument& document) override;
 		bool                             TryIdBlock(const QByteArray& id_block) override;
@@ -47,6 +48,7 @@ namespace jass
 
 	private:
 		qapp::SDocumentTypeDesc m_Description;
+		qapp::SDocumentTypeDesc m_SvgDocumentTypeDesc;
 		int m_NewDocumentNamingCounter = 0;
 	};
 

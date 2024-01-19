@@ -110,6 +110,7 @@ namespace jass
 		fileMenu->addSeparator();
 		fileMenu->addAction(qapp::s_StandardActions.Save);
 		fileMenu->addAction(qapp::s_StandardActions.SaveAs);
+		fileMenu->addAction(qapp::s_StandardActions.Export);
 		fileMenu->addSeparator();
 		fileMenu->addAction(qapp::s_StandardActions.Exit);
 

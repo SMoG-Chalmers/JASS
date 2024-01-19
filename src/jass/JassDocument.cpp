@@ -23,6 +23,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/GraphEditor/JassEditor.hpp>
 #include "JassDocument.hpp"
 #include "JassFileFormat.h"
+#include "JassSvgExport.h"
 #include "LegacyJassFileFormat.h"
 
 namespace jass
@@ -37,6 +38,11 @@ namespace jass
 		m_Description.ExtensionNoDot = "jass";
 		m_Description.Capabilities = qapp::SDocumentTypeDesc::Caps_New | qapp::SDocumentTypeDesc::Caps_Load;
 		m_Description.MinIdBlockSize = std::max(JASS_FILE_ID_BYTE_COUNT, LEGACY_JASS_FILE_ID_BYTE_COUNT);
+
+		m_SvgDocumentTypeDesc.Name = "SVG Image";
+		m_SvgDocumentTypeDesc.Icon = QIcon();
+		m_SvgDocumentTypeDesc.FileNamePrefix = "Image";
+		m_SvgDocumentTypeDesc.ExtensionNoDot = "svg";
 	}
 
 	std::unique_ptr<qapp::CDocument> CJassDocumentTypeHandler::NewDocument()
@@ -68,6 +74,11 @@ namespace jass
 		return std::span<const qapp::SDocumentTypeDesc>(&m_Description, 1);
 	}
 
+	std::span<const qapp::SDocumentTypeDesc> CJassDocumentTypeHandler::SupportedExportFormats()
+	{
+		return std::span<const qapp::SDocumentTypeDesc>(&m_SvgDocumentTypeDesc, 1);
+	}
+
 	void CJassDocumentTypeHandler::SaveDocument(qapp::CDocument& document, QIODevice& out, const qapp::SDocumentTypeDesc& format)
 	{
 		auto* jass_doc = dynamic_cast<CJassDocument*>(&document);
@@ -75,6 +86,13 @@ namespace jass
 		{
 			throw std::runtime_error("Unsupported document type");
 		}
+
+		if (&format == &m_SvgDocumentTypeDesc)
+		{
+			ExportJassToSVG(out, *jass_doc);
+			return;
+		}
+
 		SaveJassFile(out, *jass_doc);
 	}
 
