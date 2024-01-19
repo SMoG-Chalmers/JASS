@@ -52,12 +52,12 @@ namespace jass
 #endif
 		
 
-		// Apopend line break
-#ifdef _MSC_VER
-		strcat_s(at, sizeof(buf) - (at - buf), "\n");
-#else
-		strcat(at, "\n");
-#endif
+		// Append line break
+//#ifdef _MSC_VER
+//		strcat_s(at, sizeof(buf) - (at - buf), "\n");
+//#else
+//		strcat(at, "\n");
+//#endif
 
 		qDebug() << buf;
 	}
