@@ -38,6 +38,7 @@ namespace qapp
 
 namespace jass
 {
+	class CAnalyses;
 	class CCategorySet;
 	class CCategoryView;
 	class CGraphModel;
@@ -96,13 +97,14 @@ namespace jass
 	private Q_SLOTS:
 		void OnCommandHistoryDirtyChanged(bool dirty);
 		void OnCustomContextMenuRequested(const QPoint& pos);
+		void UpdateAnalyses();
 
 	private:
 		CJassDocument& m_Document;
 		CGraphWidget* m_GraphWidget = nullptr;
 		std::unique_ptr<CGraphSelectionModel> m_SelectionModel;
 		std::unique_ptr<qapp::CCommandHistory> m_CommandHistory;
-
+		std::unique_ptr<CAnalyses> m_Analyses;
 		CImageGraphLayer* m_ImageLayer = nullptr;
 
 		// Common

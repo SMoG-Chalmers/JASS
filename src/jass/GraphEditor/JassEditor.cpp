@@ -42,6 +42,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/commands/CmdSetBackgroundImage.h>
 #include <jass/commands/CmdSetNodeCategory.h>
 #include <jass/graphdata/GraphData.h>
+#include <jass/graphdata/GraphModelImmutableDirectedGraphAdapter.h>
 #include <jass/graphdata/GraphModelSubGraphView.h>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
@@ -54,6 +55,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include "tools/NodeTool.h"
 #include "tools/SelectionTool.h"
 
+#include "Analyses.hpp"
 #include "GraphClipboardData.h"
 #include "GraphTool.h"
 #include "JassEditor.hpp"
@@ -96,8 +98,17 @@ namespace jass
 		: m_Document(document)
 		, m_CommandHistory(new qapp::CCommandHistory(*this, qapp::CPagePool::DefaultPagePool()))
 		, m_SelectionModel(new CGraphSelectionModel(document.GraphModel()))
+		, m_Analyses(new CAnalyses)
 	{
 		connect(m_CommandHistory.get(), &qapp::CCommandHistory::DirtyChanged, this, &CJassEditor::OnCommandHistoryDirtyChanged);
+
+		connect(&DataModel(), &CGraphModel::NodesInserted, this, &CJassEditor::UpdateAnalyses);
+		connect(&DataModel(), &CGraphModel::NodesRemoved,  this, &CJassEditor::UpdateAnalyses);
+		connect(&DataModel(), &CGraphModel::EdgesAdded,    this, &CJassEditor::UpdateAnalyses);
+		connect(&DataModel(), &CGraphModel::EdgesInserted, this, &CJassEditor::UpdateAnalyses);
+		connect(&DataModel(), &CGraphModel::EdgesRemoved,  this, &CJassEditor::UpdateAnalyses);
+
+		UpdateAnalyses();
 	}
 	
 	CJassEditor::~CJassEditor()
@@ -385,16 +396,29 @@ namespace jass
 	{
 		if (auto* node_layer = dynamic_cast<CNodeGraphLayer*>(&m_GraphWidget->Layer(layer_index)))
 		{
+			const auto node_index = (CGraphModel::node_index_t)element;
+
 			QString s;
 			s.reserve(128);
 			s += "<table>";
 
-			s += QString("<tr><td>Name:</td><td>%1</td></tr>").arg(DataModel().NodeName((CGraphModel::node_index_t)element));
+			s += QString("<tr><td>Name:</td><td>%1</td></tr>").arg(DataModel().NodeName(node_index));
 
 			s += "<tr><td>Category:< / td><td>";
-			const auto category = (size_t)DataModel().NodeCategory((CGraphModel::node_index_t)element);
+			const auto category = (size_t)DataModel().NodeCategory(node_index);
 			s += category < m_Document.Categories().Size() ? m_Document.Categories().Name(category) : QString("None");
 			s += "</td></tr>";
+
+			const auto metric_count = m_Analyses->MetricCount();
+			for (size_t metric_index = 0; metric_index < metric_count; ++metric_index)
+			{
+				s += "<tr><td>";
+				s += m_Analyses->MetricName(metric_index);
+				s += ":</td><td>";
+				const auto value = m_Analyses->MetricValue(metric_index, node_index);
+				s += std::isnan(value) ? QString("-") : QString("%1").arg(value);
+				s += "</td></tr>";
+			}
 
 			s += "</table>";
 			return s;
@@ -494,6 +518,11 @@ namespace jass
 		}
 
 		contextMenu.exec(m_GraphWidget->mapToGlobal(pos));
+	}
+
+	void CJassEditor::UpdateAnalyses()
+	{
+		m_Analyses->EnqueueUpdate(CGraphModelImmutableDirectedGraphAdapter(DataModel()));
 	}
 
 	void CJassEditor::OnSelectTool(int tool_index)
