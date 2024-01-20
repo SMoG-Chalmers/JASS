@@ -25,5 +25,5 @@ namespace jass
 {
 	class CJassDocument;
 
-	void ExportJassToSVG(QIODevice&, const CJassDocument& out_document);
+	void ExportJassToSVG(QIODevice&, const CJassDocument& doc);
 }

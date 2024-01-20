@@ -27,6 +27,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/math/Geometry.h>
 #include <jass/ui/ImageFx.h>
 #include <jass/GraphEditor/CategorySet.hpp>
+#include <jass/Shape.h>
 #include "NodeGraphLayer.hpp"
 
 namespace jass
@@ -34,52 +35,6 @@ namespace jass
 	static const QRgb COLOR_SELECTED = qRgb(0x0a, 0x84, 0xff);
 	static const QRgb COLOR_HILIGHT = Blend(COLOR_SELECTED, 0xFFFFFFFF, 48);
 	//static const QRgb COLOR_HILIGHT = qRgb(0xe7, 0x85, 0x1d);  // Orange
-
-	struct vec2
-	{
-		float x;
-		float y;
-	};
-	
-	template <int N>
-	constexpr std::array<vec2, N> NShape(float y_offset = 0, bool tilted = false)
-	{
-		std::array<vec2, N> pts;
-		for (int i = 0; i < N; ++i)
-		{
-			const float angle = ((float)i + (tilted ? .5f : .0f)) * ((float)std::numbers::pi * 2.0f / N);
-			pts[i].x = sinf(angle);
-			pts[i].y = y_offset + -cosf(angle);
-		}
-		return pts;
-	}
-
-	template <int N>
-	constexpr std::array<vec2, N*2> StarShape()
-	{
-		std::array<vec2, N * 2> pts;
-		for (int i = 0; i < N*2; ++i)
-		{
-			const float r = 1.0f - .5f * (i & 1);
-			const float angle = (float)i * ((float)std::numbers::pi / N);
-			pts[i].x = r * sinf(angle);
-			pts[i].y = r * -cosf(angle);
-		}
-		return pts;
-	}
-
-	static const auto s_TriangleCoords = NShape<3>(.2f);
-	static const auto s_SquareCoords = NShape<4>(0, true);
-	static const auto s_DiamondCoords = NShape<4>();
-	static const auto s_PentagonCoords = NShape<5>();
-	static const auto s_HexagonCoords = NShape<6>(0, true);
-	static const auto s_StartCoords = StarShape<5>();
-
-	//inline constexpr float deg_to_rad(float deg)
-	//{
-	//	return (float)std::numbers::pi * deg / 180.0f; 
-	//}
-
 
 	void CNodeGraphLayer::SSprite::Draw(QPainter& painter, const QPoint& at) const
 	{
@@ -116,7 +71,7 @@ namespace jass
 		//};
 
 		SShapeSpriteDesc ssdNormal;
-		ssdNormal.Radius = 6.5f;
+		ssdNormal.Radius = 9.5f;
 		ssdNormal.OutlineWidth = 3.0f;
 		ssdNormal.ShadowOffset = { 1, 1 };
 		ssdNormal.ShadowBlurRadius = 3.0f;
@@ -317,43 +272,11 @@ namespace jass
 		return QRect(node.Position.x() + translation.x() - sprite.Origin.x(), node.Position.y() + translation.y() - sprite.Origin.y(), sprite.Pixmap.width(), sprite.Pixmap.height());
 	}
 
-	static std::span<const vec2> GetShapePoints(EShape shape, float& out_scale)
-	{
-		switch (shape)
-		{
-		case EShape::Circle:
-			out_scale = 1.10f;
-			return std::span<const vec2>(s_TriangleCoords);
-		case EShape::Triangle:
-			out_scale = 1.6f;
-			return std::span<const vec2>(s_TriangleCoords);
-		case EShape::Square:
-			out_scale = 1.0f / sqrtf(.5f);
-			return std::span<const vec2>(s_SquareCoords);
-		case EShape::Diamond:
-			out_scale = 1.0f / sqrtf(.5f);
-			return std::span<const vec2>(s_DiamondCoords);
-		case EShape::Pentagon:
-			out_scale = 1.4f;
-			return std::span<const vec2>(s_PentagonCoords);
-		case EShape::Hexagon:
-			out_scale = 1.35f;
-			return std::span<const vec2>(s_HexagonCoords);
-		case EShape::Star:
-			out_scale = 1.6f;
-			return std::span<const vec2>(s_StartCoords);
-		}
-
-		out_scale = 1;
-		return std::span<const vec2>();
-	}
-
 	CNodeGraphLayer::SSprite CNodeGraphLayer::CreateSprite(const SShapeSpriteDesc& desc)
 	{
-		float shape_scale;
-		const auto points = GetShapePoints(desc.Shape, shape_scale);
+		const auto points = GetShapePoints(desc.Shape);
 
-		const float radius = desc.Radius * shape_scale;
+		const float radius = desc.Radius;
 
 		const QPointF shadowOffset = { std::round(desc.ShadowOffset.x()), std::round(desc.ShadowOffset.y()) };  // Limitation in DropShadow function
 
@@ -381,7 +304,7 @@ namespace jass
 			polygon.reserve((int)points.size());
 			for (const auto& pt : points)
 			{
-				polygon.append(QPointF(pt.x * radius + (float)origin.x, pt.y * radius + (float)origin.y));
+				polygon.append(QPointF(pt.x() * radius + (float)origin.x, pt.y() * radius + (float)origin.y));
 			}
 		}
 
@@ -401,8 +324,8 @@ namespace jass
 				painter.drawEllipse(QRectF(
 					(float)origin.x - radius,
 					(float)origin.y - radius,
-					radius * 2.0f,
-					radius * 2.0f));
+					radius * CIRCLE_SHAPE_SCALE * 2.0f,
+					radius * CIRCLE_SHAPE_SCALE * 2.0f));
 			}
 			else
 			{
@@ -426,8 +349,8 @@ namespace jass
 			painter.drawEllipse(QRectF(
 				(float)origin.x - radius,
 				(float)origin.y - radius,
-				radius * 2.0f,
-				radius * 2.0f));
+				radius * CIRCLE_SHAPE_SCALE * 2.0f,
+				radius * CIRCLE_SHAPE_SCALE * 2.0f));
 		}
 		else
 		{
