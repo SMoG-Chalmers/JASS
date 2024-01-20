@@ -43,7 +43,7 @@ namespace jass
 #ifdef _MSC_VER
 		const int size = vsnprintf_s(buf, sizeof(buf), sizeof(buf), format, args);
 #else
-		const int size = vsnprintf(buf, sizeof(buf), fmt, args);
+		const int size = vsnprintf(buf, sizeof(buf), format, args);
 #endif
 		if (size >= sizeof(buf))
 		{
