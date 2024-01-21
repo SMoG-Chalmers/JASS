@@ -48,6 +48,7 @@ namespace jass
 	std::unique_ptr<qapp::CDocument> CJassDocumentTypeHandler::NewDocument()
 	{
 		auto doc = std::make_unique<CJassDocument>();
+		doc->Categories().SetDefaultCategories();
 		doc->SetPath(QString("%1%2").arg(m_Description.FileNamePrefix).arg(++m_NewDocumentNamingCounter));
 		return doc;
 	}
@@ -114,7 +115,7 @@ namespace jass
 
 	CJassDocument::CJassDocument()
 	{
-		m_Categories.SetDefaultCategories();  // Temp
+		//m_Categories.SetDefaultCategories();
 	}
 
 	void CJassDocument::SetImage(const QByteArray& image_data, QString extension_no_dot)

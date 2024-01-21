@@ -118,6 +118,7 @@ namespace jass
 		CGraphSelectionModel& m_SelectionModel;
 
 		int m_HitRadius = 5;
+		unsigned int m_CategoryCount = 0;
 		std::vector<SSprite> m_Sprites;
 		std::vector<SNode> m_Nodes;
 		bitvec m_SelectionMask;
@@ -127,7 +128,7 @@ namespace jass
 
 	inline const CNodeGraphLayer::SSprite& CNodeGraphLayer::NodeSprite(CGraphModel::category_index_t category, ENodeSpriteStyle style) const
 	{
-		auto sprite_category = (category == CGraphModel::NO_CATEGORY) ? 0 : (category % 6);
+		const auto sprite_category = std::min(m_CategoryCount, category);
 		return m_Sprites[sprite_category * SPRITE_COUNT_PER_CATEGORY + (uint32_t)style];
 	}
 

@@ -37,15 +37,19 @@ namespace jass
 	{
 		Q_OBJECT
 	public:
+		static const size_t NO_CATEGORY;
+
+		CCategorySet();
+
 		inline size_t Size() const { return m_Categories.size(); }
 
-		inline const QString& Name(size_t category_index) const { return m_Categories[category_index].Name; }
+		inline const QString& Name(size_t category_index) const { return Category(category_index).Name; }
 
-		inline const QRgb Color(size_t category_index) const { return m_Categories[category_index].Color; }
+		inline const QRgb Color(size_t category_index) const { return Category(category_index).Color; }
 
-		inline const EShape Shape(size_t category_index) const { return m_Categories[category_index].Shape; }
+		inline const EShape Shape(size_t category_index) const { return Category(category_index).Shape; }
 
-		inline QIcon Icon(size_t category_index) const { return QIcon(); }
+		QIcon Icon(size_t category_index) const;
 
 		void AddCategory(QString name, QRgb color, EShape shape);
 
@@ -76,9 +80,13 @@ namespace jass
 			QString Name;
 			QRgb    Color;
 			EShape  Shape;
-			QIcon   Icon;
+			mutable QIcon Icon;
 		};
 
+		inline SCategory& Category(size_t category_index) { return category_index < m_Categories.size() ? m_Categories[category_index] : m_NoCategory; }
+		inline const SCategory& Category(size_t category_index) const { return category_index < m_Categories.size() ? m_Categories[category_index] : m_NoCategory; }
+
+		SCategory m_NoCategory;
 		std::vector<SCategory> m_Categories;
 	};
 }

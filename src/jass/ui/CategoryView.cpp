@@ -38,7 +38,7 @@ namespace jass
 		{
 			// Customize the size of each item
 			QSize size = QStyledItemDelegate::sizeHint(option, index);
-			size.setHeight(30);
+			size.setHeight(24);
 			return size;
 		}
 

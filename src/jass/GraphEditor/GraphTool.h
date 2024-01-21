@@ -24,6 +24,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	class CCategorySet;
 	class CGraphModel;
 	class CGraphSelectionModel;
 	class CGraphWidget;
@@ -43,6 +44,7 @@ namespace jass
 		inline CGraphWidget& GraphWidget();
 		inline const CGraphWidget& GraphWidget() const;
 		inline CGraphModel& DataModel();
+		inline CCategorySet& Categories();
 		inline CGraphSelectionModel& SelectionModel();
 		inline qapp::CCommandHistory& CommandHistory();
 		
@@ -59,6 +61,7 @@ namespace jass
 	inline CGraphWidget& CGraphTool::GraphWidget() { return m_Editor->GraphWidget(); }
 	inline const CGraphWidget& CGraphTool::GraphWidget() const { return m_Editor->GraphWidget(); }
 	inline CGraphModel& CGraphTool::DataModel() { return m_Editor->DataModel(); }
+	inline CCategorySet& CGraphTool::Categories() { return m_Editor->Categories(); }
 	inline CGraphSelectionModel& CGraphTool::SelectionModel() { return m_Editor->SelectionModel(); }
 	inline qapp::CCommandHistory& CGraphTool::CommandHistory() { return m_Editor->CommandHistory(); }
 }

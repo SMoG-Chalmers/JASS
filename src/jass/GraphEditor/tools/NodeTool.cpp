@@ -24,6 +24,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <jass/commands/CmdCreateNode.h>
 #include <jass/Debug.h>
+#include <jass/GraphEditor/CategorySet.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
 
@@ -37,6 +38,8 @@ namespace jass
 	{
 		CGraphTool::Activate(ctx);
 		
+		CheckCategory();
+
 		m_Stamping = false;
 		m_NodeLayer = NodeLayer();
 
@@ -50,8 +53,6 @@ namespace jass
 
 		CGraphTool::Deactivate();
 	}
-
-	static int APAN = 0;
 
 	void CNodeTool::Paint(QPainter& painter, const QRect& rc)
 	{
@@ -125,10 +126,14 @@ namespace jass
 
 	void CNodeTool::wheelEvent(QWheelEvent& event)
 	{
-		auto new_category = (m_CurrentCategory + (event.angleDelta().y() / MOUSE_WHEEL_NOTCH_SIZE)) % 6;
+		if (!Categories().Size())
+		{
+			return;
+		}
+		auto new_category = (m_CurrentCategory + (event.angleDelta().y() / MOUSE_WHEEL_NOTCH_SIZE)) % (int)Categories().Size();
 		if (new_category < 0)
 		{
-			new_category += 6;
+			new_category += (int)Categories().Size();
 		}
 		SetCategory(new_category);
 	}
@@ -137,8 +142,17 @@ namespace jass
 	{
 		if (event.key() >= Qt::Key_1 && event.key() <= Qt::Key_9)
 		{
-			SetCategory((int)(event.key() - Qt::Key_1));
+			if (!Categories().Size())
+			{
+				return;
+			}
+			SetCategory(std::min((int)(event.key() - Qt::Key_1), (int)Categories().Size() - 1));
 		}
+	}
+
+	void CNodeTool::CheckCategory()
+	{
+		m_CurrentCategory = Categories().Size() ? std::min((int)Categories().Size() - 1, m_CurrentCategory) : -1;
 	}
 
 	void CNodeTool::SetCategory(int category)

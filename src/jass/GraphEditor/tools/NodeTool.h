@@ -37,6 +37,7 @@ namespace jass
 		void keyPressEvent(QKeyEvent& event) override;
 
 	private:
+		void CheckCategory();
 		void SetCategory(int category);
 		void ShowStamp(const QPoint& pt);
 		void HideStamp();

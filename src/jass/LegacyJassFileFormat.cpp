@@ -17,6 +17,8 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <span>
+#include <vector>
 
 #include "java/JavaObjectSerializationStream.h"
 
@@ -151,11 +153,14 @@ namespace jass
 				auto& self = (Category&)obj;
 				self.color = in.readObjectT<JavaAwtColor>();
 				self.name = in.readString().c_str();
-				self.index = m_Count++;
+				self.index = (int)m_Categories.size();
+				m_Categories.push_back(&self);
 			}
 
+			std::span<const Category*> Categories() { return m_Categories; }
+
 		private:
-			int m_Count = 0;
+			std::vector<const Category*> m_Categories;
 		};
 	};
 
@@ -295,17 +300,25 @@ namespace jass
 		jstream.AddObjectFactory("ReadWriteGraph", std::make_unique<jass::ReadWriteGraph::Factory>());
 		jstream.AddObjectFactory("Node", std::make_unique<jass::Node::Factory>());
 		jstream.AddObjectFactory("Edge", std::make_unique<jass::Edge::Factory>());
-		jstream.AddObjectFactory("Category", std::make_unique<jass::Category::Factory>());
+		auto* category_factory = new jass::Category::Factory;
+		jstream.AddObjectFactory("Category", std::unique_ptr<jass::Category::Factory>(category_factory));
 
 		auto s = jstream.readString();
 		uint32_t maybe_version = jstream.read<uint32_t>();
 		auto* rect = jstream.readObjectT<jass::JavaAwtRectangle>();
 		auto* graph = jstream.readObjectT<jass::ReadWriteGraph>();
 
+		// Categories
+		auto& categories = out_document.Categories();
+		for (auto* c : category_factory->Categories())
+		{
+			const auto color = qRgb((c->color->value >> 16) & 0xFF, (c->color->value >> 8) & 0xFF, c->color->value & 0xFF);
+			const auto shape = (EShape)(c->index % (int)EShape::_COUNT);
+			categories.AddCategory(QString(c->name), color, shape);
+		}
+
 		CGraphModel& graphModel = out_document.GraphModel();
 		graphModel.AddNodes(graph->nodes->Objects.size());
-
-		std::vector<Category*> categories;
 
 		{
 			graphModel.BeginModifyNodes();

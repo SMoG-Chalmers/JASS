@@ -22,6 +22,25 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	const size_t CCategorySet::NO_CATEGORY = (size_t)-1;
+
+	CCategorySet::CCategorySet()
+	{
+		m_NoCategory.Name = "None";
+		m_NoCategory.Color = qRgb(0xC0, 0xC0, 0xC0);
+		m_NoCategory.Shape = EShape::Circle;
+	}
+
+	QIcon CCategorySet::Icon(size_t category_index) const
+	{
+		auto& category = Category(category_index);
+		if (category.Icon.isNull())
+		{
+			category.Icon = QIcon(QPixmap::fromImage(CreateShapeImage(category.Shape, category.Color, 2, QPoint(1,1), 1, 16)));
+		}
+		return category.Icon;
+	}
+
 	void CCategorySet::AddCategory(QString name, QRgb color, EShape shape)
 	{
 		beginInsertRows(QModelIndex(), (int)m_Categories.size(), (int)m_Categories.size());
@@ -114,7 +133,7 @@ namespace jass
 		case Qt::DisplayRole:
 			return m_Categories[index.row()].Name;
 		case Qt::DecorationRole:
-			return m_Categories[index.row()].Icon;
+			return Icon(index.row());
 		}
 		return {};
 	}

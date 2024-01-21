@@ -2,6 +2,9 @@
 #include <numbers>
 
 #include <QtCore/qstring.h>
+#include <QtGui/qpainter.h>
+
+#include <jass/ui/ImageFx.h>
 #include <jass/Debug.h>
 #include <jass/Shape.h>
 
@@ -96,5 +99,65 @@ namespace jass
 			return s_StarCoords;
 		}
 		return std::span<const QPointF>();
+	}
+
+	QImage CreateShapeImage(EShape shape, QRgb color, int outline_width, const QPoint& shadow_offset, int shadow_blur_radius, int size)
+	{
+		const int shape_size = size - shadow_blur_radius * 2;
+		const float radius = .5f * shape_size;
+
+		const auto points = GetShapePoints(shape);
+
+		const QPointF origin = { radius + shadow_blur_radius - shadow_offset.x(), radius + shadow_blur_radius - shadow_offset.y() };
+		QImage image(size, size, QImage::Format_ARGB32);
+
+		// Clear
+		image.fill(Qt::transparent);
+
+		// Create a QPainter to draw on the QPixmap
+		QPainter painter(&image);
+
+		painter.setRenderHint(QPainter::Antialiasing, true);
+
+		const float mid_line_radius = radius - .5f * outline_width;
+
+		QPolygonF polygon;
+		if (EShape::Circle != shape)
+		{
+			polygon.reserve((int)points.size());
+			for (const auto& pt : points)
+			{
+				polygon.append(QPointF(pt.x() * mid_line_radius + origin.x(), pt.y() * mid_line_radius + origin.y()));
+			}
+		}
+
+		// Set the pen
+		QPen pen;
+		pen.setColor(Qt::white);
+		pen.setWidthF(outline_width);
+		pen.setJoinStyle(Qt::RoundJoin);
+		painter.setPen(pen);
+
+		// Set the brush
+		QBrush brush(QColor::fromRgb(color));
+		painter.setBrush(brush);
+
+		if (EShape::Circle == shape)
+		{
+			const float r = mid_line_radius * CIRCLE_SHAPE_SCALE;
+			painter.drawEllipse(QRectF(
+				origin.x() - r,
+				origin.y() - r,
+				r * 2.0f,
+				r * 2.0f));
+		}
+		else
+		{
+			painter.drawPolygon(polygon);
+		}
+
+		DropShadow(image, Qt::black, shadow_blur_radius, shadow_offset.x(), shadow_offset.y(), 2.0f);
+
+		return image; 
 	}
 }

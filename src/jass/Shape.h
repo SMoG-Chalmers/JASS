@@ -1,8 +1,11 @@
 #pragma once
 
 #include <span>
+#include <QtGui/qicon.h>
+#include <QtGui/qimage.h>
 #include <QtCore/qpoint.h>
 
+class QPoint;
 class QString;
 
 namespace jass
@@ -26,4 +29,6 @@ namespace jass
 	extern const float CIRCLE_SHAPE_SCALE;
 
 	std::span<const QPointF> GetShapePoints(EShape shape);
+
+	QImage CreateShapeImage(EShape shape, QRgb color, int outline_width, const QPoint& shadow_offset, int shadow_blur_radius, int size);
 }

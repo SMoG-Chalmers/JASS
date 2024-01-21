@@ -381,6 +381,7 @@ namespace jass
 		s_CategoryView->setModel(nullptr);
 
 		m_GraphWidget->SetInputProcessor(nullptr);
+		s_Tools[s_CurrentTool].Tool.get()->Deactivate();
 
 		s_Toolbar->setVisible(false);
 

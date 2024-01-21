@@ -47,29 +47,6 @@ namespace jass
 		, m_Categories(categories)
 		, m_SelectionModel(selection_model)
 	{
-		// Google Maps Blue
-		// QColor("#0a84ff")
-
-		const QColor palette[] = {
-			QColor("#cd001a"),
-			QColor("#ef6a00"),
-			QColor("#f2cd00"),
-			QColor("#79c300"),
-			QColor("#1961ae"),
-			QColor("#61007d"),
-			QColor("#A09080"),
-		};
-
-		//const QColor palette[] = {
-		//	QColor("#f94144"),
-		//	QColor("#f3722c"),
-		//	QColor("#f8961e"),
-		//	QColor("#f9c74f"),
-		//	QColor("#90be6d"),
-		//	QColor("#43aa8b"),
-		//	QColor("#577590"),
-		//};
-
 		SShapeSpriteDesc ssdNormal;
 		ssdNormal.Radius = 9.5f;
 		ssdNormal.OutlineWidth = 3.0f;
@@ -86,7 +63,9 @@ namespace jass
 		ssdHilighted.OutlineColor2 = QColor::fromRgba(COLOR_HILIGHT);
 		ssdHilighted.OutlineWidth2 = 4;
 
-		for (size_t category_index = 0; category_index < m_Categories.Size(); ++category_index)
+		// NOTE: Last one will be "None" (with same index as number of categories)
+		m_CategoryCount = (uint32_t)m_Categories.Size();
+		for (size_t category_index = 0; category_index <= m_Categories.Size(); ++category_index)
 		{
 			ssdNormal.Shape = m_Categories.Shape(category_index);
 			ssdNormal.FillColor = QColor::fromRgba(m_Categories.Color(category_index));
