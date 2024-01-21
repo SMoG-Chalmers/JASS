@@ -29,10 +29,14 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <qapplib/io/QIODeviceStreamAdapter.h>
 #include <qapplib/utils/StreamUtils.h>
+#include <qapplib/utils/StringUtils.h>
+#include <qapplib/Color.h>
 
 #include <jass/graphdata/JsonGraphData.h>
 #include <jass/graphdata/GraphModelGraphBuilder.h>
 #include <jass/graphdata/GraphModelGraphView.h>
+#include <jass/GraphEditor/CategorySet.hpp>
+#include <jass/utils/JsonUtils.h>
 
 #include "Debug.h"
 #include "GraphModel.hpp"
@@ -45,6 +49,7 @@ namespace jass
 {
 	const QString GRAPH_KEY = "graph";
 	const QString BACKGROUND_IMAGE_KEY = "background_image";
+	const QString CATEGORIES_KEY = "categories";
 
 	bool IsJassFile(const std::span<const uint8_t>& initial_bytes)
 	{
@@ -52,6 +57,8 @@ namespace jass
 
 		return initial_bytes.size() >= sizeof(EXPECTED_BYTES) && memcmp(initial_bytes.data(), EXPECTED_BYTES, sizeof(EXPECTED_BYTES)) == 0;
 	}
+
+	void FromJson(const QJsonValue& jsonValue, CCategorySet& out_categories);
 
 	void LoadJassMain(QJsonDocument& json_doc, zipx::zip_reader& reader, CJassDocument& out_jass_doc)
 	{
@@ -74,6 +81,12 @@ namespace jass
 				qapp::read_exact(*image_stream.get(), image_bytes.data(), image_bytes.size());
 				out_jass_doc.SetImage(std::move(image_bytes), QFileInfo(background_image_path).completeSuffix());
 			}
+		}
+
+		auto categories = root.find(CATEGORIES_KEY);
+		if (categories != root.end())
+		{
+			FromJson(categories.value(), out_jass_doc.Categories());
 		}
 	}
 
@@ -99,6 +112,8 @@ namespace jass
 		LoadJassMain(json_doc, reader, out_jass_doc);
 	}
 
+	QJsonValue ToJson(const CCategorySet& categories);
+
 	void SaveJassFile(QIODevice& out, const CJassDocument& document)
 	{
 		qapp::QIODeviceOStream out_adapter(out);
@@ -123,10 +138,58 @@ namespace jass
 				root[BACKGROUND_IMAGE_KEY] = backgroundImageFileName;
 			}
 
+			root[CATEGORIES_KEY] = ToJson(document.Categories());
+
 			auto jsonUtf8 = QJsonDocument(root).toJson();
 			auto& out = writer.begin_file("jass.json", true);
 			out.write((char*)jsonUtf8.data(), jsonUtf8.size());
 			writer.end_file();
+		}
+	}
+
+	QJsonValue ToJson(const CCategorySet& categories)
+	{
+		QJsonArray arr;
+		for (size_t category_index = 0; category_index < categories.Size(); ++category_index)
+		{
+			auto obj = QJsonObject();
+			obj["name"]  = categories.Name(category_index);
+			const auto color = categories.Color(category_index);
+			char buf[8];
+			snprintf(buf, sizeof(buf), "#%.2x%.2x%.2x", qRed(color), qGreen(color), qBlue(color));
+			obj["color"] = buf;
+			obj["shape"] = ShapeToString(categories.Shape(category_index));
+			arr.append(obj);
+		}
+		return arr;
+	}
+
+	void FromJson(const QJsonValue& jsonValue, CCategorySet& out_categories)
+	{
+		if (!jsonValue.isArray())
+		{
+			throw std::runtime_error("Category array expected");
+		}
+		for (auto it : jsonValue.toArray())
+		{
+			if (!it.isObject())
+			{
+				throw std::runtime_error("Category object expected");
+			}
+			auto obj = it.toObject();
+
+			const auto name = GetOptionalJsonValue(obj, "name", QString(""));
+			EShape shape;
+			if (!TryGetShapeFromString(GetOptionalJsonValue(obj, "shape", QString("circle")), shape))
+			{
+				shape = EShape::Circle;
+			}
+			QRgb color;
+			if (!qapp::TryParseColor(qapp::to_string_view(GetOptionalJsonValue<QString>(obj, "color", QString("#000"))), color))
+			{
+				color = qRgb(0, 0, 0);
+			}
+			out_categories.AddCategory(name, color, shape);
 		}
 	}
 }

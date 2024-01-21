@@ -19,6 +19,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtCore/qpoint.h>
 #include <QtCore/qjsonarray.h>
+#include <jass/utils/JsonUtils.h>
 #include <jass/utils/range_utils.h>
 
 #include "JsonGraphData.h"
@@ -92,41 +93,6 @@ namespace jass
 		}
 
 		return root;
-	}
-
-	template <typename T> inline QJsonValue::Type QJsonValueType();
-	template <>	inline QJsonValue::Type QJsonValueType<int>() { return QJsonValue::Double; }
-	template <>	inline QJsonValue::Type QJsonValueType<QString>() { return QJsonValue::String; }
-	template <>	inline QJsonValue::Type QJsonValueType<QJsonObject>() { return QJsonValue::Object; }
-	template <>	inline QJsonValue::Type QJsonValueType<QJsonArray>() { return QJsonValue::Array; }
-
-	template <typename T> inline T JsonValue(const QJsonValue& jsonValue);
-	template <>	inline int         JsonValue<int>(const QJsonValue& jsonValue) { return jsonValue.toInt(); }
-	template <>	inline QString     JsonValue<QString>(const QJsonValue& jsonValue) { return jsonValue.toString(); }
-	template <>	inline QJsonObject JsonValue<QJsonObject>(const QJsonValue& jsonValue) { return jsonValue.toObject(); }
-	template <>	inline QJsonArray  JsonValue<QJsonArray>(const QJsonValue& jsonValue) { return jsonValue.toArray(); }
-
-	template <typename T>
-	inline bool TryGetJsonValue(const QJsonObject& obj, const QString& key, T& out_value)
-	{
-		auto it = obj.find(key);
-		if (it == obj.end() || QJsonValueType<T>() != it->type())
-		{
-			return false;
-		}
-		out_value = JsonValue<T>(*it);
-		return true;
-	}
-
-	template <typename T>
-	inline T GetRequiredJsonValue(const QJsonObject& obj, const QString& key)
-	{
-		T value;
-		if (!TryGetJsonValue(obj, key, value))
-		{
-			throw std::runtime_error(QString("Missing field \"%1\"").arg(key).toStdString().c_str());
-		}
-		return value;
 	}
 
 	void GraphFromJson(IGraphBuilder& gbuilder, const QJsonObject& root)
