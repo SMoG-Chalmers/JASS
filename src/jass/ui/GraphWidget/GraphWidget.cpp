@@ -63,6 +63,8 @@ namespace jass
 		setFocusPolicy(Qt::StrongFocus);
 
 		SetScreenToModelScale(s_ZoomLevels[m_ZoomLevel] * .01f);
+
+		setAutoFillBackground(false);
 	}
 
 	CGraphWidget::~CGraphWidget()
@@ -186,6 +188,12 @@ namespace jass
 	void CGraphWidget::paintEvent(QPaintEvent* event)
 	{
 		QPainter painter(this);
+
+		// Paint background
+		painter.setPen(Qt::NoPen);
+		painter.setBrush(Qt::white);
+		painter.drawRect(rect());
+
 		for (size_t layer_index = 0; layer_index < m_Layers.size(); ++layer_index)
 		{
 			m_Layers[layer_index]->Paint(painter, event->rect());
