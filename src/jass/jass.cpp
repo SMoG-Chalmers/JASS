@@ -96,7 +96,7 @@ namespace jass
 		QSettings uiSettings(UiSettingsPath(), QSettings::IniFormat);
 
 		// Main Window
-		auto main_window = std::make_unique<CMainWindow>(document_manager, workbench);
+		auto main_window = std::make_unique<CMainWindow>(document_manager, workbench, action_manager);
 		
 		main_window->RestoreLayout(uiSettings);
 

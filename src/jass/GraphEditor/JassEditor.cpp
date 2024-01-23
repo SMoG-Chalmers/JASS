@@ -35,10 +35,13 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <qapplib/commands/CommandHistory.hpp>
 #include <qapplib/Workbench.hpp>
 
+#include <jass/commands/CmdAddCategory.h>
 #include <jass/commands/CmdAddGraphElements.h>
+#include <jass/commands/CmdDeleteCategories.h>
 #include <jass/commands/CmdDeleteGraphElements.h>
 #include <jass/commands/CmdDuplicate.h>
 #include <jass/commands/CmdFilpNodes.h>
+#include <jass/commands/CmdModifyCategory.h>
 #include <jass/commands/CmdSetBackgroundImage.h>
 #include <jass/commands/CmdSetNodeCategory.h>
 #include <jass/graphdata/GraphData.h>
@@ -266,15 +269,17 @@ namespace jass
 		ctx.Enable(s_ToolActionHandles.EdgeTool);
 	}
 
-	void CJassEditor::OnAction(qapp::HAction action_handle)
+	bool CJassEditor::OnAction(qapp::HAction action_handle)
 	{
 		if (action_handle == qapp::s_StandardActionHandles.Undo && m_CommandHistory->CanUndo())
 		{
 			m_CommandHistory->Undo();
+			return true;
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.Redo && m_CommandHistory->CanRedo())
 		{
 			m_CommandHistory->Redo();
+			return true;
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.Delete)
 		{
@@ -282,27 +287,28 @@ namespace jass
 				{
 					return CCmdDeleteGraphElements::Create(ctx, DataModel(), SelectionModel());
 				});
+			return true;
 		}
 		else if (action_handle == s_ActionHandles.FlipHorizontal || action_handle == s_ActionHandles.FlipVertical)
 		{
-			if (!SelectionModel().AnyNodesSelected())
+			if (SelectionModel().AnyNodesSelected())
 			{
-				return;
+				m_CommandHistory->NewCommand<CCmdFilpNodes>(
+					DataModel(),
+					SelectionModel().NodeMask(),
+					(action_handle == s_ActionHandles.FlipHorizontal) ? CCmdFilpNodes::Horizontal : CCmdFilpNodes::Vertical);
 			}
-			m_CommandHistory->NewCommand<CCmdFilpNodes>(
-				DataModel(),
-				SelectionModel().NodeMask(),
-				(action_handle == s_ActionHandles.FlipHorizontal) ? CCmdFilpNodes::Horizontal : CCmdFilpNodes::Vertical);
+			return true;
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.Duplicate)
 		{
-			if (!SelectionModel().AnyNodesSelected())
+			if (SelectionModel().AnyNodesSelected())
 			{
-				return;
+				m_CommandHistory->NewCommand<CCmdDuplicate>(
+					DataModel(),
+					SelectionModel().NodeMask());
 			}
-			m_CommandHistory->NewCommand<CCmdDuplicate>(
-				DataModel(),
-				SelectionModel().NodeMask());
+			return true;
 		}
 		else if (action_handle == s_ActionHandles.AddImage)
 		{
@@ -315,19 +321,21 @@ namespace jass
 			auto path = QFileDialog::getOpenFileName(QApplication::activeWindow(), "Select Background Image", s_Workbench->LastDirectory(), QString("Image Files (%1)").arg(filter));
 			if (path.isEmpty())
 			{
-				return;
+				return true;
 			}
 			QFile file(path);
 			if (!file.open(QIODevice::ReadOnly))
 			{
 				// TODO: Report error
-				return;
+				return true;
 			}
 			m_CommandHistory->NewCommand<CCmdSetBackgroundImage>(*this, file.readAll(), QFileInfo(path).completeSuffix());
+			return true;
 		}
 		else if (action_handle == s_ActionHandles.RemoveImage)
 		{
 			m_CommandHistory->NewCommand<CCmdSetBackgroundImage>(*this, QByteArray(), QString());
+			return true;
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.Cut)
 		{
@@ -337,20 +345,23 @@ namespace jass
 				{
 					return CCmdDeleteGraphElements::Create(ctx, DataModel(), SelectionModel());
 				});
+			return true;
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.Copy)
 		{
 			CGraphModelSubGraphView subGraphView(DataModel(), SelectionModel().NodeMask());
 			SetGraphClipboardData(subGraphView);
+			return true;
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.Paste)
 		{
 			CGraphData graphData;
 			if (!TryGetGraphClipboardData(graphData))
 			{
-				return;
+				return true;
 			}
 			CommandHistory().NewCommand<CCmdAddGraphElements>(DataModel(), graphData);
+			return true;
 		}
 		else if (action_handle == qapp::s_StandardActionHandles.SelectAll)
 		{
@@ -361,7 +372,9 @@ namespace jass
 			mask.set_all();
 			SelectionModel().SetNodeMask(mask);
 			SelectionModel().EndModify();
+			return true;
 		}
+		return false;
 	}
 
 	void CJassEditor::OnActivate()
@@ -373,12 +386,18 @@ namespace jass
 		s_Tools[s_CurrentTool].Tool.get()->Activate(*this);
 		m_GraphWidget->SetInputProcessor(s_Tools[s_CurrentTool].Tool.get());
 
-		s_CategoryView->setModel(&m_Document.Categories());
+		// Hook up Category view
+		s_CategoryView->SetCategories(&m_Document.Categories());
+		connect(s_CategoryView, &CCategoryView::AddCategory, this, &CJassEditor::OnAddCategory);
+		connect(s_CategoryView, &CCategoryView::RemoveCategories, this, &CJassEditor::OnRemoveCategories);
+		connect(s_CategoryView, &CCategoryView::ModifyCategory, this, &CJassEditor::OnModifyCategory);
 	}
 
 	void CJassEditor::OnDeactivate()
 	{
-		s_CategoryView->setModel(nullptr);
+		// Disconnect Category view
+		s_CategoryView->disconnect(this);
+		s_CategoryView->SetCategories(nullptr);
 
 		m_GraphWidget->SetInputProcessor(nullptr);
 		s_Tools[s_CurrentTool].Tool.get()->Deactivate();
@@ -524,6 +543,27 @@ namespace jass
 	void CJassEditor::UpdateAnalyses()
 	{
 		m_Analyses->EnqueueUpdate(CGraphModelImmutableDirectedGraphAdapter(DataModel()));
+	}
+
+	void CJassEditor::OnRemoveCategories(const QModelIndexList& indexes)
+	{
+		auto* arr = (size_t*)alloca(indexes.size() * sizeof(size_t));
+		for (int i = 0; i < indexes.size(); ++i)
+		{
+			arr[i] = (size_t)indexes[i].row();
+		}
+		std::sort(arr, arr + indexes.size());  // Must be sorted
+		CommandHistory().NewCommand<CCmdDeleteCategories>(std::span<const size_t>(arr, (size_t)indexes.size()));
+	}
+
+	void CJassEditor::OnAddCategory(const QString& name, QRgb color, EShape shape)
+	{
+		CommandHistory().NewCommand<CCmdAddCategory>(name, color, shape);
+	}
+
+	void CJassEditor::OnModifyCategory(int index, const QString& name, QRgb color, EShape shape)
+	{
+		CommandHistory().NewCommand<CCmdModifyCategory>((size_t)index, name, color, shape);
 	}
 
 	void CJassEditor::OnSelectTool(int tool_index)

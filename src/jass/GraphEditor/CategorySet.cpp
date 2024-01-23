@@ -18,6 +18,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <QtGui/qicon.h>
+#include <jass/utils/range_utils.h>
 #include "CategorySet.hpp"
 
 namespace jass
@@ -43,11 +44,23 @@ namespace jass
 
 	void CCategorySet::AddCategory(QString name, QRgb color, EShape shape)
 	{
-		beginInsertRows(QModelIndex(), (int)m_Categories.size(), (int)m_Categories.size());
-		
-		m_Categories.push_back({name, color, shape, QIcon()});
-		
+		InsertCategory(m_Categories.size(), name, color, shape);
+	}
+
+	void CCategorySet::InsertCategory(size_t index, QString name, QRgb color, EShape shape)
+	{
+		beginInsertRows(QModelIndex(), (int)index, (int)index);
+
+		m_Categories.insert(m_Categories.begin() + index, { name, color, shape, QIcon() });
+
 		endInsertRows();
+
+		if (index < m_Categories.size() - 1)
+		{
+			std::vector<size_t> remap_table(m_Categories.size() - 1);
+			build_index_expand_table(std::span<const size_t>(&index, 1), to_span(remap_table));
+			emit CategoriesRemapped(remap_table);
+		}
 	}
 
 	void CCategorySet::SetDefaultCategories()
@@ -95,6 +108,12 @@ namespace jass
 		m_Categories.erase(m_Categories.begin() + index);
 
 		endRemoveRows();
+
+		{
+			std::vector<size_t> remap_table;
+			build_index_collapse_table(m_Categories.size() + 1, std::span<const size_t>(&index, 1), remap_table);
+			emit CategoriesRemapped(remap_table);
+		}
 	}
 
 	void CCategorySet::Load(QIODevice& in)

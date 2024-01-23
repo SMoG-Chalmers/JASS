@@ -53,6 +53,8 @@ namespace jass
 
 		void AddCategory(QString name, QRgb color, EShape shape);
 
+		void InsertCategory(size_t index, QString name, QRgb color, EShape shape);
+
 		void SetDefaultCategories();
 
 		void SetCategory(size_t index, QString name, QRgb color, EShape shape);
@@ -72,7 +74,7 @@ namespace jass
 		int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
 	Q_SIGNALS:
-		void OnCategoriesRemapped(const std::span<const int>& remap_table);
+		void CategoriesRemapped(const std::span<const size_t>& remap_table);
 
 	private:
 		struct SCategory
@@ -86,6 +88,7 @@ namespace jass
 		inline SCategory& Category(size_t category_index) { return category_index < m_Categories.size() ? m_Categories[category_index] : m_NoCategory; }
 		inline const SCategory& Category(size_t category_index) const { return category_index < m_Categories.size() ? m_Categories[category_index] : m_NoCategory; }
 
+		QIcon m_AddIcon;
 		SCategory m_NoCategory;
 		std::vector<SCategory> m_Categories;
 	};

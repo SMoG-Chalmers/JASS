@@ -91,15 +91,16 @@ namespace jass
 		void OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices);
 		void OnNodesInserted(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table);
 		void OnNodesModified(const bitvec& node_mask);
-
+		void OnCategoriesInserted(const QModelIndex& parent, int first, int last);
+		void OnCategoriesRemoved(const QModelIndex& parent, int first, int last);
+		void OnCategoriesRemapped(const std::span<const size_t>&);
 
 	private:
 		static const uint8_t SPRITE_COUNT_PER_CATEGORY = 3;
 
 		struct SNode
 		{
-			QPoint   Position;  // Position on screen space, but not affected by screen translation (panning)
-			uint32_t Category;
+			QRect LastRect;  // Rect of last time it was drawn
 		};
 
 		bool IsNodeSelected(const SNode& node) const;
@@ -108,6 +109,10 @@ namespace jass
 		const SSprite& NodeSprite(const SNode& node) const;
 
 		QRect NodeRect(const SNode& node) const;
+
+		void UpdateSprites();
+
+		void UpdateSpritesForCategory(size_t catgory_index);
 
 		SSprite CreateSprite(const SShapeSpriteDesc& desc);
 

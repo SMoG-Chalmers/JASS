@@ -29,6 +29,7 @@ class QToolBar;
 
 namespace qapp
 {
+	class CActionManager;
 	class CDocumentManager;
 	class CWorkbench;
 	class CWorkbenchWidget;
@@ -44,7 +45,7 @@ namespace jass
 	{
 		Q_OBJECT
 	public:
-		CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench);
+		CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager);
 		~CMainWindow();
 
 		void SaveLayout(QSettings& settings);

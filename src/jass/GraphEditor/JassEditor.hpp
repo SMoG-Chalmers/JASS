@@ -19,12 +19,15 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include <QtCore/qabstractitemmodel.h>
+
 #include <memory>
 #include <span>
 #include <qapplib/Editor.hpp>
 #include <qapplib/actions/ActionManager.hpp>
 #include <jass/ui/InputEventProcessor.h>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
+#include <jass/Shape.h>
 
 class QActionGroup;
 class QMainWindow;
@@ -68,7 +71,7 @@ namespace jass
 		bool CanClose() const override;
 		std::unique_ptr<QWidget> CreateWidget(QWidget* parent) override;
 		void UpdateActions(qapp::CActionUpdateContext& ctx) override;
-		void OnAction(qapp::HAction action_handle) override;
+		bool OnAction(qapp::HAction action_handle) override;
 		void OnActivate() override;
 		void OnDeactivate() override;
 		void OnSaved() override;
@@ -98,6 +101,9 @@ namespace jass
 		void OnCommandHistoryDirtyChanged(bool dirty);
 		void OnCustomContextMenuRequested(const QPoint& pos);
 		void UpdateAnalyses();
+		void OnRemoveCategories(const QModelIndexList& indexes);
+		void OnAddCategory(const QString& name, QRgb color, EShape shape);
+		void OnModifyCategory(int index, const QString& name, QRgb color, EShape shape);
 
 	private:
 		CJassDocument& m_Document;

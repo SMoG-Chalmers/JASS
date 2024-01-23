@@ -74,6 +74,12 @@ namespace jass
 		template <class TLambda>
 		void for_each_set_bit(TLambda&& fn) const;
 
+		void* data() { return m_Words.data(); }
+
+		const void* data() const { return m_Words.data(); }
+
+		size_t dataByteSize() const { return m_Words.size() * sizeof(word_t); }
+
 	private:
 		inline void clear_overflow_bits();
 

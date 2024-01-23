@@ -89,17 +89,17 @@ namespace jass
 		
 		void EndModifyNodes();
 
-		inline const position_t& NodePosition(node_index_t node_index) const { return m_NodePositions[node_index]; }
+		inline const position_t& NodePosition(node_index_t node_index) const;
 
-		inline void SetNodePosition(node_index_t node_index, const position_t& position) { m_NodePositions[node_index] = position; SetNodeModified(node_index); }
+		inline void SetNodePosition(node_index_t node_index, const position_t& position);
 
-		inline category_index_t NodeCategory(node_index_t node_index) const { return m_NodeCategories[node_index]; }
+		inline category_index_t NodeCategory(node_index_t node_index) const;
 
-		inline void SetNodeCategory(node_index_t node_index, category_index_t category_index) { m_NodeCategories[node_index] = category_index; SetNodeModified(node_index); }
+		inline void SetNodeCategory(node_index_t node_index, category_index_t category_index);
 
-		inline const QString& NodeName(node_index_t node_index) const { return m_NodeNames[node_index]; }
+		inline const QString& NodeName(node_index_t node_index) const;
 
-		inline void SetNodeName(node_index_t node_index, const QString& name) { m_NodeNames[node_index] = name; SetNodeModified(node_index); }
+		inline void SetNodeName(node_index_t node_index, const QString& name);
 
 		inline std::span<const node_index_t> NodeNeighbours(node_index_t node_index) const;
 
@@ -129,6 +129,9 @@ namespace jass
 		void EdgesRemoved(const const_edge_indices_t& edge_indices);
 		void NodesModified(const bitvec& node_mask);
 
+	public Q_SLOTS:
+		void OnCatagoriesRemapped(const std::span<const size_t>& remap_table);
+
 	private:
 		typedef size_t edge_key_t;
 		typedef std::unordered_map<edge_key_t, edge_index_t> edge_map_t;
@@ -136,7 +139,7 @@ namespace jass
 		void RebuildNeighbourTables(const std::span<const node_pair_t>& edges);
 
 		inline void SetNodeModified(node_index_t node_index) { VerifyModifyingNodes(); m_NodeModificationMask.set(node_index); }
-		inline void VerifyModifyingNodes() const { ASSERT(!m_NodeModificationMask.empty()); }
+		inline void VerifyModifyingNodes() const { ASSERT(m_NodeModificationCounter > 0); }
 
 		static void RebuildEdgeMap(edge_map_t& edge_map, const const_node_pairs_t& node_pairs);
 
@@ -150,8 +153,44 @@ namespace jass
 		std::vector<node_pair_t> m_Edges;
 		std::unordered_map<edge_key_t, edge_index_t> m_EdgeMap;
 		std::vector<index_t> m_TempIndices;
+		int m_NodeModificationCounter = 0;
 		bitvec m_NodeModificationMask;
 	};
+
+	inline const CGraphModel::position_t& CGraphModel::NodePosition(node_index_t node_index) const 
+	{
+		return m_NodePositions[node_index]; 
+	}
+
+	inline void CGraphModel::SetNodePosition(node_index_t node_index, const position_t& position) 
+	{ 
+		m_NodePositions[node_index] = position; SetNodeModified(node_index); 
+	}
+
+	inline CGraphModel::category_index_t CGraphModel::NodeCategory(node_index_t node_index) const 
+	{ 
+		return m_NodeCategories[node_index];
+	}
+
+	inline void CGraphModel::SetNodeCategory(node_index_t node_index, category_index_t category_index) 
+	{ 
+		if (m_NodeCategories[node_index] != category_index)
+		{
+			m_NodeCategories[node_index] = category_index;
+			SetNodeModified(node_index);
+		}
+	}
+
+	inline const QString& CGraphModel::NodeName(node_index_t node_index) const 
+	{
+		return m_NodeNames[node_index]; 
+	}
+
+	inline void CGraphModel::SetNodeName(node_index_t node_index, const QString& name) 
+	{ 
+		m_NodeNames[node_index] = name; 
+		SetNodeModified(node_index); 
+	}
 
 	inline std::span<const CGraphModel::node_index_t> CGraphModel::NodeNeighbours(node_index_t node_index) const
 	{

@@ -55,7 +55,7 @@ namespace jass
 		Qt::DockWidgetArea m_Area = Qt::RightDockWidgetArea;
 	};
 
-	CMainWindow::CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench)
+	CMainWindow::CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager)
 		: m_DocumentManager(document_manager)
 		, m_Workbench(workbench)
 	{
@@ -129,7 +129,7 @@ namespace jass
 
 		// Category View
 		{
-			m_CategoryView = new CCategoryView(this);
+			m_CategoryView = new CCategoryView(this, action_manager);
 			SToolViewDesc desc;
 			desc.m_Name = "Categories";
 			desc.m_Icon = QIcon(":/categories.png");

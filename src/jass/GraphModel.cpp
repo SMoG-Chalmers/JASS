@@ -46,24 +46,23 @@ namespace jass
 
 	void CGraphModel::BeginModifyNodes()
 	{
-		if (NodeCount() == 0)
+		if (0 == m_NodeModificationCounter)
 		{
-			return;
+			m_NodeModificationMask.clear();
+			m_NodeModificationMask.resize(NodeCount());
 		}
-		ASSERT(m_NodeModificationMask.empty());
-		m_NodeModificationMask.clear();
-		m_NodeModificationMask.resize(NodeCount());
+		++m_NodeModificationCounter;
 	}
 
 	void CGraphModel::EndModifyNodes()
 	{
-		if (NodeCount() == 0)
-		{
-			return;
-		}
 		VerifyModifyingNodes();
-		emit NodesModified(m_NodeModificationMask);
-		m_NodeModificationMask.clear();
+		--m_NodeModificationCounter;
+		if (0 == m_NodeModificationCounter)
+		{
+			emit NodesModified(m_NodeModificationMask);
+			m_NodeModificationMask.clear();
+		}
 	}
 
 	void CGraphModel::InsertNodes(const std::span<const SNodeDesc>& new_nodes)
@@ -300,6 +299,20 @@ namespace jass
 		{
 			VERIFY(edge_map.insert(std::make_pair(MakeEdgeMapKey(node_pairs[edge_index]), edge_index)).second);
 		}
+	}
+
+	void CGraphModel::OnCatagoriesRemapped(const std::span<const size_t>& remap_table)
+	{
+		BeginModifyNodes();
+		for (CGraphModel::node_index_t node_index = 0; node_index < NodeCount(); ++node_index)
+		{
+			const auto category = NodeCategory(node_index);
+			if (NO_CATEGORY != category)
+			{
+				SetNodeCategory(node_index, remap_table[category]);
+			}
+		}
+		EndModifyNodes();
 	}
 
 	void CGraphModel::RebuildNeighbourTables(const std::span<const node_pair_t>& edges)

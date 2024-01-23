@@ -115,7 +115,7 @@ namespace jass
 
 	CJassDocument::CJassDocument()
 	{
-		//m_Categories.SetDefaultCategories();
+		connect(&m_Categories, &CCategorySet::CategoriesRemapped, &m_GraphModel, &CGraphModel::OnCatagoriesRemapped);
 	}
 
 	void CJassDocument::SetImage(const QByteArray& image_data, QString extension_no_dot)
