@@ -96,7 +96,7 @@ namespace jass
 		category.Name = name;
 		category.Color = color;
 		category.Shape = shape;
-		//category.Icon
+		category.Icon = QIcon();  // Will be recreated
 
 		auto model_index = this->index((int)index, 0);
 		emit dataChanged(model_index, model_index);

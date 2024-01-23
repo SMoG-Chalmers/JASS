@@ -94,6 +94,7 @@ namespace jass
 		void OnCategoriesInserted(const QModelIndex& parent, int first, int last);
 		void OnCategoriesRemoved(const QModelIndex& parent, int first, int last);
 		void OnCategoriesRemapped(const std::span<const size_t>&);
+		void OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles);
 
 	private:
 		static const uint8_t SPRITE_COUNT_PER_CATEGORY = 3;

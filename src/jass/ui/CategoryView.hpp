@@ -35,6 +35,8 @@ namespace qapp
 
 namespace jass
 {
+	class CCategoryDialog;
+
 	class CCategoryView : public QWidget, public qapp::IActionTarget
 	{
 		Q_OBJECT
@@ -62,6 +64,7 @@ namespace jass
 		void UpdateMyActions();
 		void OnAdd();
 		void OnRemove();
+		void EditCategory(const QModelIndex& index);
 
 	private:
 		qapp::CActionManager& m_ActionManager;
@@ -70,5 +73,6 @@ namespace jass
 		QToolBar* m_ToolBar = nullptr;
 		QListView* m_ListView = nullptr;
 		CCategorySet* m_Categories = nullptr;
+		CCategoryDialog* m_CategoryDialog = nullptr;
 	};
 }

@@ -29,6 +29,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <qapplib/actions/ActionManager.hpp>
 #include <qapplib/actions/StandardActions.h>
 #include <jass/Debug.h>
+#include "CategoryDialog.hpp"
 #include "CategoryView.hpp"
 
 namespace jass
@@ -49,54 +50,6 @@ namespace jass
 			size.setHeight(24);
 			return size;
 		}
-
-		//void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
-		//{
-		//	// Custom painting logic here
-		//	// You have full control over how the items are drawn
-
-		//	// Example: Draw text with a red background
-		//	painter->fillRect(option.rect, Qt::red);
-		//	painter->drawText(option.rect, index.data().toString());
-		//}
-
-		//bool eventFilter(QObject* watched, QEvent* event) override
-		//{
-		//	if (watched == m_ParentView && event->type() == QEvent::MouseMove)
-		//	{
-		//		QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-		//		if (mouseEvent->pos().x() > 50)
-		//		{
-		//			m_ParentView->setCursor(Qt::PointingHandCursor);
-		//		}
-		//		else
-		//		{
-		//			m_ParentView->setCursor(Qt::ArrowCursor);
-		//		}
-		//	}
-
-		//	// Continue with the default event handling
-		//	return QStyledItemDelegate::eventFilter(watched, event);
-		//}
-
-		//bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option, const QModelIndex& index) override
-		//{
-		//	if (event->type() == QEvent::MouseMove) 
-		//	{
-		//		QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
-
-		//		//// Check if the mouse press occurred within the item's rectangle
-		//		//if (option.rect.contains(mouseEvent->pos())) {
-		//		//	// Store the current index to use it in the paint method for highlighting
-		//		//	currentIndex = index;
-		//		//	// Trigger a repaint of the item
-		//		//	emit QAbstractItemView::update(index);
-		//		//	return true; // Event handled
-		//		//}
-		//	}
-
-		//	return QStyledItemDelegate::editorEvent(event, model, option, index);
-		//}
 
 	private:
 		QListView* m_ParentView;
@@ -138,6 +91,8 @@ namespace jass
 		vlayout->addLayout(hlayout);
 
 		setLayout(vlayout);
+
+		connect(m_ListView, &QListView::doubleClicked, this, &CCategoryView::EditCategory);
 	}
 
 	void CCategoryView::SetCategories(CCategorySet* categories)
@@ -191,7 +146,21 @@ namespace jass
 
 	void CCategoryView::OnAdd()
 	{
-
+		if (!m_Categories)
+		{
+			return;
+		}
+		if (!m_CategoryDialog)
+		{
+			m_CategoryDialog = new CCategoryDialog(this);
+		}
+		m_CategoryDialog->setWindowTitle("New Category");
+		m_CategoryDialog->SetName("");
+		if (m_CategoryDialog->exec() != QDialog::Accepted)
+		{
+			return;
+		}
+		emit AddCategory(m_CategoryDialog->Name(), m_CategoryDialog->Color(), m_CategoryDialog->Shape());
 	}
 
 	void CCategoryView::OnRemove()
@@ -208,6 +177,28 @@ namespace jass
 		}
 
 		emit RemoveCategories(selected_model_indexes);
+	}
+
+	void CCategoryView::EditCategory(const QModelIndex& index)
+	{
+		if (!m_Categories)
+		{
+			return;
+		}
+		const auto category_index = (size_t)index.row();
+		if (!m_CategoryDialog)
+		{
+			m_CategoryDialog = new CCategoryDialog(this);
+		}
+		m_CategoryDialog->setWindowTitle("Edit Category");
+		m_CategoryDialog->SetName(m_Categories->Name(category_index));
+		m_CategoryDialog->SetColor(m_Categories->Color(category_index));
+		m_CategoryDialog->SetShape(m_Categories->Shape(category_index));
+		if (m_CategoryDialog->exec() != QDialog::Accepted)
+		{
+			return;
+		}
+		emit ModifyCategory((int)category_index, m_CategoryDialog->Name(), m_CategoryDialog->Color(), m_CategoryDialog->Shape());
 	}
 }
 

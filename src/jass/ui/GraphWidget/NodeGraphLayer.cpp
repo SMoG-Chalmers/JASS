@@ -55,6 +55,7 @@ namespace jass
 		connect(&categories, &CCategorySet::rowsInserted, this, &CNodeGraphLayer::OnCategoriesInserted);
 		connect(&categories, &CCategorySet::rowsRemoved, this, &CNodeGraphLayer::OnCategoriesRemoved);
 		connect(&categories, &CCategorySet::CategoriesRemapped, this, &CNodeGraphLayer::OnCategoriesRemapped);
+		connect(&categories, &CCategorySet::dataChanged, this, &CNodeGraphLayer::OnCategoriesChanged);
 
 		UpdateSprites();
 
@@ -223,6 +224,14 @@ namespace jass
 	void CNodeGraphLayer::OnCategoriesRemapped(const std::span<const size_t>&)
 	{
 		UpdateSprites();
+	}
+
+	void CNodeGraphLayer::OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& /*roles*/)
+	{
+		for (auto category_index = (size_t)topLeft.row(); category_index <= (size_t)bottomRight.row(); ++category_index)
+		{
+			UpdateSpritesForCategory(category_index);
+		}
 	}
 
 	const CNodeGraphLayer::SSprite& CNodeGraphLayer::NodeSprite(const SNode& node) const
