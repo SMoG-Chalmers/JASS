@@ -23,6 +23,8 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+    const int CSplitWidget::MIN_WIDGET_SIZE = 10;
+
 	inline size_t CSplitWidget::SplitterCount() const
 	{
 		return m_Splitters.size();

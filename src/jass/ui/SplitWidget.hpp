@@ -51,7 +51,7 @@ namespace jass
 		inline int SpaceAfterSplitter(size_t splitter_index) const;
 		inline bool IsResizing() const { return m_CurrentSplitterIndex != -1; }
 
-		static const int MIN_WIDGET_SIZE = 10;
+		static const int MIN_WIDGET_SIZE;
 
 		struct SWidget
 		{
