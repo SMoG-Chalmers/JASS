@@ -32,7 +32,7 @@ namespace jass
 	static const QRgb SELECTION_OVERLAY_FILL_COLOR = qRgba(0x00, 0x78, 0xD7, 0x40);
 	static const QRgb SELECTION_OVERLAY_FRAME_COLOR = qRgba(0x00, 0x78, 0xD7, 0xFF);
 
-	void CSelectionTool::Activate(CJassEditor& ctx)
+	void CSelectionTool::Activate(const SGraphToolContext& ctx)
 	{
 		CGraphTool::Activate(ctx);
 

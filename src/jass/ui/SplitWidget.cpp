@@ -54,10 +54,11 @@ namespace jass
 		setCursor(Qt::SizeHorCursor);
 	}
 
-	void CSplitWidget::AddWidget(QWidget* widget)
+	void CSplitWidget::AddWidget(QWidget* widget, int weight)
 	{
 		SWidget w;
 		w.Widget = widget;
+		w.Weight = weight;
 		m_Widgets.push_back(w);
 		widget->setParent(this);
 		widget->installEventFilter(this);
@@ -94,6 +95,8 @@ namespace jass
 		QPainter painter(this);
 
 		const auto& rcClip = event->rect();
+
+		painter.setRenderHint(QPainter::Antialiasing, true);
 
 		for (size_t splitter_index = 0; splitter_index < SplitterCount(); ++splitter_index)
 		{
@@ -179,13 +182,13 @@ namespace jass
 		painter.drawRect(rc);
 
 		// Line
-		const auto half_width = rc.width() / 2;
-		QRect rcLine(rc.left() + half_width, rc.top() + half_width, 1, rc.height() - half_width * 2);
-		if (!rcLine.isEmpty())
-		{
-			painter.setBrush(Qt::lightGray);
-			painter.drawRect(rcLine);
-		}
+		const float half_width = .5f * rc.width();
+		const float centerX = (float)rc.left() + half_width;
+		QPen pen(Qt::lightGray);
+		pen.setWidth(3);
+		pen.setCapStyle(Qt::RoundCap);
+		painter.setPen(pen);
+		painter.drawLine(QPointF(centerX, rc.top() + half_width), QPointF(centerX, rc.bottom() - half_width));
 	}
 
 	void CSplitWidget::UpdateLayout()

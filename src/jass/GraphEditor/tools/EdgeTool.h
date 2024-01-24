@@ -31,7 +31,7 @@ namespace jass
 	class CEdgeTool : public CGraphTool
 	{
 	public:
-		void Activate(CJassEditor& ctx) override;
+		void Activate(const SGraphToolContext& ctx) override;
 		void Deactivate() override;
 		void mouseMoveEvent(QMouseEvent& event) override;
 		void mousePressEvent(QMouseEvent& event) override;

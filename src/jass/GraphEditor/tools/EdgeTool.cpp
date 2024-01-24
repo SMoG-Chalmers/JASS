@@ -33,7 +33,7 @@ namespace jass
 {
 	static const QRgb LINE_COLOR = qRgb(0x0a, 0x84, 0xff);
 
-	void CEdgeTool::Activate(CJassEditor& ctx)
+	void CEdgeTool::Activate(const SGraphToolContext& ctx)
 	{
 		CGraphTool::Activate(ctx);
 

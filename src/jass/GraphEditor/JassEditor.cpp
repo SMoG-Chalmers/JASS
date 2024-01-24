@@ -49,6 +49,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/graphdata/GraphModelSubGraphView.h>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
+#include <jass/ui/GraphWidget/JustifiedNodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/ImageGraphLayer.hpp>
 #include <jass/ui/CategoryView.hpp>
@@ -76,6 +77,7 @@ namespace jass
 	QToolBar* CJassEditor::s_Toolbar = nullptr;
 	CJassEditor::SToolActionHandles CJassEditor::s_ToolActionHandles;
 	std::vector<CJassEditor::STool> CJassEditor::s_Tools;
+	std::unique_ptr<CGraphTool> CJassEditor::s_JustifiedSelectionTool;
 	int CJassEditor::s_CurrentTool = 0;
 	CCategoryView* CJassEditor::s_CategoryView = nullptr;
 	CJassEditor::SActions CJassEditor::s_Actions;
@@ -88,7 +90,9 @@ namespace jass
 
 		void Paint(QPainter& painter, const QRect& rc) override
 		{
-			if (auto* tool = m_Editor.CurrentTool())
+			auto* tool = (&GraphWidget() == &m_Editor.GraphWidget()) ?
+				m_Editor.CurrentTool() : m_Editor.CurrentJustifiedTool();
+			if (tool)
 			{
 				tool->Paint(painter, rc);
 			}
@@ -131,6 +135,11 @@ namespace jass
 		s_CurrentTool = 0;
 		s_Tools[s_CurrentTool].Action->setChecked(true);
 
+		s_JustifiedSelectionTool.reset(new CSelectionTool);
+
+		s_ActionHandles.ShowJustified = action_manager.NewAction(nullptr, "Show Justified Graph", ":/justified_graph.png", QKeySequence(Qt::CTRL + Qt::Key_J), false, &s_Actions.ShowJustified); 
+		s_Actions.ShowJustified->setCheckable(true);
+		s_Actions.ShowJustified->setChecked(false);
 		s_ActionHandles.FlipHorizontal = action_manager.NewAction(nullptr, "Flip Horizontal",         ":/flip_horizontal.png", QKeySequence(Qt::Key_H), false, &s_Actions.FlipHorizontal);
 		s_ActionHandles.FlipVertical   = action_manager.NewAction(nullptr, "Flip Vertical",           ":/flip_vertical.png",   QKeySequence(Qt::Key_V), false, &s_Actions.FlipVertical);
 		s_ActionHandles.AddImage       = action_manager.NewAction(nullptr, "Load Background Image",   ":/image_add.png",       QKeySequence(), false, &s_Actions.AddImage);
@@ -148,6 +157,8 @@ namespace jass
 		s_Toolbar->addSeparator();
 		s_Toolbar->addAction(s_Actions.AddImage);
 		s_Toolbar->addAction(s_Actions.RemoveImage);
+		s_Toolbar->addSeparator();
+		s_Toolbar->addAction(s_Actions.ShowJustified);
 		s_Toolbar->setVisible(false);
 
 		s_CategoryView = &main_window->CategoryView();
@@ -203,7 +214,7 @@ namespace jass
 		m_SplitWidget = new CSplitWidget(parent);
 
 		m_GraphWidget = new CGraphWidget(m_SplitWidget);
-		m_SplitWidget->AddWidget(m_GraphWidget);
+		m_SplitWidget->AddWidget(m_GraphWidget, 2);
 		m_GraphWidget->setVisible(true);
 		m_GraphWidget->SetDelegate(this);
 		m_GraphWidget->EnableTooltips();
@@ -235,9 +246,22 @@ namespace jass
 
 		m_GraphWidget->addAction(qapp::s_StandardActions.SelectAll);
 
+
 		m_JustifiedGraphWidget = new CGraphWidget(m_SplitWidget);
-		m_SplitWidget->AddWidget(m_JustifiedGraphWidget);
-		m_JustifiedGraphWidget->setVisible(true);
+		m_SplitWidget->AddWidget(m_JustifiedGraphWidget, 1);
+		m_JustifiedGraphWidget->setVisible(false);
+		m_JustifiedGraphWidget->SetDelegate(this);
+		m_JustifiedGraphWidget->EnableTooltips();
+
+		{
+			auto justified_node_layer = std::make_unique<CJustifiedNodeGraphLayer>(*m_JustifiedGraphWidget, *this);
+			m_JustifiedGraphWidget->AppendLayer(std::move(justified_node_layer));
+		}
+
+		{
+			auto tool_layer = std::make_unique<CGraphToolLayer>(*m_JustifiedGraphWidget, *this);
+			m_JustifiedGraphWidget->AppendLayer(std::move(tool_layer));
+		}
 
 		return std::unique_ptr<QWidget>(m_SplitWidget);
 	}
@@ -250,6 +274,8 @@ namespace jass
 			ctx.Enable(qapp::s_StandardActionHandles.Redo);
 		ctx.Enable(qapp::s_StandardActionHandles.SelectAll);
 		ctx.Enable(qapp::s_StandardActionHandles.Paste);
+
+		ctx.Enable(s_ActionHandles.ShowJustified);
 
 		const bool hasSelectedNodes = SelectionModel().AnyNodesSelected();
 		const bool hasSelectedEdges = SelectionModel().AnyEdgesSelected();
@@ -297,6 +323,11 @@ namespace jass
 				{
 					return CCmdDeleteGraphElements::Create(ctx, DataModel(), SelectionModel());
 				});
+			return true;
+		}
+		else if (action_handle == s_ActionHandles.ShowJustified)
+		{
+			m_JustifiedGraphWidget->setVisible(s_Actions.ShowJustified->isChecked());
 			return true;
 		}
 		else if (action_handle == s_ActionHandles.FlipHorizontal || action_handle == s_ActionHandles.FlipVertical)
@@ -393,8 +424,14 @@ namespace jass
 
 		s_Toolbar->setVisible(true);
 
-		s_Tools[s_CurrentTool].Tool.get()->Activate(*this);
+		// Activate graph widget tool
+		s_Tools[s_CurrentTool].Tool.get()->Activate({ this, m_GraphWidget });
 		m_GraphWidget->SetInputProcessor(s_Tools[s_CurrentTool].Tool.get());
+
+		// Activate justified graph widget tool
+		s_JustifiedSelectionTool->Activate({ this, m_JustifiedGraphWidget });
+		m_JustifiedGraphWidget->SetInputProcessor(s_JustifiedSelectionTool.get());
+		s_Actions.ShowJustified->setChecked(m_JustifiedGraphWidget->isVisible());
 
 		// Hook up Category view
 		s_CategoryView->SetCategories(&m_Document.Categories());
@@ -409,6 +446,11 @@ namespace jass
 		s_CategoryView->disconnect(this);
 		s_CategoryView->SetCategories(nullptr);
 
+		// Deactivate justified graph widget tool
+		m_JustifiedGraphWidget->SetInputProcessor(nullptr);
+		s_JustifiedSelectionTool->Deactivate();
+
+		// Deactivate graph widget tool
 		m_GraphWidget->SetInputProcessor(nullptr);
 		s_Tools[s_CurrentTool].Tool.get()->Deactivate();
 
@@ -422,9 +464,11 @@ namespace jass
 		m_CommandHistory->SetCleanAtCurrentPosition();
 	}
 
-	QString CJassEditor::ToolTipText(size_t layer_index, CGraphLayer::element_t element)
+	QString CJassEditor::ToolTipText(CGraphWidget& graph_widget, size_t layer_index, CGraphLayer::element_t element)
 	{
-		if (auto* node_layer = dynamic_cast<CNodeGraphLayer*>(&m_GraphWidget->Layer(layer_index)))
+		auto* layer = &graph_widget.Layer(layer_index);
+
+		if (dynamic_cast<CNodeGraphLayer*>(layer) || dynamic_cast<CJustifiedNodeGraphLayer*>(layer))
 		{
 			const auto node_index = (CGraphModel::node_index_t)element;
 
@@ -590,7 +634,7 @@ namespace jass
 		if (auto* jass_editor = dynamic_cast<CJassEditor*>(s_Workbench->CurrentEditor()))
 		{
 			auto* new_tool = CurrentTool();
-			new_tool->Activate(*jass_editor);
+			new_tool->Activate({ jass_editor, jass_editor->m_GraphWidget });
 			jass_editor->m_GraphWidget->SetInputProcessor(new_tool);
 		}
 	}

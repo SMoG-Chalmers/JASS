@@ -371,7 +371,7 @@ namespace jass
 		m_ToolTip.HoverLayer = layer_index;
 		m_ToolTip.HoverElement = layer_element;
 
-		QString text = m_Delegate->ToolTipText(layer_index, layer_element);
+		QString text = m_Delegate->ToolTipText(*this, layer_index, layer_element);
 		if (text.isEmpty())
 		{
 			return false;

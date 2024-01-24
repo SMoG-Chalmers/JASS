@@ -34,7 +34,7 @@ namespace jass
 	class CSelectionTool : public CGraphTool
 	{
 	public:
-		void Activate(CJassEditor& ctx) override;
+		void Activate(const SGraphToolContext& ctx) override;
 		void Deactivate() override;
 		void Paint(QPainter& painter, const QRect& rc) override;
 		void mouseMoveEvent(QMouseEvent& event) override;

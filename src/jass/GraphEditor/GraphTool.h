@@ -32,12 +32,18 @@ namespace jass
 	class CEdgeGraphLayer;
 	class CNodeGraphLayer;
 
+	struct SGraphToolContext
+	{
+		CJassEditor* JassEditor = nullptr;
+		CGraphWidget* GraphWidget = nullptr;
+	};
+
 	class CGraphTool : public CInputEventProcessor
 	{
 	public:
 		virtual ~CGraphTool() {}
 
-		virtual void Activate(CJassEditor& ctx) { m_Editor = &ctx; }
+		virtual void Activate(const SGraphToolContext& ctx) { m_Editor = ctx.JassEditor; m_GraphWidget = ctx.GraphWidget; }
 		virtual void Deactivate() { m_Editor = nullptr; }
 		virtual void Paint(QPainter& painter, const QRect& rc) {}
 
@@ -56,10 +62,11 @@ namespace jass
 
 	private:
 		CJassEditor* m_Editor = nullptr;
+		CGraphWidget* m_GraphWidget = nullptr;
 	};
 
-	inline CGraphWidget& CGraphTool::GraphWidget() { return m_Editor->GraphWidget(); }
-	inline const CGraphWidget& CGraphTool::GraphWidget() const { return m_Editor->GraphWidget(); }
+	inline CGraphWidget& CGraphTool::GraphWidget() { return *m_GraphWidget; }
+	inline const CGraphWidget& CGraphTool::GraphWidget() const { return *m_GraphWidget; }
 	inline CGraphModel& CGraphTool::DataModel() { return m_Editor->DataModel(); }
 	inline CCategorySet& CGraphTool::Categories() { return m_Editor->Categories(); }
 	inline CGraphSelectionModel& CGraphTool::SelectionModel() { return m_Editor->SelectionModel(); }

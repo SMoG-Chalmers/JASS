@@ -12,5 +12,7 @@
   <file alias="image_remove.png"   >../external/fatcow/16x16/photo_delete.png</file>
   <file alias="add.png"            >../external/fatcow/16x16/add.png</file>
   <file alias="remove.png"         >../external/fatcow/16x16/delete.png</file>
+  <file alias="categories.png"     >../external/fatcow/16x16/palette.png</file>
+  <file alias="justified_graph.png">../external/fatcow/16x16/node.png</file>
 </qresource>
 </RCC>

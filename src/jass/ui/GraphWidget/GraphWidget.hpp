@@ -79,7 +79,7 @@ namespace jass
 	class IGraphWidgetDelegate
 	{
 	public:
-		virtual QString ToolTipText(size_t layer_index, CGraphLayer::element_t element) = 0;
+		virtual QString ToolTipText(CGraphWidget& graph_widget, size_t layer_index, CGraphLayer::element_t element) = 0;
 	};
 
 	class CGraphWidget : public QWidget

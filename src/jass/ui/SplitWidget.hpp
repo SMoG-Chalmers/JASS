@@ -29,7 +29,7 @@ namespace jass
 	public:
 		CSplitWidget(QWidget* parent);
 
-		void AddWidget(QWidget* widget);
+		void AddWidget(QWidget* widget, int weight = 1);
 
 		// Events
 		bool eventFilter(QObject* watched, QEvent* event) override;
@@ -68,7 +68,7 @@ namespace jass
 
 		int m_CurrentSplitterIndex = -1;
 		int m_MouseOffset = 0;
-		int m_SeparatorSize = 11;  // Should be odd
+		int m_SeparatorSize = 15;  // Should be odd
 		std::vector<SWidget> m_Widgets;
 		std::vector<SSplitter> m_Splitters;
 	};

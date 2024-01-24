@@ -52,6 +52,7 @@ namespace jass
 	class CJassEditor;
 	class CImageGraphLayer;
 	class CMainWindow;
+	class CSelectionTool;
 	class CSplitWidget;
 
 	class CJassEditor: public qapp::CEditor, public IGraphWidgetDelegate
@@ -78,7 +79,7 @@ namespace jass
 		void OnSaved() override;
 
 		//IGraphWidgetDelegate delegate
-		QString ToolTipText(size_t layer_index, CGraphLayer::element_t element) override;
+		QString ToolTipText(CGraphWidget& graph_widget, size_t layer_index, CGraphLayer::element_t element) override;
 
 		inline CGraphWidget& GraphWidget() { return *m_GraphWidget; }
 
@@ -93,7 +94,8 @@ namespace jass
 		inline qapp::CCommandHistory& CommandHistory() { return *m_CommandHistory; }
 
 		inline static CGraphTool* CurrentTool() { return s_Tools[s_CurrentTool].Tool.get(); }
-
+		inline static CGraphTool* CurrentJustifiedTool() { return s_JustifiedSelectionTool.get(); }
+		
 		void SetBackgroundImage(const QByteArray& image_data, QString extension_no_dot);
 
 		void SetCategoryForSelectedNodes(int category);
@@ -149,12 +151,13 @@ namespace jass
 		static QToolBar* s_Toolbar;
 		static SToolActionHandles s_ToolActionHandles;
 		static std::vector<STool> s_Tools;
+		static std::unique_ptr<CGraphTool> s_JustifiedSelectionTool;
 		static int s_CurrentTool;
 		static CCategoryView* s_CategoryView;
 
 		struct SActions
 		{
-			QAction* Duplicate = 0;
+			QAction* ShowJustified = 0;
 			QAction* FlipHorizontal = 0;
 			QAction* FlipVertical = 0;
 			QAction* AddImage = 0;
@@ -164,6 +167,7 @@ namespace jass
 
 		struct SActionHandles
 		{
+			qapp::HAction ShowJustified = 0;
 			qapp::HAction FlipHorizontal = 0;
 			qapp::HAction FlipVertical = 0;
 			qapp::HAction AddImage = 0;

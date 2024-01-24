@@ -34,7 +34,7 @@ namespace jass
 {
 	const int MOUSE_WHEEL_NOTCH_SIZE = 120;  // Is there no better way of doing this?
 
-	void CNodeTool::Activate(CJassEditor& ctx)
+	void CNodeTool::Activate(const SGraphToolContext& ctx)
 	{
 		CGraphTool::Activate(ctx);
 		
