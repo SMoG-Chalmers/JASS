@@ -32,32 +32,17 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
-	static const QRgb COLOR_SELECTED = qRgb(0x0a, 0x84, 0xff);
-	static const QRgb COLOR_HILIGHT = Blend(COLOR_SELECTED, 0xFFFFFFFF, 48);
-	//static const QRgb COLOR_HILIGHT = qRgb(0xe7, 0x85, 0x1d);  // Orange
-
-	void CNodeGraphLayer::SSprite::Draw(QPainter& painter, const QPoint& at) const
-	{
-		painter.drawPixmap(at - this->Origin, this->Pixmap);
-	}
-
 	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CCategorySet& categories, CGraphSelectionModel& selection_model)
 		: CGraphLayer(graphWidget)
 		, m_GraphModel(graph_model)
 		, m_Categories(categories)
 		, m_SelectionModel(selection_model)
+		, m_Sprites(categories)
 	{
 		connect(&selection_model, &CGraphSelectionModel::SelectionChanged, this, &CNodeGraphLayer::OnSelectionChanged);
 		connect(&graph_model, &CGraphModel::NodesRemoved, this, &CNodeGraphLayer::OnNodesRemoved);
 		connect(&graph_model, &CGraphModel::NodesInserted, this, &CNodeGraphLayer::OnNodesInserted);
 		connect(&graph_model, &CGraphModel::NodesModified, this, &CNodeGraphLayer::OnNodesModified);
-
-		connect(&categories, &CCategorySet::rowsInserted, this, &CNodeGraphLayer::OnCategoriesInserted);
-		connect(&categories, &CCategorySet::rowsRemoved, this, &CNodeGraphLayer::OnCategoriesRemoved);
-		connect(&categories, &CCategorySet::CategoriesRemapped, this, &CNodeGraphLayer::OnCategoriesRemapped);
-		connect(&categories, &CCategorySet::dataChanged, this, &CNodeGraphLayer::OnCategoriesChanged);
-
-		UpdateSprites();
 
 		RebuildNodes();
 	}
@@ -72,15 +57,15 @@ namespace jass
 		for (size_t node_index = 0; node_index < m_Nodes.size(); ++node_index)
 		{
 			auto& node = m_Nodes[node_index];
-			const auto& sprite = NodeSprite(node);
-			const auto nodeRect = NodeRect(node);
+			const auto sprite_index = NodeSpriteIndex(node);
+			const auto nodePos = NodeScreenPos(node_index);
+			const auto nodeRect = m_Sprites.SpriteRect(sprite_index).translated(nodePos);
 			const auto rcVis = nodeRect.intersected(rcClip);
 			if (rcVis.isEmpty())
 			{
 				continue;
 			}
-			const QRect srcRect(rcVis.left() - nodeRect.left(), rcVis.top() - nodeRect.top(), rcVis.width(), rcVis.height());
-			painter.drawPixmap(rcVis.topLeft(), sprite.Pixmap, srcRect);
+			m_Sprites.DrawSprite(sprite_index, painter, nodePos);
 			node.LastRect = nodeRect;
 		}
 	}
@@ -203,48 +188,17 @@ namespace jass
 		}
 	}
 
-	void CNodeGraphLayer::OnCategoriesInserted(const QModelIndex& parent, int first, int last)
-	{
-		const auto inserted_count = last - first + 1;
-		m_Sprites.insert(m_Sprites.begin() + first * SPRITE_COUNT_PER_CATEGORY, inserted_count * SPRITE_COUNT_PER_CATEGORY, SSprite());
-		m_CategoryCount += inserted_count;
-		for (int category_index = first; category_index <= last; ++category_index)
-		{
-			UpdateSpritesForCategory((size_t)category_index);
-		}
-	}
-
-	void CNodeGraphLayer::OnCategoriesRemoved(const QModelIndex& parent, int first, int last)
-	{
-		const auto removed_count = last - first + 1;
-		m_Sprites.erase(m_Sprites.begin() + first * SPRITE_COUNT_PER_CATEGORY, m_Sprites.begin() + (last + 1) * SPRITE_COUNT_PER_CATEGORY);
-		m_CategoryCount -= removed_count;
-	}
-
-	void CNodeGraphLayer::OnCategoriesRemapped(const std::span<const size_t>&)
-	{
-		UpdateSprites();
-	}
-
-	void CNodeGraphLayer::OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& /*roles*/)
-	{
-		for (auto category_index = (size_t)topLeft.row(); category_index <= (size_t)bottomRight.row(); ++category_index)
-		{
-			UpdateSpritesForCategory(category_index);
-		}
-	}
-
-	const CNodeGraphLayer::SSprite& CNodeGraphLayer::NodeSprite(const SNode& node) const
+	size_t CNodeGraphLayer::NodeSpriteIndex(const SNode& node) const
 	{
 		const auto node_index = (CGraphModel::node_index_t)(&node - m_Nodes.data());
-		ENodeSpriteStyle style;
+		CNodeSpriteSet::EStyle style;
 		if (IsNodeHilighted(&node - m_Nodes.data()))
-			style = ENodeSpriteStyle::Hilighted;
+			style = CNodeSpriteSet::EStyle::Hilighted;
 		else if (IsNodeSelected(node))
-			style = ENodeSpriteStyle::Selected;
+			style = CNodeSpriteSet::EStyle::Selected;
 		else
-			style = ENodeSpriteStyle::Normal;
-		return NodeSprite(m_GraphModel.NodeCategory(node_index), style);
+			style = CNodeSpriteSet::EStyle::Normal;
+		return m_Sprites.SpriteIndex(m_GraphModel.NodeCategory(node_index), style);
 	}
 
 	bool CNodeGraphLayer::IsNodeSelected(const SNode& node) const
@@ -254,137 +208,10 @@ namespace jass
 
 	QRect CNodeGraphLayer::NodeRect(const SNode& node) const
 	{
+		const auto sprite_index = NodeSpriteIndex(node);
 		const size_t node_index = &node - m_Nodes.data();
-		return NodeSprite(node).Rect().translated(NodeScreenPos(node_index));
-	}
-
-	void CNodeGraphLayer::UpdateSprites()
-	{
-		m_CategoryCount = (uint32_t)m_Categories.Size();
-
-		// NOTE: Last one will be "None" (with same index as number of categories)
-		m_Sprites.resize((m_CategoryCount + 1) * SPRITE_COUNT_PER_CATEGORY);
-
-		for (size_t category_index = 0; category_index <= m_CategoryCount; ++category_index)
-		{
-			UpdateSpritesForCategory(category_index);
-		}
-	}
-
-	void CNodeGraphLayer::UpdateSpritesForCategory(size_t category_index)
-	{
-		SShapeSpriteDesc sprite_desc;
-		sprite_desc.Radius = 9.5f;
-		sprite_desc.OutlineWidth = 3.0f;
-		sprite_desc.OutlineWidth2 = 0;
-		sprite_desc.ShadowOffset = { 1, 1 };
-		sprite_desc.ShadowBlurRadius = 3.0f;
-		sprite_desc.OutlineColor = Qt::white;
-		sprite_desc.ShadowColor = qRgba(0, 0, 0, 255);
-		sprite_desc.Shape = m_Categories.Shape(category_index);
-
-		sprite_desc.FillColor = QColor::fromRgba(m_Categories.Color(category_index));
-		m_Sprites[category_index * SPRITE_COUNT_PER_CATEGORY + 0] = CreateSprite(sprite_desc);
-
-		sprite_desc.OutlineColor2 = QColor::fromRgba(COLOR_SELECTED);
-		sprite_desc.OutlineWidth2 = sprite_desc.OutlineWidth;
-		m_Sprites[category_index * SPRITE_COUNT_PER_CATEGORY + 1] = CreateSprite(sprite_desc);
-
-		sprite_desc.OutlineColor2 = QColor::fromRgba(COLOR_HILIGHT);
-		sprite_desc.OutlineWidth2 = 4;
-		sprite_desc.FillColor = Blend(m_Categories.Color(category_index), 0xFFFFFFFF, 64);
-		m_Sprites[category_index * SPRITE_COUNT_PER_CATEGORY + 2] = CreateSprite(sprite_desc);
-	}
-
-	CNodeGraphLayer::SSprite CNodeGraphLayer::CreateSprite(const SShapeSpriteDesc& desc)
-	{
-		const auto points = GetShapePoints(desc.Shape);
-
-		const float radius = desc.Radius;
-
-		const QPointF shadowOffset = { std::round(desc.ShadowOffset.x()), std::round(desc.ShadowOffset.y()) };  // Limitation in DropShadow function
-
-		const float radius_ceil = std::ceil(radius + desc.OutlineWidth * .5f + desc.OutlineWidth2);
-		const float shadow_blur_radius_ceil = std::ceil(desc.ShadowBlurRadius);
-
-		const QPointF bb_min = { shadowOffset.x() - radius_ceil - shadow_blur_radius_ceil, shadowOffset.y() - radius_ceil - shadow_blur_radius_ceil};
-		const QPointF bb_max = { shadowOffset.x() + radius_ceil + shadow_blur_radius_ceil, shadowOffset.y() + radius_ceil + shadow_blur_radius_ceil };
-
-		const ivec2 origin = { -(int)std::floor(bb_min.x()), -(int)std::floor(bb_min.y()) };
-		const ivec2 dim = { origin.x + (int)std::ceil(bb_max.x()), origin.y + (int)std::ceil(bb_max.y()) };
-		QImage image(dim.x, dim.y, QImage::Format_ARGB32);
-
-		// Clear
-		image.fill(Qt::transparent);
-
-		// Create a QPainter to draw on the QPixmap
-		QPainter painter(&image);
-
-		painter.setRenderHint(QPainter::Antialiasing, true);
-
-		QPolygonF polygon;
-		if (EShape::Circle != desc.Shape)
-		{
-			polygon.reserve((int)points.size());
-			for (const auto& pt : points)
-			{
-				polygon.append(QPointF(pt.x() * radius + (float)origin.x, pt.y() * radius + (float)origin.y));
-			}
-		}
-
-		if (desc.OutlineWidth2 > 0.0f)
-		{
-			QPen pen;
-			pen.setColor(desc.OutlineColor2); // Set the color of the circle
-			pen.setWidthF(desc.OutlineWidth + desc.OutlineWidth2 * 2);       // Set the width of the circle outline
-			//pen.setCapStyle(Qt::RoundCap);
-			pen.setJoinStyle(Qt::RoundJoin);
-			painter.setPen(pen);
-
-			painter.setBrush(Qt::NoBrush);
-
-			if (EShape::Circle == desc.Shape)
-			{
-				painter.drawEllipse(QRectF(
-					(float)origin.x - radius,
-					(float)origin.y - radius,
-					radius * CIRCLE_SHAPE_SCALE * 2.0f,
-					radius * CIRCLE_SHAPE_SCALE * 2.0f));
-			}
-			else
-			{
-				painter.drawPolygon(polygon);
-			}
-		}
-
-		// Set the pen
-		QPen pen;
-		pen.setColor(desc.OutlineColor);
-		pen.setWidthF(desc.OutlineWidth);
-		pen.setJoinStyle(Qt::RoundJoin);
-		painter.setPen(pen);
-
-		// Set the brush
-		QBrush brush(desc.FillColor);
-		painter.setBrush(brush);
-
-		if (EShape::Circle == desc.Shape)
-		{
-			painter.drawEllipse(QRectF(
-				(float)origin.x - radius,
-				(float)origin.y - radius,
-				radius * CIRCLE_SHAPE_SCALE * 2.0f,
-				radius * CIRCLE_SHAPE_SCALE * 2.0f));
-		}
-		else
-		{
-			painter.drawPolygon(polygon);
-		}
-
-		DropShadow(image, desc.ShadowColor, desc.ShadowBlurRadius, (int)shadowOffset.x(), (int)shadowOffset.y(), 2.0f);
-		
-
-		return { {origin.x - desc.Offset.x, origin.y - desc.Offset.y}, QPixmap::fromImage(image) };
+		const auto nodePos = NodeScreenPos(node_index);
+		return m_Sprites.SpriteRect(sprite_index).translated(nodePos);
 	}
 
 	void CNodeGraphLayer::RebuildNodes()
@@ -394,12 +221,6 @@ namespace jass
 		m_SelectionMask.resize(m_Nodes.size());
 		m_HilightMask.resize(m_Nodes.size());
 		m_HilightMask.clearAll();
-	}
-
-	QRect CNodeGraphLayer::SSprite::Rect() const
-	{
-		const auto size = this->Pixmap.size();
-		return QRect(-this->Origin.x(), -this->Origin.y(), this->Pixmap.width(), this->Pixmap.height());
 	}
 }
 

@@ -59,7 +59,11 @@ namespace jass
 		if (m_Stamping && m_NodeLayer)
 		{
 			painter.setOpacity(.5f);
-			m_NodeLayer->NodeSprite(m_CurrentCategory, ENodeSpriteStyle::Normal).Draw(painter, m_StampPos);
+			auto& sprites = m_NodeLayer->Sprites();
+			sprites.DrawSprite(
+				sprites.SpriteIndex(m_CurrentCategory, CNodeSpriteSet::EStyle::Normal), 
+				painter, 
+				m_StampPos);
 			painter.setOpacity(1);
 		}
 	}
@@ -177,7 +181,9 @@ namespace jass
 		m_StampPos = pt;
 		if (m_NodeLayer)
 		{
-			GraphWidget().update(m_NodeLayer->NodeSprite(m_CurrentCategory, ENodeSpriteStyle::Normal).Rect().translated(pt));
+			auto& sprites = m_NodeLayer->Sprites();
+			const auto sprite_index = sprites.SpriteIndex(m_CurrentCategory, CNodeSpriteSet::EStyle::Normal);
+			GraphWidget().update(sprites.SpriteRect(sprite_index).translated(pt));
 		}
 	}
 
@@ -185,7 +191,9 @@ namespace jass
 	{
 		if (m_Stamping && m_NodeLayer)
 		{
-			GraphWidget().update(m_NodeLayer->NodeSprite(m_CurrentCategory, ENodeSpriteStyle::Normal).Rect().translated(m_StampPos));
+			auto& sprites = m_NodeLayer->Sprites();
+			const auto sprite_index = sprites.SpriteIndex(m_CurrentCategory, CNodeSpriteSet::EStyle::Normal);
+			GraphWidget().update(sprites.SpriteRect(sprite_index).translated(m_StampPos));
 		}
 		m_Stamping = false;
 	}

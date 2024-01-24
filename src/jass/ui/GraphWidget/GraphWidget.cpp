@@ -65,6 +65,8 @@ namespace jass
 		SetScreenToModelScale(s_ZoomLevels[m_ZoomLevel] * .01f);
 
 		setAutoFillBackground(false);
+
+		setCursor(Qt::ArrowCursor);
 	}
 
 	CGraphWidget::~CGraphWidget()

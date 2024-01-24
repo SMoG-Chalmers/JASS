@@ -20,62 +20,24 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <vector>
-#include <QtGui/qpixmap.h>
-
 #include <jass/GraphModel.hpp>
 #include "GraphWidget.hpp"
+#include "NodeSpriteSet.h"
 
 namespace jass
 {
 	class CCategorySet;
 	class CJassDocument;
 
-	struct ivec2
-	{
-		int x;
-		int y;
-	};
-
-	struct SShapeSpriteDesc
-	{
-		EShape  Shape;
-		float   Radius;
-		float   OutlineWidth;
-		float   OutlineWidth2 = 0;
-		QPointF ShadowOffset;
-		float   ShadowBlurRadius;
-		QColor  FillColor;
-		QColor  OutlineColor;
-		QColor  OutlineColor2;
-		QColor  ShadowColor;
-		ivec2   Offset = { 0,0 };
-	};
-
-	enum class ENodeSpriteStyle
-	{
-		Normal,
-		Selected,
-		Hilighted,
-	};
-
 	class CNodeGraphLayer: public QObject, public CGraphLayer
 	{
 		Q_OBJECT
 	public:
-		struct SSprite
-		{
-			QPoint  Origin;
-			QPixmap Pixmap;
-
-			QRect Rect() const;
-			void Draw(QPainter& painter, const QPoint& at) const;
-		};
-
 		CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CCategorySet& categories, CGraphSelectionModel& selection_model);
 
 		QPoint NodeScreenPos(element_t node) const;
 
-		inline const SSprite& NodeSprite(CGraphModel::category_index_t category, ENodeSpriteStyle style) const;
+		inline CNodeSpriteSet& Sprites() { return m_Sprites; }
 
 		// CGraphLayer overrides
 		void Paint(QPainter& painter, const QRect& rc) override;
@@ -91,14 +53,8 @@ namespace jass
 		void OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices);
 		void OnNodesInserted(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table);
 		void OnNodesModified(const bitvec& node_mask);
-		void OnCategoriesInserted(const QModelIndex& parent, int first, int last);
-		void OnCategoriesRemoved(const QModelIndex& parent, int first, int last);
-		void OnCategoriesRemapped(const std::span<const size_t>&);
-		void OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles);
 
 	private:
-		static const uint8_t SPRITE_COUNT_PER_CATEGORY = 3;
-
 		struct SNode
 		{
 			QRect LastRect;  // Rect of last time it was drawn
@@ -107,15 +63,9 @@ namespace jass
 		bool IsNodeSelected(const SNode& node) const;
 		inline bool IsNodeHilighted(size_t node_index) const;
 
-		const SSprite& NodeSprite(const SNode& node) const;
+		size_t NodeSpriteIndex(const SNode& node) const;
 
 		QRect NodeRect(const SNode& node) const;
-
-		void UpdateSprites();
-
-		void UpdateSpritesForCategory(size_t catgory_index);
-
-		SSprite CreateSprite(const SShapeSpriteDesc& desc);
 
 		void RebuildNodes();
 
@@ -125,18 +75,12 @@ namespace jass
 
 		int m_HitRadius = 5;
 		unsigned int m_CategoryCount = 0;
-		std::vector<SSprite> m_Sprites;
+		CNodeSpriteSet m_Sprites;
 		std::vector<SNode> m_Nodes;
 		bitvec m_SelectionMask;
 		bitvec m_TempSelectionMask;
 		bitvec m_HilightMask;
 	};
-
-	inline const CNodeGraphLayer::SSprite& CNodeGraphLayer::NodeSprite(CGraphModel::category_index_t category, ENodeSpriteStyle style) const
-	{
-		const auto sprite_category = std::min(m_CategoryCount, category);
-		return m_Sprites[sprite_category * SPRITE_COUNT_PER_CATEGORY + (uint32_t)style];
-	}
 
 	inline bool CNodeGraphLayer::IsNodeHilighted(size_t node_index) const
 	{

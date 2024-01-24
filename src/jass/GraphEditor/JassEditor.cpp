@@ -53,6 +53,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/ui/GraphWidget/ImageGraphLayer.hpp>
 #include <jass/ui/CategoryView.hpp>
 #include <jass/ui/MainWindow.hpp>
+#include <jass/ui/SplitWidget.hpp>
 
 #include "tools/EdgeTool.h"
 #include "tools/NodeTool.h"
@@ -196,9 +197,14 @@ namespace jass
 
 	std::unique_ptr<QWidget> CJassEditor::CreateWidget(QWidget* parent)
 	{
+		ASSERT(!m_SplitWidget);
 		ASSERT(!m_GraphWidget);
 
-		m_GraphWidget = new CGraphWidget(parent);
+		m_SplitWidget = new CSplitWidget(parent);
+
+		m_GraphWidget = new CGraphWidget(m_SplitWidget);
+		m_SplitWidget->AddWidget(m_GraphWidget);
+		m_GraphWidget->setVisible(true);
 		m_GraphWidget->SetDelegate(this);
 		m_GraphWidget->EnableTooltips();
 	
@@ -229,7 +235,11 @@ namespace jass
 
 		m_GraphWidget->addAction(qapp::s_StandardActions.SelectAll);
 
-		return std::unique_ptr<QWidget>(m_GraphWidget);
+		m_JustifiedGraphWidget = new CGraphWidget(m_SplitWidget);
+		m_SplitWidget->AddWidget(m_JustifiedGraphWidget);
+		m_JustifiedGraphWidget->setVisible(true);
+
+		return std::unique_ptr<QWidget>(m_SplitWidget);
 	}
 
 	void CJassEditor::UpdateActions(qapp::CActionUpdateContext& ctx)

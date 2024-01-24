@@ -52,6 +52,7 @@ namespace jass
 	class CJassEditor;
 	class CImageGraphLayer;
 	class CMainWindow;
+	class CSplitWidget;
 
 	class CJassEditor: public qapp::CEditor, public IGraphWidgetDelegate
 	{
@@ -107,7 +108,9 @@ namespace jass
 
 	private:
 		CJassDocument& m_Document;
+		CSplitWidget* m_SplitWidget = nullptr;
 		CGraphWidget* m_GraphWidget = nullptr;
+		CGraphWidget* m_JustifiedGraphWidget = nullptr;
 		std::unique_ptr<CGraphSelectionModel> m_SelectionModel;
 		std::unique_ptr<qapp::CCommandHistory> m_CommandHistory;
 		std::unique_ptr<CAnalyses> m_Analyses;
