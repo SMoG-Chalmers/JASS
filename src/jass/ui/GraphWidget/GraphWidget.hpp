@@ -60,6 +60,11 @@ namespace jass
 		virtual void GetSelection(bitvec& out_selection_mask) const { out_selection_mask.clear(); }
 		virtual void SetSelection(const bitvec& selection_mask) const { }
 		virtual void OnViewChanged(const QRect& rc, float screen_to_model_scale) {}
+		
+		virtual bool CanMoveElements() const { return false; }
+		virtual void BeginMoveElements(const bitvec& element_mask) {}
+		virtual void MoveElements(const QPoint& delta) {}
+		virtual void EndMoveElements(bool apply) {}
 
 		inline void Update();
 		inline void Update(const QRect& rc);

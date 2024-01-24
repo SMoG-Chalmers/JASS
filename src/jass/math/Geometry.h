@@ -20,6 +20,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <algorithm>
+#include <QtCore/qline.h>
 #include <QtCore/qpoint.h>
 #include <QtCore/qrect.h>
 

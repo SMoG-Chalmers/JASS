@@ -21,32 +21,42 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <vector>
 #include <jass/GraphModel.hpp>
-#include "GraphWidget.hpp"
+#include "SpriteGraphLayer.h"
 #include "NodeSpriteSet.h"
+
+namespace qapp
+{
+	class CCommandHistory;
+}
 
 namespace jass
 {
 	class CCategorySet;
+	class CJassEditor;
 	class CJassDocument;
 
-	class CNodeGraphLayer: public QObject, public CGraphLayer
+	class CNodeGraphLayer: public QObject, public CSpriteGraphLayer
 	{
 		Q_OBJECT
 	public:
-		CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CCategorySet& categories, CGraphSelectionModel& selection_model);
+		CNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor);
 
-		QPoint NodeScreenPos(element_t node) const;
+		// CSpriteGraphLayer overrides
+		QPoint ItemPosition(element_t element) const override;
+		size_t ItemSpriteIndex(element_t element) const override;
 
 		inline CNodeSpriteSet& Sprites() { return m_Sprites; }
 
 		// CGraphLayer overrides
-		void Paint(QPainter& painter, const QRect& rc) override;
-		element_t HitTest(const QPoint& pt) override;
-		bool RangedHitTest(const QRect& rc, bitvec& out_hit_elements) const override;
 		void SetHilighted(element_t edge, bool hilighted) override;
 		void GetSelection(bitvec& out_selection_mask) const override;
 		void SetSelection(const bitvec& selection_mask) const override;
 		void OnViewChanged(const QRect& rc, float screen_to_model_scale) override;
+
+		bool CanMoveElements() const override;
+		void BeginMoveElements(const bitvec& element_mask) override;
+		void MoveElements(const QPoint& delta) override;
+		void EndMoveElements(bool apply) override;
 
 	private Q_SLOTS:
 		void OnSelectionChanged();
@@ -55,35 +65,24 @@ namespace jass
 		void OnNodesModified(const bitvec& node_mask);
 
 	private:
-		struct SNode
-		{
-			QRect LastRect;  // Rect of last time it was drawn
-		};
-
-		bool IsNodeSelected(const SNode& node) const;
-		inline bool IsNodeHilighted(size_t node_index) const;
-
-		size_t NodeSpriteIndex(const SNode& node) const;
-
-		QRect NodeRect(const SNode& node) const;
+		inline bool IsNodeSelected(element_t node_index) const;
+		inline bool IsNodeHilighted(element_t node_index) const;
 
 		void RebuildNodes();
 
 		CGraphModel& m_GraphModel;
-		CCategorySet& m_Categories;
 		CGraphSelectionModel& m_SelectionModel;
+		qapp::CCommandHistory& m_CommandHistory;
 
-		int m_HitRadius = 5;
-		unsigned int m_CategoryCount = 0;
 		CNodeSpriteSet m_Sprites;
-		std::vector<SNode> m_Nodes;
 		bitvec m_SelectionMask;
 		bitvec m_TempSelectionMask;
 		bitvec m_HilightMask;
+		bitvec m_MoveElementMask;
+		std::vector<QPointF> m_TempPoints;
 	};
 
-	inline bool CNodeGraphLayer::IsNodeHilighted(size_t node_index) const
-	{
-		return m_HilightMask.get(node_index);
-	}
+	inline bool CNodeGraphLayer::IsNodeSelected(size_t node_index) const { return m_SelectionMask.get(node_index); }
+
+	inline bool CNodeGraphLayer::IsNodeHilighted(size_t node_index) const { return m_HilightMask.get(node_index); }
 }

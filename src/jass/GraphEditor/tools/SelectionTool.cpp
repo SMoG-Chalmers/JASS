@@ -19,15 +19,10 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtGui/qpainter.h>
 
-#include <qapplib/commands/CommandHistory.hpp>
 #include <qapplib/Workbench.hpp>
-
 
 #include <jass/Debug.h>
 #include <jass/GraphEditor/JassEditor.hpp>
-#include <jass/commands/CmdMoveNodes.h>
-#include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
-#include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
 #include <jass/utils/range_utils.h>
 
 #include "SelectionTool.h"
@@ -99,18 +94,9 @@ namespace jass
 			{
 				const auto delta_move_screen = event.pos() - m_RefPoint;
 				m_RefPoint += delta_move_screen;
-				const QPointF delta_move_model = QPointF(delta_move_screen) * GraphWidget().ScreenToModelScale();
-
-				// TODO: Defer this to the layer instead? e.g. introduce a MoveSelectedNodes(const QPointF& delta_move) method?
-				DataModel().BeginModifyNodes();
-				GraphWidget().Layer(m_HilightedLayerIndex).GetSelection(m_TempSelectionMask);
-				m_TempSelectionMask.for_each_set_bit([&](size_t node_index)
-					{
-						const auto new_pos = DataModel().NodePosition((CGraphModel::node_index_t)node_index) + delta_move_model;
-						DataModel().SetNodePosition((CGraphModel::node_index_t)node_index, new_pos);
-					});
-				DataModel().EndModifyNodes();
-		}
+				auto& layer = GraphWidget().Layer(m_HilightedLayerIndex);
+				layer.MoveElements(delta_move_screen);
+			}
 			break;
 		}
 
@@ -163,13 +149,9 @@ namespace jass
 			if (!(event.modifiers() & Qt::ControlModifier) && HasHilightedElement() && CanMoveLayerElements(m_HilightedLayerIndex))
 			{
 				m_RefPoint = event.pos();
-				GraphWidget().Layer(m_HilightedLayerIndex).GetSelection(m_TempSelectionMask);
-				m_TempPoints.clear();
-				m_TempPoints.reserve(m_TempSelectionMask.count_set_bits());
-				m_TempSelectionMask.for_each_set_bit([&](size_t node_index)
-					{
-						m_TempPoints.push_back(DataModel().NodePosition((CGraphModel::node_index_t)node_index));
-					});
+				auto& layer = GraphWidget().Layer(m_HilightedLayerIndex);
+				layer.GetSelection(m_TempSelectionMask);
+				layer.BeginMoveElements(m_TempSelectionMask);
 				SetState(EState_Move);
 			}
 			else
@@ -209,9 +191,7 @@ namespace jass
 			}
 			break;
 		case EState_Move:
-			SwapOriginalWithTempNodePositions();
-			GraphWidget().Layer(m_HilightedLayerIndex).GetSelection(m_TempSelectionMask);
-			CommandHistory().NewCommand<CCmdMoveNodes>(DataModel(), m_TempSelectionMask, to_const_span(m_TempPoints));
+			GraphWidget().Layer(m_HilightedLayerIndex).EndMoveElements(true);
 			SetState(EState_Hover);
 			break;
 		}
@@ -225,7 +205,7 @@ namespace jass
 			if (EState_Move == m_State)
 			{
 				// Cancel move
-				SwapOriginalWithTempNodePositions();
+				GraphWidget().Layer(m_HilightedLayerIndex).EndMoveElements(false);
 			}
 			SetState(EState_Hover);
 			break;
@@ -367,21 +347,6 @@ namespace jass
 
 	bool CSelectionTool::CanMoveLayerElements(size_t layer_index) const
 	{
-		return nullptr != dynamic_cast<const CNodeGraphLayer*>(&GraphWidget().Layer(layer_index));
-	}
-
-	void CSelectionTool::SwapOriginalWithTempNodePositions()
-	{
-		DataModel().BeginModifyNodes();
-		GraphWidget().Layer(m_HilightedLayerIndex).GetSelection(m_TempSelectionMask);
-		size_t n = 0;
-		m_TempSelectionMask.for_each_set_bit([&](size_t node_index)
-			{
-				const auto position = DataModel().NodePosition((CGraphModel::node_index_t)node_index);
-				DataModel().SetNodePosition((CGraphModel::node_index_t)node_index, m_TempPoints[n]);
-				m_TempPoints[n] = position;
-				++n;
-			});
-		DataModel().EndModifyNodes();
+		return GraphWidget().Layer(layer_index).CanMoveElements();
 	}
 }

@@ -224,7 +224,7 @@ namespace jass
 		}
 
 		{
-			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, DataModel(), Categories(), SelectionModel());
+			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, *this);
 			m_GraphWidget->AppendLayer(std::move(node_layer));
 		}
 

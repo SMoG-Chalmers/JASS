@@ -17,101 +17,61 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <array>
-#include <numbers>
-
-#include <QtGui/qpainter.h>
-#include <QtGui/qimage.h>
-#include <QtGui/qpixmap.h>
+#include <qapplib/commands/CommandHistory.hpp>
 
 #include <jass/math/Geometry.h>
-#include <jass/ui/ImageFx.h>
-#include <jass/GraphEditor/CategorySet.hpp>
-#include <jass/Shape.h>
+#include <jass/utils/range_utils.h>
+#include <jass/commands/CmdMoveNodes.h>
+#include <jass/GraphEditor/JassEditor.hpp>
+
 #include "NodeGraphLayer.hpp"
 
 namespace jass
 {
-	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CGraphModel& graph_model, CCategorySet& categories, CGraphSelectionModel& selection_model)
-		: CGraphLayer(graphWidget)
-		, m_GraphModel(graph_model)
-		, m_Categories(categories)
-		, m_SelectionModel(selection_model)
-		, m_Sprites(categories)
+	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor)
+		: CSpriteGraphLayer(graphWidget, &m_Sprites)
+		, m_GraphModel(editor.DataModel())
+		, m_SelectionModel(editor.SelectionModel())
+		, m_CommandHistory(editor.CommandHistory())
+		, m_Sprites(editor.Categories())
 	{
-		connect(&selection_model, &CGraphSelectionModel::SelectionChanged, this, &CNodeGraphLayer::OnSelectionChanged);
-		connect(&graph_model, &CGraphModel::NodesRemoved, this, &CNodeGraphLayer::OnNodesRemoved);
-		connect(&graph_model, &CGraphModel::NodesInserted, this, &CNodeGraphLayer::OnNodesInserted);
-		connect(&graph_model, &CGraphModel::NodesModified, this, &CNodeGraphLayer::OnNodesModified);
+		connect(&m_SelectionModel, &CGraphSelectionModel::SelectionChanged, this, &CNodeGraphLayer::OnSelectionChanged);
+		connect(&m_GraphModel, &CGraphModel::NodesRemoved, this, &CNodeGraphLayer::OnNodesRemoved);
+		connect(&m_GraphModel, &CGraphModel::NodesInserted, this, &CNodeGraphLayer::OnNodesInserted);
+		connect(&m_GraphModel, &CGraphModel::NodesModified, this, &CNodeGraphLayer::OnNodesModified);
 
 		RebuildNodes();
 	}
 
-	QPoint CNodeGraphLayer::NodeScreenPos(element_t node) const
+	QPoint CNodeGraphLayer::ItemPosition(element_t element) const
 	{
-		return QPointFromRoundedQPointF(GraphWidget().ScreenFromModel(m_GraphModel.NodePosition((CGraphModel::node_index_t)node)));
+		return QPointFromRoundedQPointF(GraphWidget().ScreenFromModel(m_GraphModel.NodePosition((CGraphModel::node_index_t)element)));
 	}
 
-	void CNodeGraphLayer::Paint(QPainter& painter, const QRect& rcClip)
+	size_t CNodeGraphLayer::ItemSpriteIndex(element_t element) const
 	{
-		for (size_t node_index = 0; node_index < m_Nodes.size(); ++node_index)
-		{
-			auto& node = m_Nodes[node_index];
-			const auto sprite_index = NodeSpriteIndex(node);
-			const auto nodePos = NodeScreenPos(node_index);
-			const auto nodeRect = m_Sprites.SpriteRect(sprite_index).translated(nodePos);
-			const auto rcVis = nodeRect.intersected(rcClip);
-			if (rcVis.isEmpty())
-			{
-				continue;
-			}
-			m_Sprites.DrawSprite(sprite_index, painter, nodePos);
-			node.LastRect = nodeRect;
-		}
+		const auto node_index = (CGraphModel::node_index_t)element;
+		CNodeSpriteSet::EStyle style;
+		if (IsNodeHilighted(element))
+			style = CNodeSpriteSet::EStyle::Hilighted;
+		else if (IsNodeSelected(element))
+			style = CNodeSpriteSet::EStyle::Selected;
+		else
+			style = CNodeSpriteSet::EStyle::Normal;
+		return m_Sprites.SpriteIndex(m_GraphModel.NodeCategory(node_index), style);
 	}
 
-	CNodeGraphLayer::element_t CNodeGraphLayer::HitTest(const QPoint& pt)
+	void CNodeGraphLayer::SetHilighted(element_t element, bool hilighted)
 	{
-		for (size_t node_index = m_Nodes.size() - 1; node_index < m_Nodes.size(); --node_index)
-		{
-			const auto& node = m_Nodes[node_index];
-			if (node.LastRect.contains(pt))
-			{
-				return node_index;
-			}
-		}
-		return NO_ELEMENT;
-	}
-
-	bool CNodeGraphLayer::RangedHitTest(const QRect& rc, bitvec& out_hit_elements) const
-	{
-		bool any_hit = false;
-		out_hit_elements.clear();
-		out_hit_elements.resize(m_Nodes.size());
-		const auto hitRect = rc.adjusted(-m_HitRadius, -m_HitRadius, m_HitRadius, m_HitRadius).translated(-GraphWidget().ScreenTranslation());
-		for (size_t node_index = 0; node_index < m_Nodes.size(); ++node_index)
-		{
-			if (hitRect.contains(NodeScreenPos(node_index)))
-			{
-				out_hit_elements.set(node_index);
-				any_hit = true;
-			}
-		}
-		return any_hit;
-	}
-
-	void CNodeGraphLayer::SetHilighted(element_t node_index, bool hilighted)
-	{
-		if (m_HilightMask.get(node_index) == hilighted)
+		if (m_HilightMask.get(element) == hilighted)
 		{
 			return;
 		}
 		if (hilighted)
-			m_HilightMask.set(node_index);
+			m_HilightMask.set(element);
 		else
-			m_HilightMask.clear(node_index);
-		const auto& node = m_Nodes[node_index];
-		Update(NodeRect(node).united(node.LastRect));
+			m_HilightMask.clear(element);
+		Update(ItemRect(element).united(LastItemRect(element)));
 	}
 
 	void CNodeGraphLayer::GetSelection(bitvec& out_selection_mask) const
@@ -138,16 +98,64 @@ namespace jass
 		RebuildNodes();
 	}
 
+	bool CNodeGraphLayer::CanMoveElements() const
+	{
+		return true;
+	}
+
+	void CNodeGraphLayer::BeginMoveElements(const bitvec& element_mask)
+	{
+		m_MoveElementMask = element_mask;
+		m_TempPoints.clear();
+		m_TempPoints.reserve(m_TempSelectionMask.count_set_bits());
+		element_mask.for_each_set_bit([&](size_t node_index)
+			{
+				m_TempPoints.push_back(m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index));
+			});
+	}
+
+	void CNodeGraphLayer::MoveElements(const QPoint& delta)
+	{
+		const QPointF delta_move_model = QPointF(delta) * GraphWidget().ScreenToModelScale();
+
+		m_GraphModel.BeginModifyNodes();
+		m_MoveElementMask.for_each_set_bit([&](size_t node_index)
+			{
+				const auto new_pos = m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index) + delta_move_model;
+				m_GraphModel.SetNodePosition((CGraphModel::node_index_t)node_index, new_pos);
+			});
+		m_GraphModel.EndModifyNodes();
+	}
+
+	void CNodeGraphLayer::EndMoveElements(bool apply)
+	{
+		{
+			m_GraphModel.BeginModifyNodes();
+			size_t n = 0;
+			m_MoveElementMask.for_each_set_bit([&](size_t node_index)
+				{
+					const auto position = m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index);
+					m_GraphModel.SetNodePosition((CGraphModel::node_index_t)node_index, m_TempPoints[n]);
+					m_TempPoints[n] = position;
+					++n;
+				});
+			m_GraphModel.EndModifyNodes();
+		}
+
+		if (apply)
+		{
+			m_CommandHistory.NewCommand<CCmdMoveNodes>(m_GraphModel, m_MoveElementMask, to_const_span(m_TempPoints));
+		}
+	}
+
 	void CNodeGraphLayer::OnSelectionChanged()
 	{
 		m_TempSelectionMask.bitwise_xor(m_SelectionMask, m_SelectionModel.NodeMask());
 
 		m_TempSelectionMask.for_each_set_bit([&](size_t node_index)
 			{
-				auto& node = m_Nodes[node_index];
-				Update(NodeRect(node));
 				m_SelectionMask.toggle(node_index);
-				Update(NodeRect(node));
+				Update(ItemRect(node_index).united(LastItemRect(node_index)));
 			});
 	}
 
@@ -168,19 +176,15 @@ namespace jass
 		QRect rcUpdate;
 		node_mask.for_each_set_bit([&](const size_t node_index)
 			{
-				const auto& node = m_Nodes[node_index];
 				if (rcUpdate.isEmpty())
 				{
-					rcUpdate = NodeRect(node);
+					rcUpdate = ItemRect(node_index);
 				}
 				else
 				{
-					rcUpdate = rcUpdate.united(NodeRect(node));
+					rcUpdate = rcUpdate.united(ItemRect(node_index));
 				}
-				if (!node.LastRect.isEmpty())
-				{
-					rcUpdate = rcUpdate.united(node.LastRect);
-				}
+				rcUpdate = rcUpdate.united(LastItemRect(node_index));
 			});
 		if (!rcUpdate.isEmpty())
 		{
@@ -188,38 +192,12 @@ namespace jass
 		}
 	}
 
-	size_t CNodeGraphLayer::NodeSpriteIndex(const SNode& node) const
-	{
-		const auto node_index = (CGraphModel::node_index_t)(&node - m_Nodes.data());
-		CNodeSpriteSet::EStyle style;
-		if (IsNodeHilighted(&node - m_Nodes.data()))
-			style = CNodeSpriteSet::EStyle::Hilighted;
-		else if (IsNodeSelected(node))
-			style = CNodeSpriteSet::EStyle::Selected;
-		else
-			style = CNodeSpriteSet::EStyle::Normal;
-		return m_Sprites.SpriteIndex(m_GraphModel.NodeCategory(node_index), style);
-	}
-
-	bool CNodeGraphLayer::IsNodeSelected(const SNode& node) const
-	{
-		return m_SelectionMask.get(&node - m_Nodes.data());
-	}
-
-	QRect CNodeGraphLayer::NodeRect(const SNode& node) const
-	{
-		const auto sprite_index = NodeSpriteIndex(node);
-		const size_t node_index = &node - m_Nodes.data();
-		const auto nodePos = NodeScreenPos(node_index);
-		return m_Sprites.SpriteRect(sprite_index).translated(nodePos);
-	}
-
 	void CNodeGraphLayer::RebuildNodes()
 	{
-		m_Nodes.clear();
-		m_Nodes.resize(m_GraphModel.NodeCount());
-		m_SelectionMask.resize(m_Nodes.size());
-		m_HilightMask.resize(m_Nodes.size());
+		ClearItems();
+		InsertItems(0, m_GraphModel.NodeCount());
+		m_SelectionMask.resize(m_GraphModel.NodeCount());
+		m_HilightMask.resize(m_GraphModel.NodeCount());
 		m_HilightMask.clearAll();
 	}
 }

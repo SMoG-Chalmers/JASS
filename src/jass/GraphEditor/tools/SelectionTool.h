@@ -65,8 +65,6 @@ namespace jass
 
 		bool CanMoveLayerElements(size_t layer_index) const;
 		
-		void SwapOriginalWithTempNodePositions();
-
 		size_t m_HilightedLayerIndex = -1;
 		CGraphLayer::element_t m_HilightedElement = CGraphLayer::NO_ELEMENT;
 
@@ -78,7 +76,6 @@ namespace jass
 		size_t m_PreviousSelectionLayer = -1;
 		bitvec m_PreviousSelectionMask;
 		bitvec m_TempSelectionMask;
-		std::vector<QPointF> m_TempPoints;
 	};
 
 	inline bool CSelectionTool::HasHilightedElement() const
