@@ -17,6 +17,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtWidgets/qapplication.h>
 #include <QtCore/qitemselectionmodel.h>
 #include <QtGui/qevent.h>
 #include <QtGui/qpainter.h>
@@ -150,17 +151,14 @@ namespace jass
 		{
 			return;
 		}
-		if (!m_CategoryDialog)
-		{
-			m_CategoryDialog = new CCategoryDialog(this);
-		}
-		m_CategoryDialog->setWindowTitle("New Category");
-		m_CategoryDialog->SetName("");
-		if (m_CategoryDialog->exec() != QDialog::Accepted)
+		auto* dialog = CategoryDialog();
+		dialog->setWindowTitle("New Category");
+		dialog->SetName("");
+		if (dialog->exec() != QDialog::Accepted)
 		{
 			return;
 		}
-		emit AddCategory(m_CategoryDialog->Name(), m_CategoryDialog->Color(), m_CategoryDialog->Shape());
+		emit AddCategory(dialog->Name(), dialog->Color(), dialog->Shape());
 	}
 
 	void CCategoryView::OnRemove()
@@ -186,19 +184,28 @@ namespace jass
 			return;
 		}
 		const auto category_index = (size_t)index.row();
-		if (!m_CategoryDialog)
-		{
-			m_CategoryDialog = new CCategoryDialog(this);
-		}
-		m_CategoryDialog->setWindowTitle("Edit Category");
-		m_CategoryDialog->SetName(m_Categories->Name(category_index));
-		m_CategoryDialog->SetColor(m_Categories->Color(category_index));
-		m_CategoryDialog->SetShape(m_Categories->Shape(category_index));
-		if (m_CategoryDialog->exec() != QDialog::Accepted)
+		auto* dialog = CategoryDialog();
+		dialog->setWindowTitle("Edit Category");
+		dialog->SetName(m_Categories->Name(category_index));
+		dialog->SetColor(m_Categories->Color(category_index));
+		dialog->SetShape(m_Categories->Shape(category_index));
+		if (dialog->exec() != QDialog::Accepted)
 		{
 			return;
 		}
-		emit ModifyCategory((int)category_index, m_CategoryDialog->Name(), m_CategoryDialog->Color(), m_CategoryDialog->Shape());
+		emit ModifyCategory((int)category_index, dialog->Name(), dialog->Color(), dialog->Shape());
+	}
+
+	CCategoryDialog* CCategoryView::CategoryDialog()
+	{
+		if (!m_CategoryDialog)
+		{
+			m_CategoryDialog = new CCategoryDialog(this);
+			const auto center = QApplication::activeWindow()->geometry().center();
+			const auto size = m_CategoryDialog->sizeHint();
+			m_CategoryDialog->setGeometry(QRect(center.x() - size.width() / 2, center.y() - size.height() / 2, size.width(), size.height()));
+		}
+		return m_CategoryDialog;
 	}
 }
 

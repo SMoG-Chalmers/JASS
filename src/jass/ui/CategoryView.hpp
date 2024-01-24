@@ -67,6 +67,8 @@ namespace jass
 		void EditCategory(const QModelIndex& index);
 
 	private:
+		CCategoryDialog* CategoryDialog();
+
 		qapp::CActionManager& m_ActionManager;
 		QAction* m_AddAction = nullptr;
 		QAction* m_RemoveAction = nullptr;
