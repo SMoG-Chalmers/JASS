@@ -29,7 +29,6 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <qapplib/io/QIODeviceStreamAdapter.h>
 #include <qapplib/utils/StreamUtils.h>
-#include <qapplib/utils/StringUtils.h>
 #include <qapplib/Color.h>
 
 #include <jass/graphdata/JsonGraphData.h>
@@ -184,8 +183,9 @@ namespace jass
 			{
 				shape = EShape::Circle;
 			}
+			QString colorString = GetOptionalJsonValue<QString>(obj, "color", QString("#000"));
 			QRgb color;
-			if (!qapp::TryParseColor(qapp::to_string_view(GetOptionalJsonValue<QString>(obj, "color", QString("#000"))), color))
+			if (!qapp::TryParseColor(std::string_view(colorString.toStdString()), color))
 			{
 				color = qRgb(0, 0, 0);
 			}
