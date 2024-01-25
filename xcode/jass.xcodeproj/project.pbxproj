@@ -315,6 +315,34 @@
 		5B150A802B61D09900EC0893 /* JassSvgExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JassSvgExport.h; sourceTree = "<group>"; };
 		5B150A812B61D09900EC0893 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		5B150A822B61D09900EC0893 /* GraphUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphUtils.h; sourceTree = "<group>"; };
+		5B150B422B61D4DD00EC0893 /* Document.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Document.hpp; sourceTree = "<group>"; };
+		5B150B432B61D4DD00EC0893 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		5B150B452B61D4DD00EC0893 /* QIODeviceStreamAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QIODeviceStreamAdapter.h; sourceTree = "<group>"; };
+		5B150B462B61D4DD00EC0893 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		5B150B472B61D4DD00EC0893 /* Editor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Editor.hpp; sourceTree = "<group>"; };
+		5B150B492B61D4DD00EC0893 /* PathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathUtils.h; sourceTree = "<group>"; };
+		5B150B4A2B61D4DD00EC0893 /* PageStackAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageStackAllocator.h; sourceTree = "<group>"; };
+		5B150B4B2B61D4DD00EC0893 /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
+		5B150B4C2B61D4DD00EC0893 /* PageBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageBuffer.h; sourceTree = "<group>"; };
+		5B150B4D2B61D4DD00EC0893 /* PageBufferStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageBufferStream.h; sourceTree = "<group>"; };
+		5B150B4E2B61D4DD00EC0893 /* PagePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagePool.h; sourceTree = "<group>"; };
+		5B150B4F2B61D4DD00EC0893 /* QVariantType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QVariantType.h; sourceTree = "<group>"; };
+		5B150B502B61D4DD00EC0893 /* StreamUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamUtils.h; sourceTree = "<group>"; };
+		5B150B512B61D4DD00EC0893 /* PageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageAllocator.h; sourceTree = "<group>"; };
+		5B150B522B61D4DD00EC0893 /* Bits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bits.h; sourceTree = "<group>"; };
+		5B150B532B61D4DD00EC0893 /* WorkbenchWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorkbenchWidget.hpp; sourceTree = "<group>"; };
+		5B150B542B61D4DD00EC0893 /* UiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UiUtils.h; sourceTree = "<group>"; };
+		5B150B552B61D4DD00EC0893 /* DocumentManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DocumentManager.hpp; sourceTree = "<group>"; };
+		5B150B562B61D4DD00EC0893 /* RecentFilesMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RecentFilesMenu.hpp; sourceTree = "<group>"; };
+		5B150B572B61D4DD00EC0893 /* Workbench.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Workbench.hpp; sourceTree = "<group>"; };
+		5B150B592B61D4DD00EC0893 /* ActionManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ActionManager.hpp; sourceTree = "<group>"; };
+		5B150B5A2B61D4DD00EC0893 /* StandardActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandardActions.h; sourceTree = "<group>"; };
+		5B150B5B2B61D4DD00EC0893 /* ActionTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionTarget.h; sourceTree = "<group>"; };
+		5B150B5D2B61D4DD00EC0893 /* Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operations.h; sourceTree = "<group>"; };
+		5B150B5E2B61D4DD00EC0893 /* CmdOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdOperations.h; sourceTree = "<group>"; };
+		5B150B5F2B61D4DD00EC0893 /* CommandHistory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CommandHistory.hpp; sourceTree = "<group>"; };
+		5B150B602B61D4DD00EC0893 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
+		5B150B622B61D4DD00EC0893 /* ColorWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColorWidget.hpp; sourceTree = "<group>"; };
 		5BA393AA2B5B430B004214F9 /* jass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BA393B02B5B430C004214F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5BA393B72B5B430C004214F9 /* jass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = jass.entitlements; sourceTree = "<group>"; };
@@ -660,6 +688,90 @@
 			path = commands;
 			sourceTree = "<group>";
 		};
+		5B150B402B61D4DD00EC0893 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				5B150B412B61D4DD00EC0893 /* qapplib */,
+			);
+			name = include;
+			path = ../../external/qapplib/include;
+			sourceTree = "<group>";
+		};
+		5B150B412B61D4DD00EC0893 /* qapplib */ = {
+			isa = PBXGroup;
+			children = (
+				5B150B422B61D4DD00EC0893 /* Document.hpp */,
+				5B150B432B61D4DD00EC0893 /* Debug.h */,
+				5B150B442B61D4DD00EC0893 /* io */,
+				5B150B462B61D4DD00EC0893 /* Color.h */,
+				5B150B472B61D4DD00EC0893 /* Editor.hpp */,
+				5B150B482B61D4DD00EC0893 /* utils */,
+				5B150B532B61D4DD00EC0893 /* WorkbenchWidget.hpp */,
+				5B150B542B61D4DD00EC0893 /* UiUtils.h */,
+				5B150B552B61D4DD00EC0893 /* DocumentManager.hpp */,
+				5B150B562B61D4DD00EC0893 /* RecentFilesMenu.hpp */,
+				5B150B572B61D4DD00EC0893 /* Workbench.hpp */,
+				5B150B582B61D4DD00EC0893 /* actions */,
+				5B150B5C2B61D4DD00EC0893 /* commands */,
+				5B150B612B61D4DD00EC0893 /* widgets */,
+			);
+			path = qapplib;
+			sourceTree = "<group>";
+		};
+		5B150B442B61D4DD00EC0893 /* io */ = {
+			isa = PBXGroup;
+			children = (
+				5B150B452B61D4DD00EC0893 /* QIODeviceStreamAdapter.h */,
+			);
+			path = io;
+			sourceTree = "<group>";
+		};
+		5B150B482B61D4DD00EC0893 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				5B150B492B61D4DD00EC0893 /* PathUtils.h */,
+				5B150B4A2B61D4DD00EC0893 /* PageStackAllocator.h */,
+				5B150B4B2B61D4DD00EC0893 /* StringUtils.h */,
+				5B150B4C2B61D4DD00EC0893 /* PageBuffer.h */,
+				5B150B4D2B61D4DD00EC0893 /* PageBufferStream.h */,
+				5B150B4E2B61D4DD00EC0893 /* PagePool.h */,
+				5B150B4F2B61D4DD00EC0893 /* QVariantType.h */,
+				5B150B502B61D4DD00EC0893 /* StreamUtils.h */,
+				5B150B512B61D4DD00EC0893 /* PageAllocator.h */,
+				5B150B522B61D4DD00EC0893 /* Bits.h */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		5B150B582B61D4DD00EC0893 /* actions */ = {
+			isa = PBXGroup;
+			children = (
+				5B150B592B61D4DD00EC0893 /* ActionManager.hpp */,
+				5B150B5A2B61D4DD00EC0893 /* StandardActions.h */,
+				5B150B5B2B61D4DD00EC0893 /* ActionTarget.h */,
+			);
+			path = actions;
+			sourceTree = "<group>";
+		};
+		5B150B5C2B61D4DD00EC0893 /* commands */ = {
+			isa = PBXGroup;
+			children = (
+				5B150B5D2B61D4DD00EC0893 /* Operations.h */,
+				5B150B5E2B61D4DD00EC0893 /* CmdOperations.h */,
+				5B150B5F2B61D4DD00EC0893 /* CommandHistory.hpp */,
+				5B150B602B61D4DD00EC0893 /* Command.h */,
+			);
+			path = commands;
+			sourceTree = "<group>";
+		};
+		5B150B612B61D4DD00EC0893 /* widgets */ = {
+			isa = PBXGroup;
+			children = (
+				5B150B622B61D4DD00EC0893 /* ColorWidget.hpp */,
+			);
+			path = widgets;
+			sourceTree = "<group>";
+		};
 		5BA393A12B5B430B004214F9 = {
 			isa = PBXGroup;
 			children = (
@@ -724,6 +836,7 @@
 		5BA394922B5B4703004214F9 /* qapplib */ = {
 			isa = PBXGroup;
 			children = (
+				5B150B402B61D4DD00EC0893 /* include */,
 				5B1509072B5FD3B400EC0893 /* src */,
 			);
 			path = qapplib;
@@ -1072,7 +1185,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xmnsoftware.jass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1112,7 +1225,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.2;
+				MARKETING_VERSION = 2.0.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xmnsoftware.jass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
