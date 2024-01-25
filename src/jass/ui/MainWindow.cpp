@@ -43,6 +43,12 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #define JASS_UI_VERSION 1
 
+// Disable recent files on Mac, since we haven't yet implemented this for the sandbox environment
+// https://developer.apple.com/documentation/security/app_sandbox/accessing_files_from_the_macos_app_sandbox
+#ifndef __APPLE__
+	#define ENABLE_RECENT_FILES
+#endif
+
 namespace jass
 {
 	struct SToolViewDesc
@@ -77,11 +83,15 @@ namespace jass
 		m_MainToolBar = addToolBar("Main");
 		m_MainToolBar->setObjectName("MainToolBar");
 		m_MainToolBar->addAction(qapp::s_StandardActions.New);
+#ifdef ENABLE_RECENT_FILES
 		auto* open_button = new QToolButton(this);
 		open_button->setDefaultAction(qapp::s_StandardActions.Open);
 		open_button->setMenu(recent_files_menu);
 		open_button->setPopupMode(QToolButton::MenuButtonPopup);
 		m_MainToolBar->addWidget(open_button);
+#else
+		m_MainToolBar->addAction(qapp::s_StandardActions.Open);
+#endif
 		m_MainToolBar->addSeparator();
 		m_MainToolBar->addAction(qapp::s_StandardActions.Save);
 		m_MainToolBar->addSeparator();
@@ -106,7 +116,9 @@ namespace jass
 		fileMenu->addAction(qapp::s_StandardActions.New);
 		fileMenu->addSeparator();
 		fileMenu->addAction(qapp::s_StandardActions.Open);
+#ifdef ENABLE_RECENT_FILES
 		fileMenu->addMenu(recent_files_menu);
+#endif
 		fileMenu->addSeparator();
 		fileMenu->addAction(qapp::s_StandardActions.Save);
 		fileMenu->addAction(qapp::s_StandardActions.SaveAs);
