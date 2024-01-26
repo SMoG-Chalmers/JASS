@@ -10,87 +10,94 @@
 		5B1508832B5BB30E00EC0893 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BA393BE2B5B436C004214F9 /* libz.tbd */; };
 		5B1508842B5CFE9500EC0893 /* QtPrintSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BA393C02B5B43C0004214F9 /* QtPrintSupport.framework */; };
 		5B1508852B5CFE9500EC0893 /* QtPrintSupport.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5BA393C02B5B43C0004214F9 /* QtPrintSupport.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5B1509222B5FD3B400EC0893 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 5B1509082B5FD3B400EC0893 /* LICENSE */; };
-		5B1509232B5FD3B400EC0893 /* DocumentManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509092B5FD3B400EC0893 /* DocumentManager.cpp */; };
-		5B1509242B5FD3B400EC0893 /* QIODeviceStreamAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15090B2B5FD3B400EC0893 /* QIODeviceStreamAdapter.cpp */; };
-		5B1509252B5FD3B400EC0893 /* RecentFilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15090C2B5FD3B400EC0893 /* RecentFilesMenu.cpp */; };
-		5B1509262B5FD3B400EC0893 /* PathUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15090E2B5FD3B400EC0893 /* PathUtils.cpp */; };
-		5B1509272B5FD3B400EC0893 /* PageBufferStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15090F2B5FD3B400EC0893 /* PageBufferStream.cpp */; };
-		5B1509282B5FD3B400EC0893 /* PageBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509102B5FD3B400EC0893 /* PageBuffer.cpp */; };
-		5B1509292B5FD3B400EC0893 /* PagePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509112B5FD3B400EC0893 /* PagePool.cpp */; };
-		5B15092A2B5FD3B400EC0893 /* PageStackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509122B5FD3B400EC0893 /* PageStackAllocator.cpp */; };
-		5B15092B2B5FD3B400EC0893 /* Workbench.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509132B5FD3B400EC0893 /* Workbench.cpp */; };
-		5B15092C2B5FD3B400EC0893 /* UiUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509142B5FD3B400EC0893 /* UiUtils.cpp */; };
-		5B15092D2B5FD3B400EC0893 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5B1509152B5FD3B400EC0893 /* README.md */; };
-		5B15092E2B5FD3B400EC0893 /* WorkbenchWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509162B5FD3B400EC0893 /* WorkbenchWidget.cpp */; };
-		5B15092F2B5FD3B400EC0893 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509172B5FD3B400EC0893 /* Editor.cpp */; };
-		5B1509302B5FD3B400EC0893 /* StandardActions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509192B5FD3B400EC0893 /* StandardActions.cpp */; };
-		5B1509312B5FD3B400EC0893 /* ActionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15091A2B5FD3B400EC0893 /* ActionManager.cpp */; };
-		5B1509322B5FD3B400EC0893 /* CmdOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15091C2B5FD3B400EC0893 /* CmdOperations.cpp */; };
-		5B1509332B5FD3B400EC0893 /* CommandHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15091D2B5FD3B400EC0893 /* CommandHistory.cpp */; };
-		5B1509342B5FD3B400EC0893 /* Operations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15091E2B5FD3B400EC0893 /* Operations.cpp */; };
-		5B1509352B5FD3B400EC0893 /* Document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B15091F2B5FD3B400EC0893 /* Document.cpp */; };
-		5B1509362B5FD3B400EC0893 /* ColorWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509212B5FD3B400EC0893 /* ColorWidget.cpp */; };
-		5B150A832B61D09900EC0893 /* GraphModelSubGraphView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509F52B61D09900EC0893 /* GraphModelSubGraphView.cpp */; };
-		5B150A842B61D09900EC0893 /* JsonGraphData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509F72B61D09900EC0893 /* JsonGraphData.cpp */; };
-		5B150A852B61D09900EC0893 /* GraphModelGraphView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509F82B61D09900EC0893 /* GraphModelGraphView.cpp */; };
-		5B150A862B61D09900EC0893 /* GraphData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B1509FD2B61D09900EC0893 /* GraphData.cpp */; };
-		5B150A872B61D09900EC0893 /* BinaryGraphData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A002B61D09900EC0893 /* BinaryGraphData.cpp */; };
-		5B150A882B61D09900EC0893 /* GraphModelGraphBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A022B61D09900EC0893 /* GraphModelGraphBuilder.cpp */; };
-		5B150A892B61D09900EC0893 /* CategoryView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A062B61D09900EC0893 /* CategoryView.cpp */; };
-		5B150A8A2B61D09900EC0893 /* InputEventProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A082B61D09900EC0893 /* InputEventProcessor.cpp */; };
-		5B150A8B2B61D09900EC0893 /* CategoryDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A092B61D09900EC0893 /* CategoryDialog.cpp */; };
-		5B150A8C2B61D09900EC0893 /* ImageFx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A0A2B61D09900EC0893 /* ImageFx.cpp */; };
-		5B150A8D2B61D09900EC0893 /* SplitWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A0B2B61D09900EC0893 /* SplitWidget.cpp */; };
-		5B150A8E2B61D09900EC0893 /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A0C2B61D09900EC0893 /* MainWindow.cpp */; };
-		5B150A8F2B61D09900EC0893 /* SpriteSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A112B61D09900EC0893 /* SpriteSet.cpp */; };
-		5B150A902B61D09900EC0893 /* SpriteGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A122B61D09900EC0893 /* SpriteGraphLayer.cpp */; };
-		5B150A912B61D09900EC0893 /* GraphWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A142B61D09900EC0893 /* GraphWidget.cpp */; };
-		5B150A922B61D09900EC0893 /* ItemGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A162B61D09900EC0893 /* ItemGraphLayer.cpp */; };
-		5B150A932B61D09900EC0893 /* NodeGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A172B61D09900EC0893 /* NodeGraphLayer.cpp */; };
-		5B150A942B61D09900EC0893 /* JustifiedNodeGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A1A2B61D09900EC0893 /* JustifiedNodeGraphLayer.cpp */; };
-		5B150A952B61D09900EC0893 /* EdgeGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A1C2B61D09900EC0893 /* EdgeGraphLayer.cpp */; };
-		5B150A962B61D09900EC0893 /* ImageGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A1D2B61D09900EC0893 /* ImageGraphLayer.cpp */; };
-		5B150A972B61D09900EC0893 /* NodeSpriteSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A202B61D09900EC0893 /* NodeSpriteSet.cpp */; };
-		5B150A982B61D09900EC0893 /* jass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A272B61D09900EC0893 /* jass.cpp */; };
-		5B150A992B61D09900EC0893 /* GraphModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A282B61D09900EC0893 /* GraphModel.cpp */; };
-		5B150A9A2B61D09900EC0893 /* Analyses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A2B2B61D09900EC0893 /* Analyses.cpp */; };
-		5B150A9B2B61D09900EC0893 /* JassEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A2C2B61D09900EC0893 /* JassEditor.cpp */; };
-		5B150A9C2B61D09900EC0893 /* NodeTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A312B61D09900EC0893 /* NodeTool.cpp */; };
-		5B150A9D2B61D09900EC0893 /* EdgeTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A332B61D09900EC0893 /* EdgeTool.cpp */; };
-		5B150A9E2B61D09900EC0893 /* SelectionTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A342B61D09900EC0893 /* SelectionTool.cpp */; };
-		5B150A9F2B61D09900EC0893 /* AnalysisWorker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A362B61D09900EC0893 /* AnalysisWorker.cpp */; };
-		5B150AA02B61D09900EC0893 /* GraphClipboardData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A382B61D09900EC0893 /* GraphClipboardData.cpp */; };
-		5B150AA12B61D09900EC0893 /* IntegrationAnalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A3B2B61D09900EC0893 /* IntegrationAnalysis.cpp */; };
-		5B150AA22B61D09900EC0893 /* GraphTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A3F2B61D09900EC0893 /* GraphTool.cpp */; };
-		5B150AA32B61D09900EC0893 /* CategorySet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A402B61D09900EC0893 /* CategorySet.cpp */; };
-		5B150AA42B61D09900EC0893 /* LegacyJassFileFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A422B61D09900EC0893 /* LegacyJassFileFormat.cpp */; };
-		5B150AA52B61D09900EC0893 /* Integration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A462B61D09900EC0893 /* Integration.cpp */; };
-		5B150AA62B61D09900EC0893 /* JassFileFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A4C2B61D09900EC0893 /* JassFileFormat.cpp */; };
-		5B150AA72B61D09900EC0893 /* JassSvgExport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A4D2B61D09900EC0893 /* JassSvgExport.cpp */; };
-		5B150AA82B61D09900EC0893 /* JassProject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A4F2B61D09900EC0893 /* JassProject.cpp */; };
-		5B150AA92B61D09900EC0893 /* JavaObjectSerializationStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A522B61D09900EC0893 /* JavaObjectSerializationStream.cpp */; };
-		5B150AAA2B61D09900EC0893 /* bitvec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A562B61D09900EC0893 /* bitvec.cpp */; };
-		5B150AAB2B61D09900EC0893 /* Gaussian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A5A2B61D09900EC0893 /* Gaussian.cpp */; };
-		5B150AAC2B61D09900EC0893 /* jass.rc in Resources */ = {isa = PBXBuildFile; fileRef = 5B150A5E2B61D09900EC0893 /* jass.rc */; };
-		5B150AAD2B61D09900EC0893 /* main_osx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A5F2B61D09900EC0893 /* main_osx.cpp */; };
-		5B150AAE2B61D09900EC0893 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A612B61D09900EC0893 /* Shape.cpp */; };
-		5B150AAF2B61D09900EC0893 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A622B61D09900EC0893 /* Debug.cpp */; };
-		5B150AB02B61D09900EC0893 /* CmdAddGraphElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A652B61D09900EC0893 /* CmdAddGraphElements.cpp */; };
-		5B150AB12B61D09900EC0893 /* CmdMoveNodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A662B61D09900EC0893 /* CmdMoveNodes.cpp */; };
-		5B150AB22B61D09900EC0893 /* CmdDuplicate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A672B61D09900EC0893 /* CmdDuplicate.cpp */; };
-		5B150AB32B61D09900EC0893 /* CmdDeleteCategories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A682B61D09900EC0893 /* CmdDeleteCategories.cpp */; };
-		5B150AB42B61D09900EC0893 /* CmdAddCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A692B61D09900EC0893 /* CmdAddCategory.cpp */; };
-		5B150AB52B61D09900EC0893 /* CmdCreateEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A6C2B61D09900EC0893 /* CmdCreateEdge.cpp */; };
-		5B150AB62B61D09900EC0893 /* GraphOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A6F2B61D09900EC0893 /* GraphOperations.cpp */; };
-		5B150AB72B61D09900EC0893 /* CmdFilpNodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A712B61D09900EC0893 /* CmdFilpNodes.cpp */; };
-		5B150AB82B61D09900EC0893 /* CmdDeleteGraphElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A762B61D09900EC0893 /* CmdDeleteGraphElements.cpp */; };
-		5B150AB92B61D09900EC0893 /* CmdSetNodeCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A782B61D09900EC0893 /* CmdSetNodeCategory.cpp */; };
-		5B150ABA2B61D09900EC0893 /* CmdCreateNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A7B2B61D09900EC0893 /* CmdCreateNode.cpp */; };
-		5B150ABB2B61D09900EC0893 /* CmdSetBackgroundImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A7C2B61D09900EC0893 /* CmdSetBackgroundImage.cpp */; };
-		5B150ABC2B61D09900EC0893 /* CmdModifyCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A7D2B61D09900EC0893 /* CmdModifyCategory.cpp */; };
-		5B150ABD2B61D09900EC0893 /* JassDocument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A7E2B61D09900EC0893 /* JassDocument.cpp */; };
-		5B150ABE2B61D09900EC0893 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B150A812B61D09900EC0893 /* main.cpp */; };
+		5B4DA2582B64221E00602697 /* GraphModelSubGraphView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1BB2B64221E00602697 /* GraphModelSubGraphView.cpp */; };
+		5B4DA2592B64221E00602697 /* JsonGraphData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1BD2B64221E00602697 /* JsonGraphData.cpp */; };
+		5B4DA25A2B64221E00602697 /* GraphModelGraphView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1BE2B64221E00602697 /* GraphModelGraphView.cpp */; };
+		5B4DA25B2B64221E00602697 /* GraphData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1C32B64221E00602697 /* GraphData.cpp */; };
+		5B4DA25C2B64221E00602697 /* BinaryGraphData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1C62B64221E00602697 /* BinaryGraphData.cpp */; };
+		5B4DA25D2B64221E00602697 /* GraphModelGraphBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1C82B64221E00602697 /* GraphModelGraphBuilder.cpp */; };
+		5B4DA25E2B64221E00602697 /* CategoryView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1CC2B64221E00602697 /* CategoryView.cpp */; };
+		5B4DA25F2B64221E00602697 /* AboutDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1CD2B64221E00602697 /* AboutDialog.cpp */; };
+		5B4DA2602B64221E00602697 /* InputEventProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1CF2B64221E00602697 /* InputEventProcessor.cpp */; };
+		5B4DA2612B64221E00602697 /* CategoryDialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1D02B64221E00602697 /* CategoryDialog.cpp */; };
+		5B4DA2622B64221E00602697 /* ImageFx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1D12B64221E00602697 /* ImageFx.cpp */; };
+		5B4DA2632B64221E00602697 /* SplitWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1D22B64221E00602697 /* SplitWidget.cpp */; };
+		5B4DA2642B64221E00602697 /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1D32B64221E00602697 /* MainWindow.cpp */; };
+		5B4DA2652B64221E00602697 /* SpriteSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1D92B64221E00602697 /* SpriteSet.cpp */; };
+		5B4DA2662B64221E00602697 /* SpriteGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1DA2B64221E00602697 /* SpriteGraphLayer.cpp */; };
+		5B4DA2672B64221E00602697 /* GraphWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1DC2B64221E00602697 /* GraphWidget.cpp */; };
+		5B4DA2682B64221E00602697 /* ItemGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1DE2B64221E00602697 /* ItemGraphLayer.cpp */; };
+		5B4DA2692B64221E00602697 /* NodeGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1DF2B64221E00602697 /* NodeGraphLayer.cpp */; };
+		5B4DA26A2B64221E00602697 /* JustifiedEdgeGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1E02B64221E00602697 /* JustifiedEdgeGraphLayer.cpp */; };
+		5B4DA26B2B64221E00602697 /* JustifiedNodeGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1E32B64221E00602697 /* JustifiedNodeGraphLayer.cpp */; };
+		5B4DA26C2B64221E00602697 /* EdgeGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1E62B64221E00602697 /* EdgeGraphLayer.cpp */; };
+		5B4DA26D2B64221E00602697 /* ImageGraphLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1E72B64221E00602697 /* ImageGraphLayer.cpp */; };
+		5B4DA26E2B64221E00602697 /* NodeSpriteSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1EA2B64221E00602697 /* NodeSpriteSet.cpp */; };
+		5B4DA26F2B64221E00602697 /* jass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1F12B64221E00602697 /* jass.cpp */; };
+		5B4DA2702B64221E00602697 /* GraphModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1F22B64221E00602697 /* GraphModel.cpp */; };
+		5B4DA2712B64221E00602697 /* Analyses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1F52B64221E00602697 /* Analyses.cpp */; };
+		5B4DA2722B64221E00602697 /* JassEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1F62B64221E00602697 /* JassEditor.cpp */; };
+		5B4DA2732B64221E00602697 /* NodeTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1FB2B64221E00602697 /* NodeTool.cpp */; };
+		5B4DA2742B64221E00602697 /* EdgeTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1FD2B64221E00602697 /* EdgeTool.cpp */; };
+		5B4DA2752B64221E00602697 /* SelectionTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA1FE2B64221E00602697 /* SelectionTool.cpp */; };
+		5B4DA2762B64221E00602697 /* AnalysisWorker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2002B64221E00602697 /* AnalysisWorker.cpp */; };
+		5B4DA2772B64221E00602697 /* GraphClipboardData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2032B64221E00602697 /* GraphClipboardData.cpp */; };
+		5B4DA2782B64221E00602697 /* IntegrationAnalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2072B64221E00602697 /* IntegrationAnalysis.cpp */; };
+		5B4DA2792B64221E00602697 /* DepthAnalysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2082B64221E00602697 /* DepthAnalysis.cpp */; };
+		5B4DA27A2B64221E00602697 /* GraphTool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA20C2B64221E00602697 /* GraphTool.cpp */; };
+		5B4DA27B2B64221E00602697 /* CategorySet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA20D2B64221E00602697 /* CategorySet.cpp */; };
+		5B4DA27C2B64221E00602697 /* JustifiedGraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA20E2B64221E00602697 /* JustifiedGraph.cpp */; };
+		5B4DA27D2B64221E00602697 /* LegacyJassFileFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2112B64221E00602697 /* LegacyJassFileFormat.cpp */; };
+		5B4DA27E2B64221E00602697 /* Integration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2152B64221E00602697 /* Integration.cpp */; };
+		5B4DA27F2B64221E00602697 /* JassFileFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA21B2B64221E00602697 /* JassFileFormat.cpp */; };
+		5B4DA2802B64221E00602697 /* JassSvgExport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA21C2B64221E00602697 /* JassSvgExport.cpp */; };
+		5B4DA2812B64221E00602697 /* NodeAttribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA21E2B64221E00602697 /* NodeAttribute.cpp */; };
+		5B4DA2822B64221E00602697 /* JassProject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA21F2B64221E00602697 /* JassProject.cpp */; };
+		5B4DA2832B64221E00602697 /* JavaObjectSerializationStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2222B64221E00602697 /* JavaObjectSerializationStream.cpp */; };
+		5B4DA2842B64221E00602697 /* bitvec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2262B64221E00602697 /* bitvec.cpp */; };
+		5B4DA2852B64221E00602697 /* Gaussian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA22A2B64221E00602697 /* Gaussian.cpp */; };
+		5B4DA2862B64221E00602697 /* jass.rc in Resources */ = {isa = PBXBuildFile; fileRef = 5B4DA22E2B64221E00602697 /* jass.rc */; };
+		5B4DA2872B64221E00602697 /* main_osx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA22F2B64221E00602697 /* main_osx.cpp */; };
+		5B4DA2882B64221E00602697 /* Shape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2312B64221E00602697 /* Shape.cpp */; };
+		5B4DA2892B64221E00602697 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2322B64221E00602697 /* Debug.cpp */; };
+		5B4DA28A2B64221E00602697 /* CmdAddGraphElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2372B64221E00602697 /* CmdAddGraphElements.cpp */; };
+		5B4DA28B2B64221E00602697 /* CmdMoveNodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2382B64221E00602697 /* CmdMoveNodes.cpp */; };
+		5B4DA28C2B64221E00602697 /* CmdDuplicate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2392B64221E00602697 /* CmdDuplicate.cpp */; };
+		5B4DA28D2B64221E00602697 /* CmdDeleteCategories.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA23A2B64221E00602697 /* CmdDeleteCategories.cpp */; };
+		5B4DA28E2B64221E00602697 /* CmdAddCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA23B2B64221E00602697 /* CmdAddCategory.cpp */; };
+		5B4DA28F2B64221E00602697 /* CmdCreateEdge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA23E2B64221E00602697 /* CmdCreateEdge.cpp */; };
+		5B4DA2902B64221E00602697 /* GraphOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2422B64221E00602697 /* GraphOperations.cpp */; };
+		5B4DA2912B64221E00602697 /* CmdFilpNodes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2442B64221E00602697 /* CmdFilpNodes.cpp */; };
+		5B4DA2922B64221E00602697 /* CmdDeleteGraphElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2492B64221E00602697 /* CmdDeleteGraphElements.cpp */; };
+		5B4DA2932B64221E00602697 /* CmdSetNodeCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA24B2B64221E00602697 /* CmdSetNodeCategory.cpp */; };
+		5B4DA2942B64221E00602697 /* CmdCreateNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA24E2B64221E00602697 /* CmdCreateNode.cpp */; };
+		5B4DA2952B64221E00602697 /* CmdSetGraphAttribute.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA24F2B64221E00602697 /* CmdSetGraphAttribute.cpp */; };
+		5B4DA2962B64221E00602697 /* CmdSetBackgroundImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2502B64221E00602697 /* CmdSetBackgroundImage.cpp */; };
+		5B4DA2972B64221E00602697 /* CmdModifyCategory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2512B64221E00602697 /* CmdModifyCategory.cpp */; };
+		5B4DA2982B64221E00602697 /* JassDocument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2522B64221E00602697 /* JassDocument.cpp */; };
+		5B4DA2992B64221E00602697 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2562B64221E00602697 /* main.cpp */; };
+		5B4DA2D92B64224300602697 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 5B4DA29B2B64224300602697 /* LICENSE */; };
+		5B4DA2DA2B64224300602697 /* DocumentManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA29C2B64224300602697 /* DocumentManager.cpp */; };
+		5B4DA2DB2B64224300602697 /* QIODeviceStreamAdapter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA29E2B64224300602697 /* QIODeviceStreamAdapter.cpp */; };
+		5B4DA2DC2B64224300602697 /* RecentFilesMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA29F2B64224300602697 /* RecentFilesMenu.cpp */; };
+		5B4DA2DD2B64224300602697 /* PathUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A12B64224300602697 /* PathUtils.cpp */; };
+		5B4DA2DE2B64224300602697 /* PageBufferStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A22B64224300602697 /* PageBufferStream.cpp */; };
+		5B4DA2DF2B64224300602697 /* StreamUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A32B64224300602697 /* StreamUtils.cpp */; };
+		5B4DA2E02B64224300602697 /* PageBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A42B64224300602697 /* PageBuffer.cpp */; };
+		5B4DA2E12B64224300602697 /* PagePool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A52B64224300602697 /* PagePool.cpp */; };
+		5B4DA2E22B64224300602697 /* PageStackAllocator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A62B64224300602697 /* PageStackAllocator.cpp */; };
+		5B4DA2E32B64224300602697 /* Workbench.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A72B64224300602697 /* Workbench.cpp */; };
+		5B4DA2E42B64224300602697 /* UiUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A82B64224300602697 /* UiUtils.cpp */; };
+		5B4DA2E52B64224300602697 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5B4DA2A92B64224300602697 /* README.md */; };
+		5B4DA2E62B64224300602697 /* WorkbenchWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2AA2B64224300602697 /* WorkbenchWidget.cpp */; };
+		5B4DA2E72B64224300602697 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2AB2B64224300602697 /* Editor.cpp */; };
+		5B4DA2E82B64224300602697 /* StandardActions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2AD2B64224300602697 /* StandardActions.cpp */; };
+		5B4DA2E92B64224300602697 /* ActionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2AE2B64224300602697 /* ActionManager.cpp */; };
+		5B4DA2EA2B64224300602697 /* CmdOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2B02B64224300602697 /* CmdOperations.cpp */; };
+		5B4DA2EB2B64224300602697 /* CommandHistory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2B12B64224300602697 /* CommandHistory.cpp */; };
+		5B4DA2EC2B64224300602697 /* Operations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2B22B64224300602697 /* Operations.cpp */; };
+		5B4DA2ED2B64224300602697 /* Document.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2B32B64224300602697 /* Document.cpp */; };
+		5B4DA2EE2B64224300602697 /* ColorWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5B4DA2B52B64224300602697 /* ColorWidget.cpp */; };
 		5BA393B12B5B430C004214F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5BA393B02B5B430C004214F9 /* Assets.xcassets */; };
 		5BA393C42B5B43C0004214F9 /* QtGui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BA393BF2B5B43C0004214F9 /* QtGui.framework */; };
 		5BA393C52B5B43C0004214F9 /* QtGui.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5BA393BF2B5B43C0004214F9 /* QtGui.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -162,187 +169,203 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5B1509082B5FD3B400EC0893 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		5B1509092B5FD3B400EC0893 /* DocumentManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DocumentManager.cpp; sourceTree = "<group>"; };
-		5B15090B2B5FD3B400EC0893 /* QIODeviceStreamAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QIODeviceStreamAdapter.cpp; sourceTree = "<group>"; };
-		5B15090C2B5FD3B400EC0893 /* RecentFilesMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecentFilesMenu.cpp; sourceTree = "<group>"; };
-		5B15090E2B5FD3B400EC0893 /* PathUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathUtils.cpp; sourceTree = "<group>"; };
-		5B15090F2B5FD3B400EC0893 /* PageBufferStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PageBufferStream.cpp; sourceTree = "<group>"; };
-		5B1509102B5FD3B400EC0893 /* PageBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PageBuffer.cpp; sourceTree = "<group>"; };
-		5B1509112B5FD3B400EC0893 /* PagePool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PagePool.cpp; sourceTree = "<group>"; };
-		5B1509122B5FD3B400EC0893 /* PageStackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PageStackAllocator.cpp; sourceTree = "<group>"; };
-		5B1509132B5FD3B400EC0893 /* Workbench.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Workbench.cpp; sourceTree = "<group>"; };
-		5B1509142B5FD3B400EC0893 /* UiUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UiUtils.cpp; sourceTree = "<group>"; };
-		5B1509152B5FD3B400EC0893 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		5B1509162B5FD3B400EC0893 /* WorkbenchWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkbenchWidget.cpp; sourceTree = "<group>"; };
-		5B1509172B5FD3B400EC0893 /* Editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Editor.cpp; sourceTree = "<group>"; };
-		5B1509192B5FD3B400EC0893 /* StandardActions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandardActions.cpp; sourceTree = "<group>"; };
-		5B15091A2B5FD3B400EC0893 /* ActionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActionManager.cpp; sourceTree = "<group>"; };
-		5B15091C2B5FD3B400EC0893 /* CmdOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdOperations.cpp; sourceTree = "<group>"; };
-		5B15091D2B5FD3B400EC0893 /* CommandHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandHistory.cpp; sourceTree = "<group>"; };
-		5B15091E2B5FD3B400EC0893 /* Operations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Operations.cpp; sourceTree = "<group>"; };
-		5B15091F2B5FD3B400EC0893 /* Document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Document.cpp; sourceTree = "<group>"; };
-		5B1509212B5FD3B400EC0893 /* ColorWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorWidget.cpp; sourceTree = "<group>"; };
-		5B1509F52B61D09900EC0893 /* GraphModelSubGraphView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModelSubGraphView.cpp; sourceTree = "<group>"; };
-		5B1509F62B61D09900EC0893 /* GraphBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphBuilder.h; sourceTree = "<group>"; };
-		5B1509F72B61D09900EC0893 /* JsonGraphData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonGraphData.cpp; sourceTree = "<group>"; };
-		5B1509F82B61D09900EC0893 /* GraphModelGraphView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModelGraphView.cpp; sourceTree = "<group>"; };
-		5B1509F92B61D09900EC0893 /* GraphModelSubGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelSubGraphView.h; sourceTree = "<group>"; };
-		5B1509FA2B61D09900EC0893 /* GraphModelGraphBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelGraphBuilder.h; sourceTree = "<group>"; };
-		5B1509FB2B61D09900EC0893 /* JsonGraphData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonGraphData.h; sourceTree = "<group>"; };
-		5B1509FC2B61D09900EC0893 /* GraphModelGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelGraphView.h; sourceTree = "<group>"; };
-		5B1509FD2B61D09900EC0893 /* GraphData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphData.cpp; sourceTree = "<group>"; };
-		5B1509FE2B61D09900EC0893 /* GraphModelImmutableDirectedGraphAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelImmutableDirectedGraphAdapter.h; sourceTree = "<group>"; };
-		5B1509FF2B61D09900EC0893 /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
-		5B150A002B61D09900EC0893 /* BinaryGraphData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryGraphData.cpp; sourceTree = "<group>"; };
-		5B150A012B61D09900EC0893 /* GraphData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphData.h; sourceTree = "<group>"; };
-		5B150A022B61D09900EC0893 /* GraphModelGraphBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModelGraphBuilder.cpp; sourceTree = "<group>"; };
-		5B150A032B61D09900EC0893 /* BinaryGraphData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryGraphData.h; sourceTree = "<group>"; };
-		5B150A042B61D09900EC0893 /* GraphDataCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphDataCommon.h; sourceTree = "<group>"; };
-		5B150A062B61D09900EC0893 /* CategoryView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CategoryView.cpp; sourceTree = "<group>"; };
-		5B150A072B61D09900EC0893 /* MainWindow.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MainWindow.hpp; sourceTree = "<group>"; };
-		5B150A082B61D09900EC0893 /* InputEventProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputEventProcessor.cpp; sourceTree = "<group>"; };
-		5B150A092B61D09900EC0893 /* CategoryDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CategoryDialog.cpp; sourceTree = "<group>"; };
-		5B150A0A2B61D09900EC0893 /* ImageFx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageFx.cpp; sourceTree = "<group>"; };
-		5B150A0B2B61D09900EC0893 /* SplitWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplitWidget.cpp; sourceTree = "<group>"; };
-		5B150A0C2B61D09900EC0893 /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainWindow.cpp; sourceTree = "<group>"; };
-		5B150A0D2B61D09900EC0893 /* CategoryDialog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CategoryDialog.hpp; sourceTree = "<group>"; };
-		5B150A0E2B61D09900EC0893 /* ImageFx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFx.h; sourceTree = "<group>"; };
-		5B150A0F2B61D09900EC0893 /* SplitWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SplitWidget.hpp; sourceTree = "<group>"; };
-		5B150A112B61D09900EC0893 /* SpriteSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteSet.cpp; sourceTree = "<group>"; };
-		5B150A122B61D09900EC0893 /* SpriteGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteGraphLayer.cpp; sourceTree = "<group>"; };
-		5B150A132B61D09900EC0893 /* SpriteGraphLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteGraphLayer.h; sourceTree = "<group>"; };
-		5B150A142B61D09900EC0893 /* GraphWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphWidget.cpp; sourceTree = "<group>"; };
-		5B150A152B61D09900EC0893 /* JustifiedNodeGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JustifiedNodeGraphLayer.hpp; sourceTree = "<group>"; };
-		5B150A162B61D09900EC0893 /* ItemGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemGraphLayer.cpp; sourceTree = "<group>"; };
-		5B150A172B61D09900EC0893 /* NodeGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeGraphLayer.cpp; sourceTree = "<group>"; };
-		5B150A182B61D09900EC0893 /* EdgeGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeGraphLayer.hpp; sourceTree = "<group>"; };
-		5B150A192B61D09900EC0893 /* ImageGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageGraphLayer.hpp; sourceTree = "<group>"; };
-		5B150A1A2B61D09900EC0893 /* JustifiedNodeGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JustifiedNodeGraphLayer.cpp; sourceTree = "<group>"; };
-		5B150A1B2B61D09900EC0893 /* NodeGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NodeGraphLayer.hpp; sourceTree = "<group>"; };
-		5B150A1C2B61D09900EC0893 /* EdgeGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeGraphLayer.cpp; sourceTree = "<group>"; };
-		5B150A1D2B61D09900EC0893 /* ImageGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageGraphLayer.cpp; sourceTree = "<group>"; };
-		5B150A1E2B61D09900EC0893 /* SpriteSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteSet.h; sourceTree = "<group>"; };
-		5B150A1F2B61D09900EC0893 /* ItemGraphLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemGraphLayer.h; sourceTree = "<group>"; };
-		5B150A202B61D09900EC0893 /* NodeSpriteSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeSpriteSet.cpp; sourceTree = "<group>"; };
-		5B150A212B61D09900EC0893 /* GraphWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphWidget.hpp; sourceTree = "<group>"; };
-		5B150A222B61D09900EC0893 /* NodeSpriteSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeSpriteSet.h; sourceTree = "<group>"; };
-		5B150A232B61D09900EC0893 /* CategoryView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CategoryView.hpp; sourceTree = "<group>"; };
-		5B150A242B61D09900EC0893 /* InputEventProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputEventProcessor.h; sourceTree = "<group>"; };
-		5B150A252B61D09900EC0893 /* JassDocument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JassDocument.hpp; sourceTree = "<group>"; };
-		5B150A262B61D09900EC0893 /* JassFileFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JassFileFormat.h; sourceTree = "<group>"; };
-		5B150A272B61D09900EC0893 /* jass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jass.cpp; sourceTree = "<group>"; };
-		5B150A282B61D09900EC0893 /* GraphModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModel.cpp; sourceTree = "<group>"; };
-		5B150A292B61D09900EC0893 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
-		5B150A2B2B61D09900EC0893 /* Analyses.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Analyses.cpp; sourceTree = "<group>"; };
-		5B150A2C2B61D09900EC0893 /* JassEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassEditor.cpp; sourceTree = "<group>"; };
-		5B150A2D2B61D09900EC0893 /* CategorySet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CategorySet.hpp; sourceTree = "<group>"; };
-		5B150A2F2B61D09900EC0893 /* SelectionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionTool.h; sourceTree = "<group>"; };
-		5B150A302B61D09900EC0893 /* NodeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTool.h; sourceTree = "<group>"; };
-		5B150A312B61D09900EC0893 /* NodeTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeTool.cpp; sourceTree = "<group>"; };
-		5B150A322B61D09900EC0893 /* EdgeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeTool.h; sourceTree = "<group>"; };
-		5B150A332B61D09900EC0893 /* EdgeTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeTool.cpp; sourceTree = "<group>"; };
-		5B150A342B61D09900EC0893 /* SelectionTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectionTool.cpp; sourceTree = "<group>"; };
-		5B150A352B61D09900EC0893 /* GraphTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphTool.h; sourceTree = "<group>"; };
-		5B150A362B61D09900EC0893 /* AnalysisWorker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnalysisWorker.cpp; sourceTree = "<group>"; };
-		5B150A372B61D09900EC0893 /* AnalysisWorker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AnalysisWorker.hpp; sourceTree = "<group>"; };
-		5B150A382B61D09900EC0893 /* GraphClipboardData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphClipboardData.cpp; sourceTree = "<group>"; };
-		5B150A3A2B61D09900EC0893 /* IntegrationAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntegrationAnalysis.h; sourceTree = "<group>"; };
-		5B150A3B2B61D09900EC0893 /* IntegrationAnalysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntegrationAnalysis.cpp; sourceTree = "<group>"; };
-		5B150A3C2B61D09900EC0893 /* GraphClipboardData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphClipboardData.h; sourceTree = "<group>"; };
-		5B150A3D2B61D09900EC0893 /* JassEditor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JassEditor.hpp; sourceTree = "<group>"; };
-		5B150A3E2B61D09900EC0893 /* Analyses.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Analyses.hpp; sourceTree = "<group>"; };
-		5B150A3F2B61D09900EC0893 /* GraphTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphTool.cpp; sourceTree = "<group>"; };
-		5B150A402B61D09900EC0893 /* CategorySet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CategorySet.cpp; sourceTree = "<group>"; };
-		5B150A412B61D09900EC0893 /* Analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
-		5B150A422B61D09900EC0893 /* LegacyJassFileFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LegacyJassFileFormat.cpp; sourceTree = "<group>"; };
-		5B150A442B61D09900EC0893 /* BfsTraversal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BfsTraversal.h; sourceTree = "<group>"; };
-		5B150A452B61D09900EC0893 /* ImmutableDirectedGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImmutableDirectedGraph.h; sourceTree = "<group>"; };
-		5B150A462B61D09900EC0893 /* Integration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Integration.cpp; sourceTree = "<group>"; };
-		5B150A472B61D09900EC0893 /* MinDistCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinDistCalculator.h; sourceTree = "<group>"; };
-		5B150A482B61D09900EC0893 /* Integration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Integration.h; sourceTree = "<group>"; };
-		5B150A492B61D09900EC0893 /* DepthCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepthCalculator.h; sourceTree = "<group>"; };
-		5B150A4A2B61D09900EC0893 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
-		5B150A4B2B61D09900EC0893 /* jass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jass.h; sourceTree = "<group>"; };
-		5B150A4C2B61D09900EC0893 /* JassFileFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassFileFormat.cpp; sourceTree = "<group>"; };
-		5B150A4D2B61D09900EC0893 /* JassSvgExport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassSvgExport.cpp; sourceTree = "<group>"; };
-		5B150A4E2B61D09900EC0893 /* LegacyJassFileFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacyJassFileFormat.h; sourceTree = "<group>"; };
-		5B150A4F2B61D09900EC0893 /* JassProject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassProject.cpp; sourceTree = "<group>"; };
-		5B150A512B61D09900EC0893 /* JavaObjectSerializationStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaObjectSerializationStream.h; sourceTree = "<group>"; };
-		5B150A522B61D09900EC0893 /* JavaObjectSerializationStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JavaObjectSerializationStream.cpp; sourceTree = "<group>"; };
-		5B150A542B61D09900EC0893 /* JsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonUtils.h; sourceTree = "<group>"; };
-		5B150A552B61D09900EC0893 /* range_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = range_utils.h; sourceTree = "<group>"; };
-		5B150A562B61D09900EC0893 /* bitvec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bitvec.cpp; sourceTree = "<group>"; };
-		5B150A572B61D09900EC0893 /* bitvec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitvec.h; sourceTree = "<group>"; };
-		5B150A582B61D09900EC0893 /* Shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
-		5B150A5A2B61D09900EC0893 /* Gaussian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gaussian.cpp; sourceTree = "<group>"; };
-		5B150A5B2B61D09900EC0893 /* Gaussian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gaussian.h; sourceTree = "<group>"; };
-		5B150A5C2B61D09900EC0893 /* Integral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Integral.h; sourceTree = "<group>"; };
-		5B150A5D2B61D09900EC0893 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
-		5B150A5E2B61D09900EC0893 /* jass.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jass.rc; sourceTree = "<group>"; };
-		5B150A5F2B61D09900EC0893 /* main_osx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main_osx.cpp; sourceTree = "<group>"; };
-		5B150A602B61D09900EC0893 /* JassProject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JassProject.hpp; sourceTree = "<group>"; };
-		5B150A612B61D09900EC0893 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
-		5B150A622B61D09900EC0893 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
-		5B150A642B61D09900EC0893 /* CmdFilpNodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdFilpNodes.h; sourceTree = "<group>"; };
-		5B150A652B61D09900EC0893 /* CmdAddGraphElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdAddGraphElements.cpp; sourceTree = "<group>"; };
-		5B150A662B61D09900EC0893 /* CmdMoveNodes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdMoveNodes.cpp; sourceTree = "<group>"; };
-		5B150A672B61D09900EC0893 /* CmdDuplicate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdDuplicate.cpp; sourceTree = "<group>"; };
-		5B150A682B61D09900EC0893 /* CmdDeleteCategories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdDeleteCategories.cpp; sourceTree = "<group>"; };
-		5B150A692B61D09900EC0893 /* CmdAddCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdAddCategory.cpp; sourceTree = "<group>"; };
-		5B150A6A2B61D09900EC0893 /* CmdMoveNodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdMoveNodes.h; sourceTree = "<group>"; };
-		5B150A6B2B61D09900EC0893 /* CmdSetNodeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdSetNodeCategory.h; sourceTree = "<group>"; };
-		5B150A6C2B61D09900EC0893 /* CmdCreateEdge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdCreateEdge.cpp; sourceTree = "<group>"; };
-		5B150A6D2B61D09900EC0893 /* CmdAddCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdAddCategory.h; sourceTree = "<group>"; };
-		5B150A6E2B61D09900EC0893 /* CmdSetBackgroundImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdSetBackgroundImage.h; sourceTree = "<group>"; };
-		5B150A6F2B61D09900EC0893 /* GraphOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphOperations.cpp; sourceTree = "<group>"; };
-		5B150A702B61D09900EC0893 /* GraphOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphOperations.h; sourceTree = "<group>"; };
-		5B150A712B61D09900EC0893 /* CmdFilpNodes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdFilpNodes.cpp; sourceTree = "<group>"; };
-		5B150A722B61D09900EC0893 /* CmdDeleteGraphElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdDeleteGraphElements.h; sourceTree = "<group>"; };
-		5B150A732B61D09900EC0893 /* CmdDeleteCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdDeleteCategories.h; sourceTree = "<group>"; };
-		5B150A742B61D09900EC0893 /* CmdCreateNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdCreateNode.h; sourceTree = "<group>"; };
-		5B150A752B61D09900EC0893 /* CmdModifyCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdModifyCategory.h; sourceTree = "<group>"; };
-		5B150A762B61D09900EC0893 /* CmdDeleteGraphElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdDeleteGraphElements.cpp; sourceTree = "<group>"; };
-		5B150A772B61D09900EC0893 /* CmdDuplicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdDuplicate.h; sourceTree = "<group>"; };
-		5B150A782B61D09900EC0893 /* CmdSetNodeCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdSetNodeCategory.cpp; sourceTree = "<group>"; };
-		5B150A792B61D09900EC0893 /* CmdAddGraphElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdAddGraphElements.h; sourceTree = "<group>"; };
-		5B150A7A2B61D09900EC0893 /* CmdCreateEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdCreateEdge.h; sourceTree = "<group>"; };
-		5B150A7B2B61D09900EC0893 /* CmdCreateNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdCreateNode.cpp; sourceTree = "<group>"; };
-		5B150A7C2B61D09900EC0893 /* CmdSetBackgroundImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdSetBackgroundImage.cpp; sourceTree = "<group>"; };
-		5B150A7D2B61D09900EC0893 /* CmdModifyCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdModifyCategory.cpp; sourceTree = "<group>"; };
-		5B150A7E2B61D09900EC0893 /* JassDocument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassDocument.cpp; sourceTree = "<group>"; };
-		5B150A7F2B61D09900EC0893 /* GraphModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphModel.hpp; sourceTree = "<group>"; };
-		5B150A802B61D09900EC0893 /* JassSvgExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JassSvgExport.h; sourceTree = "<group>"; };
-		5B150A812B61D09900EC0893 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		5B150A822B61D09900EC0893 /* GraphUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphUtils.h; sourceTree = "<group>"; };
-		5B150B422B61D4DD00EC0893 /* Document.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Document.hpp; sourceTree = "<group>"; };
-		5B150B432B61D4DD00EC0893 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
-		5B150B452B61D4DD00EC0893 /* QIODeviceStreamAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QIODeviceStreamAdapter.h; sourceTree = "<group>"; };
-		5B150B462B61D4DD00EC0893 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
-		5B150B472B61D4DD00EC0893 /* Editor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Editor.hpp; sourceTree = "<group>"; };
-		5B150B492B61D4DD00EC0893 /* PathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathUtils.h; sourceTree = "<group>"; };
-		5B150B4A2B61D4DD00EC0893 /* PageStackAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageStackAllocator.h; sourceTree = "<group>"; };
-		5B150B4B2B61D4DD00EC0893 /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
-		5B150B4C2B61D4DD00EC0893 /* PageBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageBuffer.h; sourceTree = "<group>"; };
-		5B150B4D2B61D4DD00EC0893 /* PageBufferStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageBufferStream.h; sourceTree = "<group>"; };
-		5B150B4E2B61D4DD00EC0893 /* PagePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagePool.h; sourceTree = "<group>"; };
-		5B150B4F2B61D4DD00EC0893 /* QVariantType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QVariantType.h; sourceTree = "<group>"; };
-		5B150B502B61D4DD00EC0893 /* StreamUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamUtils.h; sourceTree = "<group>"; };
-		5B150B512B61D4DD00EC0893 /* PageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageAllocator.h; sourceTree = "<group>"; };
-		5B150B522B61D4DD00EC0893 /* Bits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bits.h; sourceTree = "<group>"; };
-		5B150B532B61D4DD00EC0893 /* WorkbenchWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorkbenchWidget.hpp; sourceTree = "<group>"; };
-		5B150B542B61D4DD00EC0893 /* UiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UiUtils.h; sourceTree = "<group>"; };
-		5B150B552B61D4DD00EC0893 /* DocumentManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DocumentManager.hpp; sourceTree = "<group>"; };
-		5B150B562B61D4DD00EC0893 /* RecentFilesMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RecentFilesMenu.hpp; sourceTree = "<group>"; };
-		5B150B572B61D4DD00EC0893 /* Workbench.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Workbench.hpp; sourceTree = "<group>"; };
-		5B150B592B61D4DD00EC0893 /* ActionManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ActionManager.hpp; sourceTree = "<group>"; };
-		5B150B5A2B61D4DD00EC0893 /* StandardActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandardActions.h; sourceTree = "<group>"; };
-		5B150B5B2B61D4DD00EC0893 /* ActionTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionTarget.h; sourceTree = "<group>"; };
-		5B150B5D2B61D4DD00EC0893 /* Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operations.h; sourceTree = "<group>"; };
-		5B150B5E2B61D4DD00EC0893 /* CmdOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdOperations.h; sourceTree = "<group>"; };
-		5B150B5F2B61D4DD00EC0893 /* CommandHistory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CommandHistory.hpp; sourceTree = "<group>"; };
-		5B150B602B61D4DD00EC0893 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
-		5B150B622B61D4DD00EC0893 /* ColorWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColorWidget.hpp; sourceTree = "<group>"; };
+		5B4DA1BB2B64221E00602697 /* GraphModelSubGraphView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModelSubGraphView.cpp; sourceTree = "<group>"; };
+		5B4DA1BC2B64221E00602697 /* GraphBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphBuilder.h; sourceTree = "<group>"; };
+		5B4DA1BD2B64221E00602697 /* JsonGraphData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JsonGraphData.cpp; sourceTree = "<group>"; };
+		5B4DA1BE2B64221E00602697 /* GraphModelGraphView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModelGraphView.cpp; sourceTree = "<group>"; };
+		5B4DA1BF2B64221E00602697 /* GraphModelSubGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelSubGraphView.h; sourceTree = "<group>"; };
+		5B4DA1C02B64221E00602697 /* GraphModelGraphBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelGraphBuilder.h; sourceTree = "<group>"; };
+		5B4DA1C12B64221E00602697 /* JsonGraphData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonGraphData.h; sourceTree = "<group>"; };
+		5B4DA1C22B64221E00602697 /* GraphModelGraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelGraphView.h; sourceTree = "<group>"; };
+		5B4DA1C32B64221E00602697 /* GraphData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphData.cpp; sourceTree = "<group>"; };
+		5B4DA1C42B64221E00602697 /* GraphModelImmutableDirectedGraphAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphModelImmutableDirectedGraphAdapter.h; sourceTree = "<group>"; };
+		5B4DA1C52B64221E00602697 /* GraphView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphView.h; sourceTree = "<group>"; };
+		5B4DA1C62B64221E00602697 /* BinaryGraphData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BinaryGraphData.cpp; sourceTree = "<group>"; };
+		5B4DA1C72B64221E00602697 /* GraphData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphData.h; sourceTree = "<group>"; };
+		5B4DA1C82B64221E00602697 /* GraphModelGraphBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModelGraphBuilder.cpp; sourceTree = "<group>"; };
+		5B4DA1C92B64221E00602697 /* BinaryGraphData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BinaryGraphData.h; sourceTree = "<group>"; };
+		5B4DA1CA2B64221E00602697 /* GraphDataCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphDataCommon.h; sourceTree = "<group>"; };
+		5B4DA1CC2B64221E00602697 /* CategoryView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CategoryView.cpp; sourceTree = "<group>"; };
+		5B4DA1CD2B64221E00602697 /* AboutDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AboutDialog.cpp; sourceTree = "<group>"; };
+		5B4DA1CE2B64221E00602697 /* MainWindow.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MainWindow.hpp; sourceTree = "<group>"; };
+		5B4DA1CF2B64221E00602697 /* InputEventProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputEventProcessor.cpp; sourceTree = "<group>"; };
+		5B4DA1D02B64221E00602697 /* CategoryDialog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CategoryDialog.cpp; sourceTree = "<group>"; };
+		5B4DA1D12B64221E00602697 /* ImageFx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageFx.cpp; sourceTree = "<group>"; };
+		5B4DA1D22B64221E00602697 /* SplitWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplitWidget.cpp; sourceTree = "<group>"; };
+		5B4DA1D32B64221E00602697 /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainWindow.cpp; sourceTree = "<group>"; };
+		5B4DA1D42B64221E00602697 /* AboutDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutDialog.h; sourceTree = "<group>"; };
+		5B4DA1D52B64221E00602697 /* CategoryDialog.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CategoryDialog.hpp; sourceTree = "<group>"; };
+		5B4DA1D62B64221E00602697 /* ImageFx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageFx.h; sourceTree = "<group>"; };
+		5B4DA1D72B64221E00602697 /* SplitWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SplitWidget.hpp; sourceTree = "<group>"; };
+		5B4DA1D92B64221E00602697 /* SpriteSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteSet.cpp; sourceTree = "<group>"; };
+		5B4DA1DA2B64221E00602697 /* SpriteGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteGraphLayer.cpp; sourceTree = "<group>"; };
+		5B4DA1DB2B64221E00602697 /* SpriteGraphLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteGraphLayer.h; sourceTree = "<group>"; };
+		5B4DA1DC2B64221E00602697 /* GraphWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphWidget.cpp; sourceTree = "<group>"; };
+		5B4DA1DD2B64221E00602697 /* JustifiedNodeGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JustifiedNodeGraphLayer.hpp; sourceTree = "<group>"; };
+		5B4DA1DE2B64221E00602697 /* ItemGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemGraphLayer.cpp; sourceTree = "<group>"; };
+		5B4DA1DF2B64221E00602697 /* NodeGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeGraphLayer.cpp; sourceTree = "<group>"; };
+		5B4DA1E02B64221E00602697 /* JustifiedEdgeGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JustifiedEdgeGraphLayer.cpp; sourceTree = "<group>"; };
+		5B4DA1E12B64221E00602697 /* EdgeGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EdgeGraphLayer.hpp; sourceTree = "<group>"; };
+		5B4DA1E22B64221E00602697 /* ImageGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ImageGraphLayer.hpp; sourceTree = "<group>"; };
+		5B4DA1E32B64221E00602697 /* JustifiedNodeGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JustifiedNodeGraphLayer.cpp; sourceTree = "<group>"; };
+		5B4DA1E42B64221E00602697 /* NodeGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NodeGraphLayer.hpp; sourceTree = "<group>"; };
+		5B4DA1E52B64221E00602697 /* JustifiedEdgeGraphLayer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JustifiedEdgeGraphLayer.hpp; sourceTree = "<group>"; };
+		5B4DA1E62B64221E00602697 /* EdgeGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeGraphLayer.cpp; sourceTree = "<group>"; };
+		5B4DA1E72B64221E00602697 /* ImageGraphLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageGraphLayer.cpp; sourceTree = "<group>"; };
+		5B4DA1E82B64221E00602697 /* SpriteSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteSet.h; sourceTree = "<group>"; };
+		5B4DA1E92B64221E00602697 /* ItemGraphLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemGraphLayer.h; sourceTree = "<group>"; };
+		5B4DA1EA2B64221E00602697 /* NodeSpriteSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeSpriteSet.cpp; sourceTree = "<group>"; };
+		5B4DA1EB2B64221E00602697 /* GraphWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphWidget.hpp; sourceTree = "<group>"; };
+		5B4DA1EC2B64221E00602697 /* NodeSpriteSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeSpriteSet.h; sourceTree = "<group>"; };
+		5B4DA1ED2B64221E00602697 /* CategoryView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CategoryView.hpp; sourceTree = "<group>"; };
+		5B4DA1EE2B64221E00602697 /* InputEventProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputEventProcessor.h; sourceTree = "<group>"; };
+		5B4DA1EF2B64221E00602697 /* JassDocument.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JassDocument.hpp; sourceTree = "<group>"; };
+		5B4DA1F02B64221E00602697 /* JassFileFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JassFileFormat.h; sourceTree = "<group>"; };
+		5B4DA1F12B64221E00602697 /* jass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jass.cpp; sourceTree = "<group>"; };
+		5B4DA1F22B64221E00602697 /* GraphModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphModel.cpp; sourceTree = "<group>"; };
+		5B4DA1F32B64221E00602697 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		5B4DA1F52B64221E00602697 /* Analyses.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Analyses.cpp; sourceTree = "<group>"; };
+		5B4DA1F62B64221E00602697 /* JassEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassEditor.cpp; sourceTree = "<group>"; };
+		5B4DA1F72B64221E00602697 /* CategorySet.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CategorySet.hpp; sourceTree = "<group>"; };
+		5B4DA1F92B64221E00602697 /* SelectionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionTool.h; sourceTree = "<group>"; };
+		5B4DA1FA2B64221E00602697 /* NodeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeTool.h; sourceTree = "<group>"; };
+		5B4DA1FB2B64221E00602697 /* NodeTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeTool.cpp; sourceTree = "<group>"; };
+		5B4DA1FC2B64221E00602697 /* EdgeTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeTool.h; sourceTree = "<group>"; };
+		5B4DA1FD2B64221E00602697 /* EdgeTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeTool.cpp; sourceTree = "<group>"; };
+		5B4DA1FE2B64221E00602697 /* SelectionTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectionTool.cpp; sourceTree = "<group>"; };
+		5B4DA1FF2B64221E00602697 /* GraphTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphTool.h; sourceTree = "<group>"; };
+		5B4DA2002B64221E00602697 /* AnalysisWorker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnalysisWorker.cpp; sourceTree = "<group>"; };
+		5B4DA2012B64221E00602697 /* AnalysisWorker.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AnalysisWorker.hpp; sourceTree = "<group>"; };
+		5B4DA2022B64221E00602697 /* JustifiedGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JustifiedGraph.h; sourceTree = "<group>"; };
+		5B4DA2032B64221E00602697 /* GraphClipboardData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphClipboardData.cpp; sourceTree = "<group>"; };
+		5B4DA2052B64221E00602697 /* DepthAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepthAnalysis.h; sourceTree = "<group>"; };
+		5B4DA2062B64221E00602697 /* IntegrationAnalysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntegrationAnalysis.h; sourceTree = "<group>"; };
+		5B4DA2072B64221E00602697 /* IntegrationAnalysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IntegrationAnalysis.cpp; sourceTree = "<group>"; };
+		5B4DA2082B64221E00602697 /* DepthAnalysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DepthAnalysis.cpp; sourceTree = "<group>"; };
+		5B4DA2092B64221E00602697 /* GraphClipboardData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphClipboardData.h; sourceTree = "<group>"; };
+		5B4DA20A2B64221E00602697 /* JassEditor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JassEditor.hpp; sourceTree = "<group>"; };
+		5B4DA20B2B64221E00602697 /* Analyses.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Analyses.hpp; sourceTree = "<group>"; };
+		5B4DA20C2B64221E00602697 /* GraphTool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphTool.cpp; sourceTree = "<group>"; };
+		5B4DA20D2B64221E00602697 /* CategorySet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CategorySet.cpp; sourceTree = "<group>"; };
+		5B4DA20E2B64221E00602697 /* JustifiedGraph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JustifiedGraph.cpp; sourceTree = "<group>"; };
+		5B4DA20F2B64221E00602697 /* Analysis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analysis.h; sourceTree = "<group>"; };
+		5B4DA2102B64221E00602697 /* NodeAttributeImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeAttributeImpl.h; sourceTree = "<group>"; };
+		5B4DA2112B64221E00602697 /* LegacyJassFileFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LegacyJassFileFormat.cpp; sourceTree = "<group>"; };
+		5B4DA2132B64221E00602697 /* BfsTraversal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BfsTraversal.h; sourceTree = "<group>"; };
+		5B4DA2142B64221E00602697 /* ImmutableDirectedGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImmutableDirectedGraph.h; sourceTree = "<group>"; };
+		5B4DA2152B64221E00602697 /* Integration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Integration.cpp; sourceTree = "<group>"; };
+		5B4DA2162B64221E00602697 /* MinDistCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinDistCalculator.h; sourceTree = "<group>"; };
+		5B4DA2172B64221E00602697 /* Integration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Integration.h; sourceTree = "<group>"; };
+		5B4DA2182B64221E00602697 /* DepthCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepthCalculator.h; sourceTree = "<group>"; };
+		5B4DA2192B64221E00602697 /* endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endian.h; sourceTree = "<group>"; };
+		5B4DA21A2B64221E00602697 /* jass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jass.h; sourceTree = "<group>"; };
+		5B4DA21B2B64221E00602697 /* JassFileFormat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassFileFormat.cpp; sourceTree = "<group>"; };
+		5B4DA21C2B64221E00602697 /* JassSvgExport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassSvgExport.cpp; sourceTree = "<group>"; };
+		5B4DA21D2B64221E00602697 /* LegacyJassFileFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacyJassFileFormat.h; sourceTree = "<group>"; };
+		5B4DA21E2B64221E00602697 /* NodeAttribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NodeAttribute.cpp; sourceTree = "<group>"; };
+		5B4DA21F2B64221E00602697 /* JassProject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassProject.cpp; sourceTree = "<group>"; };
+		5B4DA2212B64221E00602697 /* JavaObjectSerializationStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaObjectSerializationStream.h; sourceTree = "<group>"; };
+		5B4DA2222B64221E00602697 /* JavaObjectSerializationStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JavaObjectSerializationStream.cpp; sourceTree = "<group>"; };
+		5B4DA2242B64221E00602697 /* JsonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsonUtils.h; sourceTree = "<group>"; };
+		5B4DA2252B64221E00602697 /* range_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = range_utils.h; sourceTree = "<group>"; };
+		5B4DA2262B64221E00602697 /* bitvec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bitvec.cpp; sourceTree = "<group>"; };
+		5B4DA2272B64221E00602697 /* bitvec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitvec.h; sourceTree = "<group>"; };
+		5B4DA2282B64221E00602697 /* Shape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shape.h; sourceTree = "<group>"; };
+		5B4DA22A2B64221E00602697 /* Gaussian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Gaussian.cpp; sourceTree = "<group>"; };
+		5B4DA22B2B64221E00602697 /* Gaussian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gaussian.h; sourceTree = "<group>"; };
+		5B4DA22C2B64221E00602697 /* Integral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Integral.h; sourceTree = "<group>"; };
+		5B4DA22D2B64221E00602697 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Geometry.h; sourceTree = "<group>"; };
+		5B4DA22E2B64221E00602697 /* jass.rc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = jass.rc; sourceTree = "<group>"; };
+		5B4DA22F2B64221E00602697 /* main_osx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main_osx.cpp; sourceTree = "<group>"; };
+		5B4DA2302B64221E00602697 /* JassProject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JassProject.hpp; sourceTree = "<group>"; };
+		5B4DA2312B64221E00602697 /* Shape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shape.cpp; sourceTree = "<group>"; };
+		5B4DA2322B64221E00602697 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
+		5B4DA2332B64221E00602697 /* StandardNodeAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandardNodeAttributes.h; sourceTree = "<group>"; };
+		5B4DA2352B64221E00602697 /* CmdFilpNodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdFilpNodes.h; sourceTree = "<group>"; };
+		5B4DA2362B64221E00602697 /* CmdSetGraphAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdSetGraphAttribute.h; sourceTree = "<group>"; };
+		5B4DA2372B64221E00602697 /* CmdAddGraphElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdAddGraphElements.cpp; sourceTree = "<group>"; };
+		5B4DA2382B64221E00602697 /* CmdMoveNodes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdMoveNodes.cpp; sourceTree = "<group>"; };
+		5B4DA2392B64221E00602697 /* CmdDuplicate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdDuplicate.cpp; sourceTree = "<group>"; };
+		5B4DA23A2B64221E00602697 /* CmdDeleteCategories.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdDeleteCategories.cpp; sourceTree = "<group>"; };
+		5B4DA23B2B64221E00602697 /* CmdAddCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdAddCategory.cpp; sourceTree = "<group>"; };
+		5B4DA23C2B64221E00602697 /* CmdMoveNodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdMoveNodes.h; sourceTree = "<group>"; };
+		5B4DA23D2B64221E00602697 /* CmdSetNodeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdSetNodeCategory.h; sourceTree = "<group>"; };
+		5B4DA23E2B64221E00602697 /* CmdCreateEdge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdCreateEdge.cpp; sourceTree = "<group>"; };
+		5B4DA23F2B64221E00602697 /* CmdAddCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdAddCategory.h; sourceTree = "<group>"; };
+		5B4DA2402B64221E00602697 /* CmdSetBackgroundImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdSetBackgroundImage.h; sourceTree = "<group>"; };
+		5B4DA2412B64221E00602697 /* CmdSetNodeAttributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdSetNodeAttributes.h; sourceTree = "<group>"; };
+		5B4DA2422B64221E00602697 /* GraphOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GraphOperations.cpp; sourceTree = "<group>"; };
+		5B4DA2432B64221E00602697 /* GraphOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphOperations.h; sourceTree = "<group>"; };
+		5B4DA2442B64221E00602697 /* CmdFilpNodes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdFilpNodes.cpp; sourceTree = "<group>"; };
+		5B4DA2452B64221E00602697 /* CmdDeleteGraphElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdDeleteGraphElements.h; sourceTree = "<group>"; };
+		5B4DA2462B64221E00602697 /* CmdDeleteCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdDeleteCategories.h; sourceTree = "<group>"; };
+		5B4DA2472B64221E00602697 /* CmdCreateNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdCreateNode.h; sourceTree = "<group>"; };
+		5B4DA2482B64221E00602697 /* CmdModifyCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdModifyCategory.h; sourceTree = "<group>"; };
+		5B4DA2492B64221E00602697 /* CmdDeleteGraphElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdDeleteGraphElements.cpp; sourceTree = "<group>"; };
+		5B4DA24A2B64221E00602697 /* CmdDuplicate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdDuplicate.h; sourceTree = "<group>"; };
+		5B4DA24B2B64221E00602697 /* CmdSetNodeCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdSetNodeCategory.cpp; sourceTree = "<group>"; };
+		5B4DA24C2B64221E00602697 /* CmdAddGraphElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdAddGraphElements.h; sourceTree = "<group>"; };
+		5B4DA24D2B64221E00602697 /* CmdCreateEdge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdCreateEdge.h; sourceTree = "<group>"; };
+		5B4DA24E2B64221E00602697 /* CmdCreateNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdCreateNode.cpp; sourceTree = "<group>"; };
+		5B4DA24F2B64221E00602697 /* CmdSetGraphAttribute.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdSetGraphAttribute.cpp; sourceTree = "<group>"; };
+		5B4DA2502B64221E00602697 /* CmdSetBackgroundImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdSetBackgroundImage.cpp; sourceTree = "<group>"; };
+		5B4DA2512B64221E00602697 /* CmdModifyCategory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdModifyCategory.cpp; sourceTree = "<group>"; };
+		5B4DA2522B64221E00602697 /* JassDocument.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JassDocument.cpp; sourceTree = "<group>"; };
+		5B4DA2532B64221E00602697 /* GraphModel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GraphModel.hpp; sourceTree = "<group>"; };
+		5B4DA2542B64221E00602697 /* NodeAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeAttribute.h; sourceTree = "<group>"; };
+		5B4DA2552B64221E00602697 /* JassSvgExport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JassSvgExport.h; sourceTree = "<group>"; };
+		5B4DA2562B64221E00602697 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		5B4DA2572B64221E00602697 /* GraphUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphUtils.h; sourceTree = "<group>"; };
+		5B4DA29B2B64224300602697 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		5B4DA29C2B64224300602697 /* DocumentManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DocumentManager.cpp; sourceTree = "<group>"; };
+		5B4DA29E2B64224300602697 /* QIODeviceStreamAdapter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QIODeviceStreamAdapter.cpp; sourceTree = "<group>"; };
+		5B4DA29F2B64224300602697 /* RecentFilesMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RecentFilesMenu.cpp; sourceTree = "<group>"; };
+		5B4DA2A12B64224300602697 /* PathUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PathUtils.cpp; sourceTree = "<group>"; };
+		5B4DA2A22B64224300602697 /* PageBufferStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PageBufferStream.cpp; sourceTree = "<group>"; };
+		5B4DA2A32B64224300602697 /* StreamUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StreamUtils.cpp; sourceTree = "<group>"; };
+		5B4DA2A42B64224300602697 /* PageBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PageBuffer.cpp; sourceTree = "<group>"; };
+		5B4DA2A52B64224300602697 /* PagePool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PagePool.cpp; sourceTree = "<group>"; };
+		5B4DA2A62B64224300602697 /* PageStackAllocator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PageStackAllocator.cpp; sourceTree = "<group>"; };
+		5B4DA2A72B64224300602697 /* Workbench.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Workbench.cpp; sourceTree = "<group>"; };
+		5B4DA2A82B64224300602697 /* UiUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UiUtils.cpp; sourceTree = "<group>"; };
+		5B4DA2A92B64224300602697 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5B4DA2AA2B64224300602697 /* WorkbenchWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WorkbenchWidget.cpp; sourceTree = "<group>"; };
+		5B4DA2AB2B64224300602697 /* Editor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Editor.cpp; sourceTree = "<group>"; };
+		5B4DA2AD2B64224300602697 /* StandardActions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandardActions.cpp; sourceTree = "<group>"; };
+		5B4DA2AE2B64224300602697 /* ActionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActionManager.cpp; sourceTree = "<group>"; };
+		5B4DA2B02B64224300602697 /* CmdOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdOperations.cpp; sourceTree = "<group>"; };
+		5B4DA2B12B64224300602697 /* CommandHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandHistory.cpp; sourceTree = "<group>"; };
+		5B4DA2B22B64224300602697 /* Operations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Operations.cpp; sourceTree = "<group>"; };
+		5B4DA2B32B64224300602697 /* Document.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Document.cpp; sourceTree = "<group>"; };
+		5B4DA2B52B64224300602697 /* ColorWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColorWidget.cpp; sourceTree = "<group>"; };
+		5B4DA2B82B64224300602697 /* Document.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Document.hpp; sourceTree = "<group>"; };
+		5B4DA2B92B64224300602697 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		5B4DA2BB2B64224300602697 /* QIODeviceStreamAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QIODeviceStreamAdapter.h; sourceTree = "<group>"; };
+		5B4DA2BC2B64224300602697 /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		5B4DA2BD2B64224300602697 /* Editor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Editor.hpp; sourceTree = "<group>"; };
+		5B4DA2BF2B64224300602697 /* PathUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PathUtils.h; sourceTree = "<group>"; };
+		5B4DA2C02B64224300602697 /* PageStackAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageStackAllocator.h; sourceTree = "<group>"; };
+		5B4DA2C12B64224300602697 /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
+		5B4DA2C22B64224300602697 /* PageBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageBuffer.h; sourceTree = "<group>"; };
+		5B4DA2C32B64224300602697 /* PageBufferStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageBufferStream.h; sourceTree = "<group>"; };
+		5B4DA2C42B64224300602697 /* PagePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PagePool.h; sourceTree = "<group>"; };
+		5B4DA2C52B64224300602697 /* QVariantType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QVariantType.h; sourceTree = "<group>"; };
+		5B4DA2C62B64224300602697 /* StreamUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamUtils.h; sourceTree = "<group>"; };
+		5B4DA2C72B64224300602697 /* PageAllocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageAllocator.h; sourceTree = "<group>"; };
+		5B4DA2C82B64224300602697 /* Bits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bits.h; sourceTree = "<group>"; };
+		5B4DA2C92B64224300602697 /* WorkbenchWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WorkbenchWidget.hpp; sourceTree = "<group>"; };
+		5B4DA2CA2B64224300602697 /* UiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UiUtils.h; sourceTree = "<group>"; };
+		5B4DA2CB2B64224300602697 /* DocumentManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DocumentManager.hpp; sourceTree = "<group>"; };
+		5B4DA2CC2B64224300602697 /* RecentFilesMenu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RecentFilesMenu.hpp; sourceTree = "<group>"; };
+		5B4DA2CD2B64224300602697 /* Workbench.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Workbench.hpp; sourceTree = "<group>"; };
+		5B4DA2CF2B64224300602697 /* ActionManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ActionManager.hpp; sourceTree = "<group>"; };
+		5B4DA2D02B64224300602697 /* StandardActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StandardActions.h; sourceTree = "<group>"; };
+		5B4DA2D12B64224300602697 /* ActionTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionTarget.h; sourceTree = "<group>"; };
+		5B4DA2D32B64224300602697 /* Operations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Operations.h; sourceTree = "<group>"; };
+		5B4DA2D42B64224300602697 /* CmdOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdOperations.h; sourceTree = "<group>"; };
+		5B4DA2D52B64224300602697 /* CommandHistory.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CommandHistory.hpp; sourceTree = "<group>"; };
+		5B4DA2D62B64224300602697 /* Command.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Command.h; sourceTree = "<group>"; };
+		5B4DA2D82B64224300602697 /* ColorWidget.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColorWidget.hpp; sourceTree = "<group>"; };
 		5BA393AA2B5B430B004214F9 /* jass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = jass.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5BA393B02B5B430C004214F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5BA393B72B5B430C004214F9 /* jass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = jass.entitlements; sourceTree = "<group>"; };
@@ -383,391 +406,407 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5B1509072B5FD3B400EC0893 /* src */ = {
+		5B4DA1B82B64221E00602697 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				5B1509082B5FD3B400EC0893 /* LICENSE */,
-				5B1509092B5FD3B400EC0893 /* DocumentManager.cpp */,
-				5B15090A2B5FD3B400EC0893 /* io */,
-				5B15090C2B5FD3B400EC0893 /* RecentFilesMenu.cpp */,
-				5B15090D2B5FD3B400EC0893 /* utils */,
-				5B1509132B5FD3B400EC0893 /* Workbench.cpp */,
-				5B1509142B5FD3B400EC0893 /* UiUtils.cpp */,
-				5B1509152B5FD3B400EC0893 /* README.md */,
-				5B1509162B5FD3B400EC0893 /* WorkbenchWidget.cpp */,
-				5B1509172B5FD3B400EC0893 /* Editor.cpp */,
-				5B1509182B5FD3B400EC0893 /* actions */,
-				5B15091B2B5FD3B400EC0893 /* commands */,
-				5B15091F2B5FD3B400EC0893 /* Document.cpp */,
-				5B1509202B5FD3B400EC0893 /* widgets */,
-			);
-			name = src;
-			path = ../../external/qapplib/src;
-			sourceTree = "<group>";
-		};
-		5B15090A2B5FD3B400EC0893 /* io */ = {
-			isa = PBXGroup;
-			children = (
-				5B15090B2B5FD3B400EC0893 /* QIODeviceStreamAdapter.cpp */,
-			);
-			path = io;
-			sourceTree = "<group>";
-		};
-		5B15090D2B5FD3B400EC0893 /* utils */ = {
-			isa = PBXGroup;
-			children = (
-				5B15090E2B5FD3B400EC0893 /* PathUtils.cpp */,
-				5B15090F2B5FD3B400EC0893 /* PageBufferStream.cpp */,
-				5B1509102B5FD3B400EC0893 /* PageBuffer.cpp */,
-				5B1509112B5FD3B400EC0893 /* PagePool.cpp */,
-				5B1509122B5FD3B400EC0893 /* PageStackAllocator.cpp */,
-			);
-			path = utils;
-			sourceTree = "<group>";
-		};
-		5B1509182B5FD3B400EC0893 /* actions */ = {
-			isa = PBXGroup;
-			children = (
-				5B1509192B5FD3B400EC0893 /* StandardActions.cpp */,
-				5B15091A2B5FD3B400EC0893 /* ActionManager.cpp */,
-			);
-			path = actions;
-			sourceTree = "<group>";
-		};
-		5B15091B2B5FD3B400EC0893 /* commands */ = {
-			isa = PBXGroup;
-			children = (
-				5B15091C2B5FD3B400EC0893 /* CmdOperations.cpp */,
-				5B15091D2B5FD3B400EC0893 /* CommandHistory.cpp */,
-				5B15091E2B5FD3B400EC0893 /* Operations.cpp */,
-			);
-			path = commands;
-			sourceTree = "<group>";
-		};
-		5B1509202B5FD3B400EC0893 /* widgets */ = {
-			isa = PBXGroup;
-			children = (
-				5B1509212B5FD3B400EC0893 /* ColorWidget.cpp */,
-			);
-			path = widgets;
-			sourceTree = "<group>";
-		};
-		5B1509F22B61D09900EC0893 /* src */ = {
-			isa = PBXGroup;
-			children = (
-				5B1509F32B61D09900EC0893 /* jass */,
+				5B4DA1B92B64221E00602697 /* jass */,
 			);
 			name = src;
 			path = ../src;
 			sourceTree = "<group>";
 		};
-		5B1509F32B61D09900EC0893 /* jass */ = {
+		5B4DA1B92B64221E00602697 /* jass */ = {
 			isa = PBXGroup;
 			children = (
-				5B1509F42B61D09900EC0893 /* graphdata */,
-				5B150A052B61D09900EC0893 /* ui */,
-				5B150A252B61D09900EC0893 /* JassDocument.hpp */,
-				5B150A262B61D09900EC0893 /* JassFileFormat.h */,
-				5B150A272B61D09900EC0893 /* jass.cpp */,
-				5B150A282B61D09900EC0893 /* GraphModel.cpp */,
-				5B150A292B61D09900EC0893 /* Debug.h */,
-				5B150A2A2B61D09900EC0893 /* GraphEditor */,
-				5B150A422B61D09900EC0893 /* LegacyJassFileFormat.cpp */,
-				5B150A432B61D09900EC0893 /* analysis */,
-				5B150A4A2B61D09900EC0893 /* endian.h */,
-				5B150A4B2B61D09900EC0893 /* jass.h */,
-				5B150A4C2B61D09900EC0893 /* JassFileFormat.cpp */,
-				5B150A4D2B61D09900EC0893 /* JassSvgExport.cpp */,
-				5B150A4E2B61D09900EC0893 /* LegacyJassFileFormat.h */,
-				5B150A4F2B61D09900EC0893 /* JassProject.cpp */,
-				5B150A502B61D09900EC0893 /* java */,
-				5B150A532B61D09900EC0893 /* utils */,
-				5B150A582B61D09900EC0893 /* Shape.h */,
-				5B150A592B61D09900EC0893 /* math */,
-				5B150A5E2B61D09900EC0893 /* jass.rc */,
-				5B150A5F2B61D09900EC0893 /* main_osx.cpp */,
-				5B150A602B61D09900EC0893 /* JassProject.hpp */,
-				5B150A612B61D09900EC0893 /* Shape.cpp */,
-				5B150A622B61D09900EC0893 /* Debug.cpp */,
-				5B150A632B61D09900EC0893 /* commands */,
-				5B150A7E2B61D09900EC0893 /* JassDocument.cpp */,
-				5B150A7F2B61D09900EC0893 /* GraphModel.hpp */,
-				5B150A802B61D09900EC0893 /* JassSvgExport.h */,
-				5B150A812B61D09900EC0893 /* main.cpp */,
-				5B150A822B61D09900EC0893 /* GraphUtils.h */,
+				5B4DA1BA2B64221E00602697 /* graphdata */,
+				5B4DA1CB2B64221E00602697 /* ui */,
+				5B4DA1EF2B64221E00602697 /* JassDocument.hpp */,
+				5B4DA1F02B64221E00602697 /* JassFileFormat.h */,
+				5B4DA1F12B64221E00602697 /* jass.cpp */,
+				5B4DA1F22B64221E00602697 /* GraphModel.cpp */,
+				5B4DA1F32B64221E00602697 /* Debug.h */,
+				5B4DA1F42B64221E00602697 /* GraphEditor */,
+				5B4DA2102B64221E00602697 /* NodeAttributeImpl.h */,
+				5B4DA2112B64221E00602697 /* LegacyJassFileFormat.cpp */,
+				5B4DA2122B64221E00602697 /* analysis */,
+				5B4DA2192B64221E00602697 /* endian.h */,
+				5B4DA21A2B64221E00602697 /* jass.h */,
+				5B4DA21B2B64221E00602697 /* JassFileFormat.cpp */,
+				5B4DA21C2B64221E00602697 /* JassSvgExport.cpp */,
+				5B4DA21D2B64221E00602697 /* LegacyJassFileFormat.h */,
+				5B4DA21E2B64221E00602697 /* NodeAttribute.cpp */,
+				5B4DA21F2B64221E00602697 /* JassProject.cpp */,
+				5B4DA2202B64221E00602697 /* java */,
+				5B4DA2232B64221E00602697 /* utils */,
+				5B4DA2282B64221E00602697 /* Shape.h */,
+				5B4DA2292B64221E00602697 /* math */,
+				5B4DA22E2B64221E00602697 /* jass.rc */,
+				5B4DA22F2B64221E00602697 /* main_osx.cpp */,
+				5B4DA2302B64221E00602697 /* JassProject.hpp */,
+				5B4DA2312B64221E00602697 /* Shape.cpp */,
+				5B4DA2322B64221E00602697 /* Debug.cpp */,
+				5B4DA2332B64221E00602697 /* StandardNodeAttributes.h */,
+				5B4DA2342B64221E00602697 /* commands */,
+				5B4DA2522B64221E00602697 /* JassDocument.cpp */,
+				5B4DA2532B64221E00602697 /* GraphModel.hpp */,
+				5B4DA2542B64221E00602697 /* NodeAttribute.h */,
+				5B4DA2552B64221E00602697 /* JassSvgExport.h */,
+				5B4DA2562B64221E00602697 /* main.cpp */,
+				5B4DA2572B64221E00602697 /* GraphUtils.h */,
 			);
 			path = jass;
 			sourceTree = "<group>";
 		};
-		5B1509F42B61D09900EC0893 /* graphdata */ = {
+		5B4DA1BA2B64221E00602697 /* graphdata */ = {
 			isa = PBXGroup;
 			children = (
-				5B1509F52B61D09900EC0893 /* GraphModelSubGraphView.cpp */,
-				5B1509F62B61D09900EC0893 /* GraphBuilder.h */,
-				5B1509F72B61D09900EC0893 /* JsonGraphData.cpp */,
-				5B1509F82B61D09900EC0893 /* GraphModelGraphView.cpp */,
-				5B1509F92B61D09900EC0893 /* GraphModelSubGraphView.h */,
-				5B1509FA2B61D09900EC0893 /* GraphModelGraphBuilder.h */,
-				5B1509FB2B61D09900EC0893 /* JsonGraphData.h */,
-				5B1509FC2B61D09900EC0893 /* GraphModelGraphView.h */,
-				5B1509FD2B61D09900EC0893 /* GraphData.cpp */,
-				5B1509FE2B61D09900EC0893 /* GraphModelImmutableDirectedGraphAdapter.h */,
-				5B1509FF2B61D09900EC0893 /* GraphView.h */,
-				5B150A002B61D09900EC0893 /* BinaryGraphData.cpp */,
-				5B150A012B61D09900EC0893 /* GraphData.h */,
-				5B150A022B61D09900EC0893 /* GraphModelGraphBuilder.cpp */,
-				5B150A032B61D09900EC0893 /* BinaryGraphData.h */,
-				5B150A042B61D09900EC0893 /* GraphDataCommon.h */,
+				5B4DA1BB2B64221E00602697 /* GraphModelSubGraphView.cpp */,
+				5B4DA1BC2B64221E00602697 /* GraphBuilder.h */,
+				5B4DA1BD2B64221E00602697 /* JsonGraphData.cpp */,
+				5B4DA1BE2B64221E00602697 /* GraphModelGraphView.cpp */,
+				5B4DA1BF2B64221E00602697 /* GraphModelSubGraphView.h */,
+				5B4DA1C02B64221E00602697 /* GraphModelGraphBuilder.h */,
+				5B4DA1C12B64221E00602697 /* JsonGraphData.h */,
+				5B4DA1C22B64221E00602697 /* GraphModelGraphView.h */,
+				5B4DA1C32B64221E00602697 /* GraphData.cpp */,
+				5B4DA1C42B64221E00602697 /* GraphModelImmutableDirectedGraphAdapter.h */,
+				5B4DA1C52B64221E00602697 /* GraphView.h */,
+				5B4DA1C62B64221E00602697 /* BinaryGraphData.cpp */,
+				5B4DA1C72B64221E00602697 /* GraphData.h */,
+				5B4DA1C82B64221E00602697 /* GraphModelGraphBuilder.cpp */,
+				5B4DA1C92B64221E00602697 /* BinaryGraphData.h */,
+				5B4DA1CA2B64221E00602697 /* GraphDataCommon.h */,
 			);
 			path = graphdata;
 			sourceTree = "<group>";
 		};
-		5B150A052B61D09900EC0893 /* ui */ = {
+		5B4DA1CB2B64221E00602697 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A062B61D09900EC0893 /* CategoryView.cpp */,
-				5B150A072B61D09900EC0893 /* MainWindow.hpp */,
-				5B150A082B61D09900EC0893 /* InputEventProcessor.cpp */,
-				5B150A092B61D09900EC0893 /* CategoryDialog.cpp */,
-				5B150A0A2B61D09900EC0893 /* ImageFx.cpp */,
-				5B150A0B2B61D09900EC0893 /* SplitWidget.cpp */,
-				5B150A0C2B61D09900EC0893 /* MainWindow.cpp */,
-				5B150A0D2B61D09900EC0893 /* CategoryDialog.hpp */,
-				5B150A0E2B61D09900EC0893 /* ImageFx.h */,
-				5B150A0F2B61D09900EC0893 /* SplitWidget.hpp */,
-				5B150A102B61D09900EC0893 /* GraphWidget */,
-				5B150A232B61D09900EC0893 /* CategoryView.hpp */,
-				5B150A242B61D09900EC0893 /* InputEventProcessor.h */,
+				5B4DA1CC2B64221E00602697 /* CategoryView.cpp */,
+				5B4DA1CD2B64221E00602697 /* AboutDialog.cpp */,
+				5B4DA1CE2B64221E00602697 /* MainWindow.hpp */,
+				5B4DA1CF2B64221E00602697 /* InputEventProcessor.cpp */,
+				5B4DA1D02B64221E00602697 /* CategoryDialog.cpp */,
+				5B4DA1D12B64221E00602697 /* ImageFx.cpp */,
+				5B4DA1D22B64221E00602697 /* SplitWidget.cpp */,
+				5B4DA1D32B64221E00602697 /* MainWindow.cpp */,
+				5B4DA1D42B64221E00602697 /* AboutDialog.h */,
+				5B4DA1D52B64221E00602697 /* CategoryDialog.hpp */,
+				5B4DA1D62B64221E00602697 /* ImageFx.h */,
+				5B4DA1D72B64221E00602697 /* SplitWidget.hpp */,
+				5B4DA1D82B64221E00602697 /* GraphWidget */,
+				5B4DA1ED2B64221E00602697 /* CategoryView.hpp */,
+				5B4DA1EE2B64221E00602697 /* InputEventProcessor.h */,
 			);
 			path = ui;
 			sourceTree = "<group>";
 		};
-		5B150A102B61D09900EC0893 /* GraphWidget */ = {
+		5B4DA1D82B64221E00602697 /* GraphWidget */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A112B61D09900EC0893 /* SpriteSet.cpp */,
-				5B150A122B61D09900EC0893 /* SpriteGraphLayer.cpp */,
-				5B150A132B61D09900EC0893 /* SpriteGraphLayer.h */,
-				5B150A142B61D09900EC0893 /* GraphWidget.cpp */,
-				5B150A152B61D09900EC0893 /* JustifiedNodeGraphLayer.hpp */,
-				5B150A162B61D09900EC0893 /* ItemGraphLayer.cpp */,
-				5B150A172B61D09900EC0893 /* NodeGraphLayer.cpp */,
-				5B150A182B61D09900EC0893 /* EdgeGraphLayer.hpp */,
-				5B150A192B61D09900EC0893 /* ImageGraphLayer.hpp */,
-				5B150A1A2B61D09900EC0893 /* JustifiedNodeGraphLayer.cpp */,
-				5B150A1B2B61D09900EC0893 /* NodeGraphLayer.hpp */,
-				5B150A1C2B61D09900EC0893 /* EdgeGraphLayer.cpp */,
-				5B150A1D2B61D09900EC0893 /* ImageGraphLayer.cpp */,
-				5B150A1E2B61D09900EC0893 /* SpriteSet.h */,
-				5B150A1F2B61D09900EC0893 /* ItemGraphLayer.h */,
-				5B150A202B61D09900EC0893 /* NodeSpriteSet.cpp */,
-				5B150A212B61D09900EC0893 /* GraphWidget.hpp */,
-				5B150A222B61D09900EC0893 /* NodeSpriteSet.h */,
+				5B4DA1D92B64221E00602697 /* SpriteSet.cpp */,
+				5B4DA1DA2B64221E00602697 /* SpriteGraphLayer.cpp */,
+				5B4DA1DB2B64221E00602697 /* SpriteGraphLayer.h */,
+				5B4DA1DC2B64221E00602697 /* GraphWidget.cpp */,
+				5B4DA1DD2B64221E00602697 /* JustifiedNodeGraphLayer.hpp */,
+				5B4DA1DE2B64221E00602697 /* ItemGraphLayer.cpp */,
+				5B4DA1DF2B64221E00602697 /* NodeGraphLayer.cpp */,
+				5B4DA1E02B64221E00602697 /* JustifiedEdgeGraphLayer.cpp */,
+				5B4DA1E12B64221E00602697 /* EdgeGraphLayer.hpp */,
+				5B4DA1E22B64221E00602697 /* ImageGraphLayer.hpp */,
+				5B4DA1E32B64221E00602697 /* JustifiedNodeGraphLayer.cpp */,
+				5B4DA1E42B64221E00602697 /* NodeGraphLayer.hpp */,
+				5B4DA1E52B64221E00602697 /* JustifiedEdgeGraphLayer.hpp */,
+				5B4DA1E62B64221E00602697 /* EdgeGraphLayer.cpp */,
+				5B4DA1E72B64221E00602697 /* ImageGraphLayer.cpp */,
+				5B4DA1E82B64221E00602697 /* SpriteSet.h */,
+				5B4DA1E92B64221E00602697 /* ItemGraphLayer.h */,
+				5B4DA1EA2B64221E00602697 /* NodeSpriteSet.cpp */,
+				5B4DA1EB2B64221E00602697 /* GraphWidget.hpp */,
+				5B4DA1EC2B64221E00602697 /* NodeSpriteSet.h */,
 			);
 			path = GraphWidget;
 			sourceTree = "<group>";
 		};
-		5B150A2A2B61D09900EC0893 /* GraphEditor */ = {
+		5B4DA1F42B64221E00602697 /* GraphEditor */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A2B2B61D09900EC0893 /* Analyses.cpp */,
-				5B150A2C2B61D09900EC0893 /* JassEditor.cpp */,
-				5B150A2D2B61D09900EC0893 /* CategorySet.hpp */,
-				5B150A2E2B61D09900EC0893 /* tools */,
-				5B150A352B61D09900EC0893 /* GraphTool.h */,
-				5B150A362B61D09900EC0893 /* AnalysisWorker.cpp */,
-				5B150A372B61D09900EC0893 /* AnalysisWorker.hpp */,
-				5B150A382B61D09900EC0893 /* GraphClipboardData.cpp */,
-				5B150A392B61D09900EC0893 /* analyses */,
-				5B150A3C2B61D09900EC0893 /* GraphClipboardData.h */,
-				5B150A3D2B61D09900EC0893 /* JassEditor.hpp */,
-				5B150A3E2B61D09900EC0893 /* Analyses.hpp */,
-				5B150A3F2B61D09900EC0893 /* GraphTool.cpp */,
-				5B150A402B61D09900EC0893 /* CategorySet.cpp */,
-				5B150A412B61D09900EC0893 /* Analysis.h */,
+				5B4DA1F52B64221E00602697 /* Analyses.cpp */,
+				5B4DA1F62B64221E00602697 /* JassEditor.cpp */,
+				5B4DA1F72B64221E00602697 /* CategorySet.hpp */,
+				5B4DA1F82B64221E00602697 /* tools */,
+				5B4DA1FF2B64221E00602697 /* GraphTool.h */,
+				5B4DA2002B64221E00602697 /* AnalysisWorker.cpp */,
+				5B4DA2012B64221E00602697 /* AnalysisWorker.hpp */,
+				5B4DA2022B64221E00602697 /* JustifiedGraph.h */,
+				5B4DA2032B64221E00602697 /* GraphClipboardData.cpp */,
+				5B4DA2042B64221E00602697 /* analyses */,
+				5B4DA2092B64221E00602697 /* GraphClipboardData.h */,
+				5B4DA20A2B64221E00602697 /* JassEditor.hpp */,
+				5B4DA20B2B64221E00602697 /* Analyses.hpp */,
+				5B4DA20C2B64221E00602697 /* GraphTool.cpp */,
+				5B4DA20D2B64221E00602697 /* CategorySet.cpp */,
+				5B4DA20E2B64221E00602697 /* JustifiedGraph.cpp */,
+				5B4DA20F2B64221E00602697 /* Analysis.h */,
 			);
 			path = GraphEditor;
 			sourceTree = "<group>";
 		};
-		5B150A2E2B61D09900EC0893 /* tools */ = {
+		5B4DA1F82B64221E00602697 /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A2F2B61D09900EC0893 /* SelectionTool.h */,
-				5B150A302B61D09900EC0893 /* NodeTool.h */,
-				5B150A312B61D09900EC0893 /* NodeTool.cpp */,
-				5B150A322B61D09900EC0893 /* EdgeTool.h */,
-				5B150A332B61D09900EC0893 /* EdgeTool.cpp */,
-				5B150A342B61D09900EC0893 /* SelectionTool.cpp */,
+				5B4DA1F92B64221E00602697 /* SelectionTool.h */,
+				5B4DA1FA2B64221E00602697 /* NodeTool.h */,
+				5B4DA1FB2B64221E00602697 /* NodeTool.cpp */,
+				5B4DA1FC2B64221E00602697 /* EdgeTool.h */,
+				5B4DA1FD2B64221E00602697 /* EdgeTool.cpp */,
+				5B4DA1FE2B64221E00602697 /* SelectionTool.cpp */,
 			);
 			path = tools;
 			sourceTree = "<group>";
 		};
-		5B150A392B61D09900EC0893 /* analyses */ = {
+		5B4DA2042B64221E00602697 /* analyses */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A3A2B61D09900EC0893 /* IntegrationAnalysis.h */,
-				5B150A3B2B61D09900EC0893 /* IntegrationAnalysis.cpp */,
+				5B4DA2052B64221E00602697 /* DepthAnalysis.h */,
+				5B4DA2062B64221E00602697 /* IntegrationAnalysis.h */,
+				5B4DA2072B64221E00602697 /* IntegrationAnalysis.cpp */,
+				5B4DA2082B64221E00602697 /* DepthAnalysis.cpp */,
 			);
 			path = analyses;
 			sourceTree = "<group>";
 		};
-		5B150A432B61D09900EC0893 /* analysis */ = {
+		5B4DA2122B64221E00602697 /* analysis */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A442B61D09900EC0893 /* BfsTraversal.h */,
-				5B150A452B61D09900EC0893 /* ImmutableDirectedGraph.h */,
-				5B150A462B61D09900EC0893 /* Integration.cpp */,
-				5B150A472B61D09900EC0893 /* MinDistCalculator.h */,
-				5B150A482B61D09900EC0893 /* Integration.h */,
-				5B150A492B61D09900EC0893 /* DepthCalculator.h */,
+				5B4DA2132B64221E00602697 /* BfsTraversal.h */,
+				5B4DA2142B64221E00602697 /* ImmutableDirectedGraph.h */,
+				5B4DA2152B64221E00602697 /* Integration.cpp */,
+				5B4DA2162B64221E00602697 /* MinDistCalculator.h */,
+				5B4DA2172B64221E00602697 /* Integration.h */,
+				5B4DA2182B64221E00602697 /* DepthCalculator.h */,
 			);
 			path = analysis;
 			sourceTree = "<group>";
 		};
-		5B150A502B61D09900EC0893 /* java */ = {
+		5B4DA2202B64221E00602697 /* java */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A512B61D09900EC0893 /* JavaObjectSerializationStream.h */,
-				5B150A522B61D09900EC0893 /* JavaObjectSerializationStream.cpp */,
+				5B4DA2212B64221E00602697 /* JavaObjectSerializationStream.h */,
+				5B4DA2222B64221E00602697 /* JavaObjectSerializationStream.cpp */,
 			);
 			path = java;
 			sourceTree = "<group>";
 		};
-		5B150A532B61D09900EC0893 /* utils */ = {
+		5B4DA2232B64221E00602697 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A542B61D09900EC0893 /* JsonUtils.h */,
-				5B150A552B61D09900EC0893 /* range_utils.h */,
-				5B150A562B61D09900EC0893 /* bitvec.cpp */,
-				5B150A572B61D09900EC0893 /* bitvec.h */,
+				5B4DA2242B64221E00602697 /* JsonUtils.h */,
+				5B4DA2252B64221E00602697 /* range_utils.h */,
+				5B4DA2262B64221E00602697 /* bitvec.cpp */,
+				5B4DA2272B64221E00602697 /* bitvec.h */,
 			);
 			path = utils;
 			sourceTree = "<group>";
 		};
-		5B150A592B61D09900EC0893 /* math */ = {
+		5B4DA2292B64221E00602697 /* math */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A5A2B61D09900EC0893 /* Gaussian.cpp */,
-				5B150A5B2B61D09900EC0893 /* Gaussian.h */,
-				5B150A5C2B61D09900EC0893 /* Integral.h */,
-				5B150A5D2B61D09900EC0893 /* Geometry.h */,
+				5B4DA22A2B64221E00602697 /* Gaussian.cpp */,
+				5B4DA22B2B64221E00602697 /* Gaussian.h */,
+				5B4DA22C2B64221E00602697 /* Integral.h */,
+				5B4DA22D2B64221E00602697 /* Geometry.h */,
 			);
 			path = math;
 			sourceTree = "<group>";
 		};
-		5B150A632B61D09900EC0893 /* commands */ = {
+		5B4DA2342B64221E00602697 /* commands */ = {
 			isa = PBXGroup;
 			children = (
-				5B150A642B61D09900EC0893 /* CmdFilpNodes.h */,
-				5B150A652B61D09900EC0893 /* CmdAddGraphElements.cpp */,
-				5B150A662B61D09900EC0893 /* CmdMoveNodes.cpp */,
-				5B150A672B61D09900EC0893 /* CmdDuplicate.cpp */,
-				5B150A682B61D09900EC0893 /* CmdDeleteCategories.cpp */,
-				5B150A692B61D09900EC0893 /* CmdAddCategory.cpp */,
-				5B150A6A2B61D09900EC0893 /* CmdMoveNodes.h */,
-				5B150A6B2B61D09900EC0893 /* CmdSetNodeCategory.h */,
-				5B150A6C2B61D09900EC0893 /* CmdCreateEdge.cpp */,
-				5B150A6D2B61D09900EC0893 /* CmdAddCategory.h */,
-				5B150A6E2B61D09900EC0893 /* CmdSetBackgroundImage.h */,
-				5B150A6F2B61D09900EC0893 /* GraphOperations.cpp */,
-				5B150A702B61D09900EC0893 /* GraphOperations.h */,
-				5B150A712B61D09900EC0893 /* CmdFilpNodes.cpp */,
-				5B150A722B61D09900EC0893 /* CmdDeleteGraphElements.h */,
-				5B150A732B61D09900EC0893 /* CmdDeleteCategories.h */,
-				5B150A742B61D09900EC0893 /* CmdCreateNode.h */,
-				5B150A752B61D09900EC0893 /* CmdModifyCategory.h */,
-				5B150A762B61D09900EC0893 /* CmdDeleteGraphElements.cpp */,
-				5B150A772B61D09900EC0893 /* CmdDuplicate.h */,
-				5B150A782B61D09900EC0893 /* CmdSetNodeCategory.cpp */,
-				5B150A792B61D09900EC0893 /* CmdAddGraphElements.h */,
-				5B150A7A2B61D09900EC0893 /* CmdCreateEdge.h */,
-				5B150A7B2B61D09900EC0893 /* CmdCreateNode.cpp */,
-				5B150A7C2B61D09900EC0893 /* CmdSetBackgroundImage.cpp */,
-				5B150A7D2B61D09900EC0893 /* CmdModifyCategory.cpp */,
+				5B4DA2352B64221E00602697 /* CmdFilpNodes.h */,
+				5B4DA2362B64221E00602697 /* CmdSetGraphAttribute.h */,
+				5B4DA2372B64221E00602697 /* CmdAddGraphElements.cpp */,
+				5B4DA2382B64221E00602697 /* CmdMoveNodes.cpp */,
+				5B4DA2392B64221E00602697 /* CmdDuplicate.cpp */,
+				5B4DA23A2B64221E00602697 /* CmdDeleteCategories.cpp */,
+				5B4DA23B2B64221E00602697 /* CmdAddCategory.cpp */,
+				5B4DA23C2B64221E00602697 /* CmdMoveNodes.h */,
+				5B4DA23D2B64221E00602697 /* CmdSetNodeCategory.h */,
+				5B4DA23E2B64221E00602697 /* CmdCreateEdge.cpp */,
+				5B4DA23F2B64221E00602697 /* CmdAddCategory.h */,
+				5B4DA2402B64221E00602697 /* CmdSetBackgroundImage.h */,
+				5B4DA2412B64221E00602697 /* CmdSetNodeAttributes.h */,
+				5B4DA2422B64221E00602697 /* GraphOperations.cpp */,
+				5B4DA2432B64221E00602697 /* GraphOperations.h */,
+				5B4DA2442B64221E00602697 /* CmdFilpNodes.cpp */,
+				5B4DA2452B64221E00602697 /* CmdDeleteGraphElements.h */,
+				5B4DA2462B64221E00602697 /* CmdDeleteCategories.h */,
+				5B4DA2472B64221E00602697 /* CmdCreateNode.h */,
+				5B4DA2482B64221E00602697 /* CmdModifyCategory.h */,
+				5B4DA2492B64221E00602697 /* CmdDeleteGraphElements.cpp */,
+				5B4DA24A2B64221E00602697 /* CmdDuplicate.h */,
+				5B4DA24B2B64221E00602697 /* CmdSetNodeCategory.cpp */,
+				5B4DA24C2B64221E00602697 /* CmdAddGraphElements.h */,
+				5B4DA24D2B64221E00602697 /* CmdCreateEdge.h */,
+				5B4DA24E2B64221E00602697 /* CmdCreateNode.cpp */,
+				5B4DA24F2B64221E00602697 /* CmdSetGraphAttribute.cpp */,
+				5B4DA2502B64221E00602697 /* CmdSetBackgroundImage.cpp */,
+				5B4DA2512B64221E00602697 /* CmdModifyCategory.cpp */,
 			);
 			path = commands;
 			sourceTree = "<group>";
 		};
-		5B150B402B61D4DD00EC0893 /* include */ = {
+		5B4DA29A2B64224300602697 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B412B61D4DD00EC0893 /* qapplib */,
+				5B4DA29B2B64224300602697 /* LICENSE */,
+				5B4DA29C2B64224300602697 /* DocumentManager.cpp */,
+				5B4DA29D2B64224300602697 /* io */,
+				5B4DA29F2B64224300602697 /* RecentFilesMenu.cpp */,
+				5B4DA2A02B64224300602697 /* utils */,
+				5B4DA2A72B64224300602697 /* Workbench.cpp */,
+				5B4DA2A82B64224300602697 /* UiUtils.cpp */,
+				5B4DA2A92B64224300602697 /* README.md */,
+				5B4DA2AA2B64224300602697 /* WorkbenchWidget.cpp */,
+				5B4DA2AB2B64224300602697 /* Editor.cpp */,
+				5B4DA2AC2B64224300602697 /* actions */,
+				5B4DA2AF2B64224300602697 /* commands */,
+				5B4DA2B32B64224300602697 /* Document.cpp */,
+				5B4DA2B42B64224300602697 /* widgets */,
+			);
+			name = src;
+			path = ../../external/qapplib/src;
+			sourceTree = "<group>";
+		};
+		5B4DA29D2B64224300602697 /* io */ = {
+			isa = PBXGroup;
+			children = (
+				5B4DA29E2B64224300602697 /* QIODeviceStreamAdapter.cpp */,
+			);
+			path = io;
+			sourceTree = "<group>";
+		};
+		5B4DA2A02B64224300602697 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				5B4DA2A12B64224300602697 /* PathUtils.cpp */,
+				5B4DA2A22B64224300602697 /* PageBufferStream.cpp */,
+				5B4DA2A32B64224300602697 /* StreamUtils.cpp */,
+				5B4DA2A42B64224300602697 /* PageBuffer.cpp */,
+				5B4DA2A52B64224300602697 /* PagePool.cpp */,
+				5B4DA2A62B64224300602697 /* PageStackAllocator.cpp */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		5B4DA2AC2B64224300602697 /* actions */ = {
+			isa = PBXGroup;
+			children = (
+				5B4DA2AD2B64224300602697 /* StandardActions.cpp */,
+				5B4DA2AE2B64224300602697 /* ActionManager.cpp */,
+			);
+			path = actions;
+			sourceTree = "<group>";
+		};
+		5B4DA2AF2B64224300602697 /* commands */ = {
+			isa = PBXGroup;
+			children = (
+				5B4DA2B02B64224300602697 /* CmdOperations.cpp */,
+				5B4DA2B12B64224300602697 /* CommandHistory.cpp */,
+				5B4DA2B22B64224300602697 /* Operations.cpp */,
+			);
+			path = commands;
+			sourceTree = "<group>";
+		};
+		5B4DA2B42B64224300602697 /* widgets */ = {
+			isa = PBXGroup;
+			children = (
+				5B4DA2B52B64224300602697 /* ColorWidget.cpp */,
+			);
+			path = widgets;
+			sourceTree = "<group>";
+		};
+		5B4DA2B62B64224300602697 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				5B4DA2B72B64224300602697 /* qapplib */,
 			);
 			name = include;
 			path = ../../external/qapplib/include;
 			sourceTree = "<group>";
 		};
-		5B150B412B61D4DD00EC0893 /* qapplib */ = {
+		5B4DA2B72B64224300602697 /* qapplib */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B422B61D4DD00EC0893 /* Document.hpp */,
-				5B150B432B61D4DD00EC0893 /* Debug.h */,
-				5B150B442B61D4DD00EC0893 /* io */,
-				5B150B462B61D4DD00EC0893 /* Color.h */,
-				5B150B472B61D4DD00EC0893 /* Editor.hpp */,
-				5B150B482B61D4DD00EC0893 /* utils */,
-				5B150B532B61D4DD00EC0893 /* WorkbenchWidget.hpp */,
-				5B150B542B61D4DD00EC0893 /* UiUtils.h */,
-				5B150B552B61D4DD00EC0893 /* DocumentManager.hpp */,
-				5B150B562B61D4DD00EC0893 /* RecentFilesMenu.hpp */,
-				5B150B572B61D4DD00EC0893 /* Workbench.hpp */,
-				5B150B582B61D4DD00EC0893 /* actions */,
-				5B150B5C2B61D4DD00EC0893 /* commands */,
-				5B150B612B61D4DD00EC0893 /* widgets */,
+				5B4DA2B82B64224300602697 /* Document.hpp */,
+				5B4DA2B92B64224300602697 /* Debug.h */,
+				5B4DA2BA2B64224300602697 /* io */,
+				5B4DA2BC2B64224300602697 /* Color.h */,
+				5B4DA2BD2B64224300602697 /* Editor.hpp */,
+				5B4DA2BE2B64224300602697 /* utils */,
+				5B4DA2C92B64224300602697 /* WorkbenchWidget.hpp */,
+				5B4DA2CA2B64224300602697 /* UiUtils.h */,
+				5B4DA2CB2B64224300602697 /* DocumentManager.hpp */,
+				5B4DA2CC2B64224300602697 /* RecentFilesMenu.hpp */,
+				5B4DA2CD2B64224300602697 /* Workbench.hpp */,
+				5B4DA2CE2B64224300602697 /* actions */,
+				5B4DA2D22B64224300602697 /* commands */,
+				5B4DA2D72B64224300602697 /* widgets */,
 			);
 			path = qapplib;
 			sourceTree = "<group>";
 		};
-		5B150B442B61D4DD00EC0893 /* io */ = {
+		5B4DA2BA2B64224300602697 /* io */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B452B61D4DD00EC0893 /* QIODeviceStreamAdapter.h */,
+				5B4DA2BB2B64224300602697 /* QIODeviceStreamAdapter.h */,
 			);
 			path = io;
 			sourceTree = "<group>";
 		};
-		5B150B482B61D4DD00EC0893 /* utils */ = {
+		5B4DA2BE2B64224300602697 /* utils */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B492B61D4DD00EC0893 /* PathUtils.h */,
-				5B150B4A2B61D4DD00EC0893 /* PageStackAllocator.h */,
-				5B150B4B2B61D4DD00EC0893 /* StringUtils.h */,
-				5B150B4C2B61D4DD00EC0893 /* PageBuffer.h */,
-				5B150B4D2B61D4DD00EC0893 /* PageBufferStream.h */,
-				5B150B4E2B61D4DD00EC0893 /* PagePool.h */,
-				5B150B4F2B61D4DD00EC0893 /* QVariantType.h */,
-				5B150B502B61D4DD00EC0893 /* StreamUtils.h */,
-				5B150B512B61D4DD00EC0893 /* PageAllocator.h */,
-				5B150B522B61D4DD00EC0893 /* Bits.h */,
+				5B4DA2BF2B64224300602697 /* PathUtils.h */,
+				5B4DA2C02B64224300602697 /* PageStackAllocator.h */,
+				5B4DA2C12B64224300602697 /* StringUtils.h */,
+				5B4DA2C22B64224300602697 /* PageBuffer.h */,
+				5B4DA2C32B64224300602697 /* PageBufferStream.h */,
+				5B4DA2C42B64224300602697 /* PagePool.h */,
+				5B4DA2C52B64224300602697 /* QVariantType.h */,
+				5B4DA2C62B64224300602697 /* StreamUtils.h */,
+				5B4DA2C72B64224300602697 /* PageAllocator.h */,
+				5B4DA2C82B64224300602697 /* Bits.h */,
 			);
 			path = utils;
 			sourceTree = "<group>";
 		};
-		5B150B582B61D4DD00EC0893 /* actions */ = {
+		5B4DA2CE2B64224300602697 /* actions */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B592B61D4DD00EC0893 /* ActionManager.hpp */,
-				5B150B5A2B61D4DD00EC0893 /* StandardActions.h */,
-				5B150B5B2B61D4DD00EC0893 /* ActionTarget.h */,
+				5B4DA2CF2B64224300602697 /* ActionManager.hpp */,
+				5B4DA2D02B64224300602697 /* StandardActions.h */,
+				5B4DA2D12B64224300602697 /* ActionTarget.h */,
 			);
 			path = actions;
 			sourceTree = "<group>";
 		};
-		5B150B5C2B61D4DD00EC0893 /* commands */ = {
+		5B4DA2D22B64224300602697 /* commands */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B5D2B61D4DD00EC0893 /* Operations.h */,
-				5B150B5E2B61D4DD00EC0893 /* CmdOperations.h */,
-				5B150B5F2B61D4DD00EC0893 /* CommandHistory.hpp */,
-				5B150B602B61D4DD00EC0893 /* Command.h */,
+				5B4DA2D32B64224300602697 /* Operations.h */,
+				5B4DA2D42B64224300602697 /* CmdOperations.h */,
+				5B4DA2D52B64224300602697 /* CommandHistory.hpp */,
+				5B4DA2D62B64224300602697 /* Command.h */,
 			);
 			path = commands;
 			sourceTree = "<group>";
 		};
-		5B150B612B61D4DD00EC0893 /* widgets */ = {
+		5B4DA2D72B64224300602697 /* widgets */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B622B61D4DD00EC0893 /* ColorWidget.hpp */,
+				5B4DA2D82B64224300602697 /* ColorWidget.hpp */,
 			);
 			path = widgets;
 			sourceTree = "<group>";
@@ -775,7 +814,7 @@
 		5BA393A12B5B430B004214F9 = {
 			isa = PBXGroup;
 			children = (
-				5B1509F22B61D09900EC0893 /* src */,
+				5B4DA1B82B64221E00602697 /* src */,
 				5BA393AC2B5B430B004214F9 /* jass */,
 				5BA394912B5B46F4004214F9 /* external */,
 				5BA393BD2B5B436C004214F9 /* Frameworks */,
@@ -836,8 +875,8 @@
 		5BA394922B5B4703004214F9 /* qapplib */ = {
 			isa = PBXGroup;
 			children = (
-				5B150B402B61D4DD00EC0893 /* include */,
-				5B1509072B5FD3B400EC0893 /* src */,
+				5B4DA2B62B64224300602697 /* include */,
+				5B4DA29A2B64224300602697 /* src */,
 			);
 			path = qapplib;
 			sourceTree = "<group>";
@@ -928,10 +967,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5B1509222B5FD3B400EC0893 /* LICENSE in Resources */,
+				5B4DA2D92B64224300602697 /* LICENSE in Resources */,
 				5BA393B12B5B430C004214F9 /* Assets.xcassets in Resources */,
-				5B15092D2B5FD3B400EC0893 /* README.md in Resources */,
-				5B150AAC2B61D09900EC0893 /* jass.rc in Resources */,
+				5B4DA2E52B64224300602697 /* README.md in Resources */,
+				5B4DA2862B64221E00602697 /* jass.rc in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -942,92 +981,99 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B4DA2852B64221E00602697 /* Gaussian.cpp in Sources */,
+				5B4DA27A2B64221E00602697 /* GraphTool.cpp in Sources */,
+				5B4DA2882B64221E00602697 /* Shape.cpp in Sources */,
+				5B4DA27B2B64221E00602697 /* CategorySet.cpp in Sources */,
+				5B4DA2E62B64224300602697 /* WorkbenchWidget.cpp in Sources */,
+				5B4DA2962B64221E00602697 /* CmdSetBackgroundImage.cpp in Sources */,
+				5B4DA26B2B64221E00602697 /* JustifiedNodeGraphLayer.cpp in Sources */,
+				5B4DA2692B64221E00602697 /* NodeGraphLayer.cpp in Sources */,
+				5B4DA2792B64221E00602697 /* DepthAnalysis.cpp in Sources */,
 				5BA395802B5B476A004214F9 /* zipx_test.cpp in Sources */,
-				5B150A882B61D09900EC0893 /* GraphModelGraphBuilder.cpp in Sources */,
-				5B150AA42B61D09900EC0893 /* LegacyJassFileFormat.cpp in Sources */,
-				5B150AB52B61D09900EC0893 /* CmdCreateEdge.cpp in Sources */,
-				5B150AA92B61D09900EC0893 /* JavaObjectSerializationStream.cpp in Sources */,
-				5B150A9A2B61D09900EC0893 /* Analyses.cpp in Sources */,
-				5B150ABA2B61D09900EC0893 /* CmdCreateNode.cpp in Sources */,
-				5B1509252B5FD3B400EC0893 /* RecentFilesMenu.cpp in Sources */,
-				5B150AA72B61D09900EC0893 /* JassSvgExport.cpp in Sources */,
-				5B1509242B5FD3B400EC0893 /* QIODeviceStreamAdapter.cpp in Sources */,
-				5B1509302B5FD3B400EC0893 /* StandardActions.cpp in Sources */,
+				5B4DA2632B64221E00602697 /* SplitWidget.cpp in Sources */,
+				5B4DA25D2B64221E00602697 /* GraphModelGraphBuilder.cpp in Sources */,
+				5B4DA2772B64221E00602697 /* GraphClipboardData.cpp in Sources */,
+				5B4DA2662B64221E00602697 /* SpriteGraphLayer.cpp in Sources */,
+				5B4DA2E22B64224300602697 /* PageStackAllocator.cpp in Sources */,
+				5B4DA2DC2B64224300602697 /* RecentFilesMenu.cpp in Sources */,
+				5B4DA2742B64221E00602697 /* EdgeTool.cpp in Sources */,
+				5B4DA2EE2B64224300602697 /* ColorWidget.cpp in Sources */,
+				5B4DA26E2B64221E00602697 /* NodeSpriteSet.cpp in Sources */,
+				5B4DA28C2B64221E00602697 /* CmdDuplicate.cpp in Sources */,
+				5B4DA2612B64221E00602697 /* CategoryDialog.cpp in Sources */,
 				5BA395842B5B476A004214F9 /* inflate_stream.cpp in Sources */,
-				5B150ABC2B61D09900EC0893 /* CmdModifyCategory.cpp in Sources */,
-				5B150A832B61D09900EC0893 /* GraphModelSubGraphView.cpp in Sources */,
-				5B1509232B5FD3B400EC0893 /* DocumentManager.cpp in Sources */,
-				5B150A9F2B61D09900EC0893 /* AnalysisWorker.cpp in Sources */,
-				5B150AA02B61D09900EC0893 /* GraphClipboardData.cpp in Sources */,
-				5B15092C2B5FD3B400EC0893 /* UiUtils.cpp in Sources */,
-				5B150A8F2B61D09900EC0893 /* SpriteSet.cpp in Sources */,
-				5B150A912B61D09900EC0893 /* GraphWidget.cpp in Sources */,
-				5B1509292B5FD3B400EC0893 /* PagePool.cpp in Sources */,
-				5B150A942B61D09900EC0893 /* JustifiedNodeGraphLayer.cpp in Sources */,
-				5B150AA12B61D09900EC0893 /* IntegrationAnalysis.cpp in Sources */,
+				5B4DA2682B64221E00602697 /* ItemGraphLayer.cpp in Sources */,
+				5B4DA2932B64221E00602697 /* CmdSetNodeCategory.cpp in Sources */,
+				5B4DA2582B64221E00602697 /* GraphModelSubGraphView.cpp in Sources */,
+				5B4DA28F2B64221E00602697 /* CmdCreateEdge.cpp in Sources */,
+				5B4DA2EA2B64224300602697 /* CmdOperations.cpp in Sources */,
+				5B4DA2982B64221E00602697 /* JassDocument.cpp in Sources */,
+				5B4DA2622B64221E00602697 /* ImageFx.cpp in Sources */,
+				5B4DA2722B64221E00602697 /* JassEditor.cpp in Sources */,
+				5B4DA2992B64221E00602697 /* main.cpp in Sources */,
+				5B4DA2832B64221E00602697 /* JavaObjectSerializationStream.cpp in Sources */,
+				5B4DA2DD2B64224300602697 /* PathUtils.cpp in Sources */,
 				5BA395832B5B476A004214F9 /* inflate_state.cpp in Sources */,
-				5B150ABE2B61D09900EC0893 /* main.cpp in Sources */,
-				5B150ABD2B61D09900EC0893 /* JassDocument.cpp in Sources */,
-				5B150A852B61D09900EC0893 /* GraphModelGraphView.cpp in Sources */,
-				5B150AA82B61D09900EC0893 /* JassProject.cpp in Sources */,
-				5B150AA22B61D09900EC0893 /* GraphTool.cpp in Sources */,
-				5B150A8C2B61D09900EC0893 /* ImageFx.cpp in Sources */,
-				5B150A8E2B61D09900EC0893 /* MainWindow.cpp in Sources */,
-				5B150A932B61D09900EC0893 /* NodeGraphLayer.cpp in Sources */,
-				5B150AAA2B61D09900EC0893 /* bitvec.cpp in Sources */,
-				5B150AAB2B61D09900EC0893 /* Gaussian.cpp in Sources */,
-				5B150ABB2B61D09900EC0893 /* CmdSetBackgroundImage.cpp in Sources */,
-				5B1509272B5FD3B400EC0893 /* PageBufferStream.cpp in Sources */,
-				5B1509262B5FD3B400EC0893 /* PathUtils.cpp in Sources */,
+				5B4DA2902B64221E00602697 /* GraphOperations.cpp in Sources */,
+				5B4DA2802B64221E00602697 /* JassSvgExport.cpp in Sources */,
+				5B4DA25A2B64221E00602697 /* GraphModelGraphView.cpp in Sources */,
+				5B4DA2912B64221E00602697 /* CmdFilpNodes.cpp in Sources */,
+				5B4DA2762B64221E00602697 /* AnalysisWorker.cpp in Sources */,
+				5B4DA27C2B64221E00602697 /* JustifiedGraph.cpp in Sources */,
+				5B4DA2DA2B64224300602697 /* DocumentManager.cpp in Sources */,
 				5BA3957F2B5B476A004214F9 /* zip_writer.cpp in Sources */,
-				5B150AB82B61D09900EC0893 /* CmdDeleteGraphElements.cpp in Sources */,
-				5B150A842B61D09900EC0893 /* JsonGraphData.cpp in Sources */,
-				5B150AB62B61D09900EC0893 /* GraphOperations.cpp in Sources */,
-				5B150A9B2B61D09900EC0893 /* JassEditor.cpp in Sources */,
-				5B150AB22B61D09900EC0893 /* CmdDuplicate.cpp in Sources */,
-				5B150AB92B61D09900EC0893 /* CmdSetNodeCategory.cpp in Sources */,
-				5B150A962B61D09900EC0893 /* ImageGraphLayer.cpp in Sources */,
-				5B1509332B5FD3B400EC0893 /* CommandHistory.cpp in Sources */,
-				5B150A952B61D09900EC0893 /* EdgeGraphLayer.cpp in Sources */,
-				5B150A9E2B61D09900EC0893 /* SelectionTool.cpp in Sources */,
-				5B150A862B61D09900EC0893 /* GraphData.cpp in Sources */,
-				5B150A9D2B61D09900EC0893 /* EdgeTool.cpp in Sources */,
-				5B1509342B5FD3B400EC0893 /* Operations.cpp in Sources */,
-				5B150A972B61D09900EC0893 /* NodeSpriteSet.cpp in Sources */,
-				5B15092B2B5FD3B400EC0893 /* Workbench.cpp in Sources */,
-				5B150AAF2B61D09900EC0893 /* Debug.cpp in Sources */,
-				5B150AB02B61D09900EC0893 /* CmdAddGraphElements.cpp in Sources */,
-				5B1509362B5FD3B400EC0893 /* ColorWidget.cpp in Sources */,
-				5B150AA62B61D09900EC0893 /* JassFileFormat.cpp in Sources */,
-				5B15092A2B5FD3B400EC0893 /* PageStackAllocator.cpp in Sources */,
-				5B150A9C2B61D09900EC0893 /* NodeTool.cpp in Sources */,
-				5B150A892B61D09900EC0893 /* CategoryView.cpp in Sources */,
-				5B150A872B61D09900EC0893 /* BinaryGraphData.cpp in Sources */,
-				5B150AB32B61D09900EC0893 /* CmdDeleteCategories.cpp in Sources */,
-				5B150A982B61D09900EC0893 /* jass.cpp in Sources */,
-				5B150AA52B61D09900EC0893 /* Integration.cpp in Sources */,
-				5B150A8A2B61D09900EC0893 /* InputEventProcessor.cpp in Sources */,
-				5B150A8B2B61D09900EC0893 /* CategoryDialog.cpp in Sources */,
-				5B1509312B5FD3B400EC0893 /* ActionManager.cpp in Sources */,
-				5B150AB42B61D09900EC0893 /* CmdAddCategory.cpp in Sources */,
-				5B150AA32B61D09900EC0893 /* CategorySet.cpp in Sources */,
-				5B1509282B5FD3B400EC0893 /* PageBuffer.cpp in Sources */,
-				5B150A992B61D09900EC0893 /* GraphModel.cpp in Sources */,
-				5B150AAE2B61D09900EC0893 /* Shape.cpp in Sources */,
-				5B150AAD2B61D09900EC0893 /* main_osx.cpp in Sources */,
-				5B150A922B61D09900EC0893 /* ItemGraphLayer.cpp in Sources */,
-				5B150AB12B61D09900EC0893 /* CmdMoveNodes.cpp in Sources */,
+				5B4DA2592B64221E00602697 /* JsonGraphData.cpp in Sources */,
+				5B4DA28D2B64221E00602697 /* CmdDeleteCategories.cpp in Sources */,
+				5B4DA2782B64221E00602697 /* IntegrationAnalysis.cpp in Sources */,
+				5B4DA28E2B64221E00602697 /* CmdAddCategory.cpp in Sources */,
+				5B4DA2E82B64224300602697 /* StandardActions.cpp in Sources */,
+				5B4DA2EB2B64224300602697 /* CommandHistory.cpp in Sources */,
+				5B4DA26C2B64221E00602697 /* EdgeGraphLayer.cpp in Sources */,
+				5B4DA2672B64221E00602697 /* GraphWidget.cpp in Sources */,
+				5B4DA2872B64221E00602697 /* main_osx.cpp in Sources */,
+				5B4DA25B2B64221E00602697 /* GraphData.cpp in Sources */,
+				5B4DA2812B64221E00602697 /* NodeAttribute.cpp in Sources */,
+				5B4DA2732B64221E00602697 /* NodeTool.cpp in Sources */,
+				5B4DA2702B64221E00602697 /* GraphModel.cpp in Sources */,
+				5B4DA2E32B64224300602697 /* Workbench.cpp in Sources */,
+				5B4DA2E12B64224300602697 /* PagePool.cpp in Sources */,
+				5B4DA28B2B64221E00602697 /* CmdMoveNodes.cpp in Sources */,
+				5B4DA2DB2B64224300602697 /* QIODeviceStreamAdapter.cpp in Sources */,
+				5B4DA2652B64221E00602697 /* SpriteSet.cpp in Sources */,
+				5B4DA2E42B64224300602697 /* UiUtils.cpp in Sources */,
+				5B4DA27D2B64221E00602697 /* LegacyJassFileFormat.cpp in Sources */,
+				5B4DA2922B64221E00602697 /* CmdDeleteGraphElements.cpp in Sources */,
+				5B4DA2842B64221E00602697 /* bitvec.cpp in Sources */,
+				5B4DA25E2B64221E00602697 /* CategoryView.cpp in Sources */,
+				5B4DA2EC2B64224300602697 /* Operations.cpp in Sources */,
+				5B4DA28A2B64221E00602697 /* CmdAddGraphElements.cpp in Sources */,
+				5B4DA2892B64221E00602697 /* Debug.cpp in Sources */,
+				5B4DA2DE2B64224300602697 /* PageBufferStream.cpp in Sources */,
+				5B4DA25C2B64221E00602697 /* BinaryGraphData.cpp in Sources */,
+				5B4DA2972B64221E00602697 /* CmdModifyCategory.cpp in Sources */,
+				5B4DA2DF2B64224300602697 /* StreamUtils.cpp in Sources */,
+				5B4DA2752B64221E00602697 /* SelectionTool.cpp in Sources */,
+				5B4DA27E2B64221E00602697 /* Integration.cpp in Sources */,
+				5B4DA26F2B64221E00602697 /* jass.cpp in Sources */,
+				5B4DA27F2B64221E00602697 /* JassFileFormat.cpp in Sources */,
 				5BA3957E2B5B476A004214F9 /* deflate_state.cpp in Sources */,
-				5B15092E2B5FD3B400EC0893 /* WorkbenchWidget.cpp in Sources */,
-				5B1509322B5FD3B400EC0893 /* CmdOperations.cpp in Sources */,
+				5B4DA26D2B64221E00602697 /* ImageGraphLayer.cpp in Sources */,
 				5BA395812B5B476A004214F9 /* zip_reader.cpp in Sources */,
-				5B150A902B61D09900EC0893 /* SpriteGraphLayer.cpp in Sources */,
+				5B4DA2E92B64224300602697 /* ActionManager.cpp in Sources */,
+				5B4DA2E72B64224300602697 /* Editor.cpp in Sources */,
+				5B4DA2602B64221E00602697 /* InputEventProcessor.cpp in Sources */,
+				5B4DA2E02B64224300602697 /* PageBuffer.cpp in Sources */,
 				5BA395852B5B476A004214F9 /* zip_index.cpp in Sources */,
-				5B150A8D2B61D09900EC0893 /* SplitWidget.cpp in Sources */,
-				5B15092F2B5FD3B400EC0893 /* Editor.cpp in Sources */,
+				5B4DA2642B64221E00602697 /* MainWindow.cpp in Sources */,
+				5B4DA2ED2B64224300602697 /* Document.cpp in Sources */,
 				5BA395822B5B476A004214F9 /* deflate_stream.cpp in Sources */,
-				5B150AB72B61D09900EC0893 /* CmdFilpNodes.cpp in Sources */,
-				5B1509352B5FD3B400EC0893 /* Document.cpp in Sources */,
+				5B4DA2942B64221E00602697 /* CmdCreateNode.cpp in Sources */,
+				5B4DA26A2B64221E00602697 /* JustifiedEdgeGraphLayer.cpp in Sources */,
+				5B4DA2822B64221E00602697 /* JassProject.cpp in Sources */,
+				5B4DA25F2B64221E00602697 /* AboutDialog.cpp in Sources */,
+				5B4DA2712B64221E00602697 /* Analyses.cpp in Sources */,
+				5B4DA2952B64221E00602697 /* CmdSetGraphAttribute.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1185,7 +1231,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xmnsoftware.jass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1225,7 +1271,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.xmnsoftware.jass;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
