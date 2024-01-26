@@ -44,6 +44,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/commands/CmdModifyCategory.h>
 #include <jass/commands/CmdSetBackgroundImage.h>
 #include <jass/commands/CmdSetGraphAttribute.h>
+#include <jass/commands/CmdSetNodeAttributes.h>
 #include <jass/commands/CmdSetNodeCategory.h>
 #include <jass/graphdata/GraphData.h>
 #include <jass/graphdata/GraphModelSubGraphView.h>
@@ -717,12 +718,24 @@ namespace jass
 
 		jass::GenerateJustifiedGraph(DataModel(), SelectionModel().NodeMask(), m_Analyses->MetricValues(depth_metric_index), jpositions);
 		
-		jposition_attribute->BeginModify();
-		for (size_t node_index = 0; node_index < jpositions.size(); ++node_index)
+		// Create a mask for the nodes for which the j-position value changes, and pack the array
+		// to only contain values for the canged ones.
+		bitvec diff_mask;
+		diff_mask.resize(DataModel().NodeCount());
 		{
-			jposition_attribute->SetValue(node_index, jpositions[node_index]);
+			size_t n = 0;
+			for (size_t node_index = 0; node_index < jpositions.size(); ++node_index)
+			{
+				if (jposition_attribute->Value(node_index) != jpositions[node_index])
+				{
+					diff_mask.set(node_index);
+					jpositions[n++] = jpositions[node_index];
+				}
+			}
+			jpositions.resize(n);
 		}
-		jposition_attribute->EndModify();
+
+		CommandHistory().NewCommand<CCmdSetNodeAttributes<JPosition_NodeAttribute_t::value_t>>(jposition_attribute, diff_mask, jpositions);
 	}
 
 	void CJassEditor::OnSelectTool(int tool_index)

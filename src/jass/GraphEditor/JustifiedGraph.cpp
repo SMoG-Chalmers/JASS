@@ -73,7 +73,10 @@ namespace jass
 
 		for (auto& pt : out_points)
 		{
-			pt = pt * 50;
+			if (pt.y() >= 0)
+			{
+				pt = pt * 50;
+			}
 		}
 	}
 }
