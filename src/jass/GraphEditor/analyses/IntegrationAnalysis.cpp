@@ -20,6 +20,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include <QtCore/qstring.h>
 #include <jass/analysis/DepthCalculator.h>
 #include <jass/analysis/ImmutableDirectedGraph.h>
 #include <jass/analysis/Integration.h>

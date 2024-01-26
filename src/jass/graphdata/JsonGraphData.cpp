@@ -70,11 +70,43 @@ namespace jass
 		return arr;
 	}
 
+	inline QJsonValue JsonValueFromVariant(const QVariant& v)
+	{
+		// TODO: Handle special types here
+		return QJsonValue::fromVariant(v);
+	}
+
+	inline QVariant VariantFromJsonValue(const QJsonValue& v, QVariant::Type type)
+	{
+		switch (type)
+		{
+		case QVariant::Int:
+			return QVariant(v.toInt());
+		}
+		throw std::runtime_error("Unsupported graph attribute data type");
+	}
+
 	QJsonObject ToJson(const IGraphView& graph_view)
 	{
 		QJsonObject root;
 
 		root["node_count"] = (int)graph_view.NodeCount();
+
+		{
+			QJsonArray attributes;
+			QString name;
+			QVariant value;
+			for (size_t attribute_index = 0; attribute_index < graph_view.AttributeCount(); ++attribute_index)
+			{
+				graph_view.GetAttribute(attribute_index, name, value);
+				QJsonObject attribute;
+				attribute["name"] = name;
+				attribute["type"] = qapp::QVariantTypeToString(value.type());
+				attribute["value"] = JsonValueFromVariant(value);
+				attributes.append(attribute);
+			}
+			root["attributes"] = attributes;
+		}
 
 		{
 			QJsonArray node_attributes;
@@ -109,7 +141,29 @@ namespace jass
 	{
 		const size_t node_count = GetRequiredJsonValue<int>(root, "node_count");
 		gbuilder.SetNodeCount(node_count);
-		
+	
+		for (auto it : GetOptionalJsonValue<QJsonArray>(root, "attributes", QJsonArray()))
+		{
+			if (!it.isObject())
+			{
+				LOG_ERROR("Attribute object expected");
+				continue;
+			}
+			auto attribute_obj = it.toObject();
+
+			const auto name = GetRequiredJsonValue<QString>(attribute_obj, "name");
+			const auto type = qapp::QVariantTypeFromString(GetRequiredJsonValue<QString>(attribute_obj, "type"));
+			{
+				auto it_value = attribute_obj.find("value");
+				if (it_value == attribute_obj.end())
+				{
+					LOG_ERROR("Attribute value expected");
+					continue;
+				}
+				gbuilder.SetAttribute(name, VariantFromJsonValue(it_value.value(), type));
+			}
+		}
+
 		for (auto it : GetRequiredJsonValue<QJsonArray>(root, "node_attributes"))
 		{
 			if (!it.isObject())

@@ -41,6 +41,16 @@ namespace jass
 			});
 	}
 
+	size_t CGraphModelSubGraphView::AttributeCount() const
+	{
+		return 0;
+	}
+
+	void CGraphModelSubGraphView::GetAttribute(size_t index, QString& out_name, QVariant& out_value) const
+	{
+		ASSERT(false && "Currently no attribute support in CGraphModelSubGraphView");
+	}
+
 	size_t CGraphModelSubGraphView::NodeCount() const
 	{
 		return m_NodeIndexMap.size();

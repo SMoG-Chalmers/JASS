@@ -26,6 +26,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	const CGraphModel::attribute_index_t CGraphModel::NO_ATTRIBUTE = (CGraphModel::attribute_index_t)-1;
 	const CGraphModel::node_index_t CGraphModel::NO_NODE = (CGraphModel::node_index_t)-1;
 	const CGraphModel::category_index_t CGraphModel::NO_CATEGORY = (CGraphModel::category_index_t)-1;
 
@@ -48,6 +49,52 @@ namespace jass
 		m_FirstEdgePerNode.resize(new_node_count + 1, m_FirstEdgePerNode.back());  // has one extra element!
 
 		return (CGraphModel::node_index_t)(new_node_count - count);
+	}
+
+	void CGraphModel::AddAttribute(const QString& name, const QVariant& value)
+	{
+		if (FindAttribute(name) != NO_ATTRIBUTE)
+		{
+			throw TFormatException<std::runtime_error>("Trying to add graph attribute '%s' twice.", name.toStdString().c_str());
+		}
+		m_Attributes.push_back({ name, value });
+	}
+
+	CGraphModel::attribute_index_t CGraphModel::FindAttribute(const QString& name) const
+	{
+		for (size_t i = 0; i < m_Attributes.size(); ++i)
+		{
+			if (name == m_Attributes[i].first)
+			{
+				return (attribute_index_t)i;
+			}
+		}
+		return NO_ATTRIBUTE;
+	}
+
+	void CGraphModel::SetAttribute(attribute_index_t index, const QVariant& value)
+	{
+		if (value == m_Attributes[index].second)
+		{
+			return;
+		}
+		m_Attributes[index].second = value;
+		emit AttributeChanged(index, value);
+	}
+
+	CGraphModel::attribute_index_t CGraphModel::AttributeCount() const
+	{
+		return m_Attributes.size();
+	}
+
+	const QString& CGraphModel::AttributeName(CGraphModel::attribute_index_t index) const
+	{
+		return m_Attributes[index].first;
+	}
+
+	const QVariant& CGraphModel::AttributeValue(CGraphModel::attribute_index_t index) const
+	{
+		return m_Attributes[index].second;
 	}
 
 	size_t CGraphModel::NodeAttributeCount() const
@@ -404,6 +451,16 @@ namespace jass
 		connect(&m_DataModel, &CGraphModel::NodesRemoved,  this, &CGraphSelectionModel::OnNodesRemoved);
 		connect(&m_DataModel, &CGraphModel::EdgesInserted, this, &CGraphSelectionModel::OnEdgesInserted);
 		connect(&m_DataModel, &CGraphModel::EdgesRemoved,  this, &CGraphSelectionModel::OnEdgesRemoved);
+	}
+
+	CGraphSelectionModel::node_index_t CGraphSelectionModel::FirstSelected() const
+	{
+		CGraphModel::node_index_t first_selected_index = CGraphModel::NO_NODE;
+		NodeMask().for_each_set_bit([&](auto node_index)
+			{
+				first_selected_index = (CGraphModel::node_index_t)node_index;
+			});
+		return first_selected_index;
 	}
 
 	void CGraphSelectionModel::SetNodeMask(const bitvec& mask) 

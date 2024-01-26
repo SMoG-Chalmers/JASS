@@ -36,6 +36,8 @@ namespace jass
 		};
 
 		// IGraphView interface
+		size_t AttributeCount() const override;
+		void   GetAttribute(size_t index, QString& out_name, QVariant& out_value) const override;
 		size_t NodeCount() const override;
 		size_t NodeAttributeCount() const override;
 		SNodeAttributeDesc NodeAttributeDesc(size_t index) const override;
@@ -44,6 +46,7 @@ namespace jass
 		void   GetEdges(std::span<edge_t> out_edges) const override;
 
 		// IGraphBuilder interface
+		void SetAttribute(const QString& name, const QVariant& value) override;
 		void SetNodeCount(size_t count) override;
 		void AddNodeAttribute(const SNodeAttributeDesc& desc, const void* data, size_t size) override;
 		void SetEdges(std::span<const edge_t> edges) override;
@@ -51,6 +54,7 @@ namespace jass
 	private:
 		size_t m_NodeCount = 0;
 		std::vector<edge_t> m_Edges;
+		std::vector<std::pair<QString, QVariant>> m_Attributes;
 		std::vector<SNodeAttribute> m_NodeAttributes;
 	};
 }

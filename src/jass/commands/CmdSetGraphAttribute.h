@@ -19,23 +19,16 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <QtCore/qstring.h>
-#include <QtCore/qvariant.h>
-
-// Standard graph attribute names
-#define GRAPH_ATTTRIBUTE_ROOT_NODE "root-node"
-
-// Standard graph node attribute names
-#define GRAPH_NODE_ATTTRIBUTE_POSITION    "position"
-#define GRAPH_NODE_ATTTRIBUTE_CATEGORY    "category"
-#define GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_POSITION "justified-position"
+#include <qapplib/commands/Command.h>
+#include <jass/GraphModel.hpp>
 
 namespace jass
 {
-	struct SNodeAttributeDesc
+	class CCmdSetGraphAttribute: public qapp::ICommand
 	{
-		QString Name;
-		QVariant::Type Type;
+	public:
+		CCmdSetGraphAttribute(qapp::SCommandCreationContext& ctx, CGraphModel::attribute_index_t attribute_index, const QVariant& value);
+		void Do(qapp::SCommandExecutionContext& ctx) override;
+		void Undo(qapp::SCommandExecutionContext& ctx) override;
 	};
-
 }

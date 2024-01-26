@@ -24,6 +24,17 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	size_t CGraphData::AttributeCount() const
+	{
+		return m_Attributes.size();
+	}
+
+	void CGraphData::GetAttribute(size_t index, QString& out_name, QVariant& out_value) const
+	{
+		out_name = m_Attributes[index].first;
+		out_value = m_Attributes[index].second;
+	}
+
 	size_t CGraphData::NodeCount() const
 	{
 		return m_NodeCount;
@@ -55,6 +66,19 @@ namespace jass
 	{
 		ASSERT(out_edges.size() == m_Edges.size());
 		memcpy(out_edges.data(), m_Edges.data(), m_Edges.size() * sizeof(edge_t));
+	}
+
+	void CGraphData::SetAttribute(const QString& name, const QVariant& value)
+	{
+		for (auto& a : m_Attributes)
+		{
+			if (a.first == name)
+			{
+				a.second = value;
+				return;
+			}
+		}
+		m_Attributes.push_back({ name, value });
 	}
 
 	void CGraphData::SetNodeCount(size_t count)

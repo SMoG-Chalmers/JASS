@@ -61,6 +61,7 @@ namespace jass
 		Q_OBJECT
 	public:
 		typedef QRgb color_t;
+		typedef uint8_t attribute_index_t;
 		typedef uint32_t index_t;
 		typedef index_t node_index_t;
 		typedef index_t edge_index_t;
@@ -74,6 +75,7 @@ namespace jass
 		typedef void* node_attribute_t;
 
 		static const node_index_t NO_NODE;
+		static const attribute_index_t NO_ATTRIBUTE;
 		static const category_index_t NO_CATEGORY;
 		static const node_attribute_t INVALID_NODE_ATTRIBUTE;
 
@@ -90,6 +92,14 @@ namespace jass
 		inline node_index_t EdgeCount() const { return (node_index_t)m_NeighboursPerNode.size() >> 1; }
 
 		node_index_t AddNodes(size_t count);
+
+		// Graph Attributes
+		void AddAttribute(const QString& name, const QVariant& value);
+		attribute_index_t FindAttribute(const QString& name) const;
+		void SetAttribute(attribute_index_t index, const QVariant& value);
+		attribute_index_t AttributeCount() const;
+		const QString& AttributeName(attribute_index_t index) const;
+		const QVariant& AttributeValue(attribute_index_t index) const;
 
 		template <class T>
 		CNodeAttribute<T>& AddNodeAttribute(const QString& name);
@@ -144,6 +154,7 @@ namespace jass
 		inline void VerifyModifyingNodes() const { ASSERT(m_NodeModificationCounter > 0); }
 
 	Q_SIGNALS:
+		void AttributeChanged(attribute_index_t index, const QVariant& value);
 		void NodesInserted(const const_node_indices_t& node_indices, const node_remap_table_t& remap_table);
 		void NodesRemoved(const const_node_indices_t& node_indices, const node_remap_table_t& remap_table);
 		void EdgesAdded(size_t count);
@@ -164,6 +175,7 @@ namespace jass
 
 		inline static edge_key_t MakeEdgeMapKey(const node_pair_t& node_pair);
 
+		std::vector<std::pair<QString, QVariant>> m_Attributes;
 		std::vector<std::pair<QString, std::unique_ptr<CNodeAttributeBase>>> m_NodeAttributes;
 
 		std::vector<QString> m_NodeNames;
@@ -281,6 +293,8 @@ namespace jass
 		inline bool AnyNodesSelected() const { return SelectedNodeCount() > 0; }
 
 		inline bool AnyEdgesSelected() const { return SelectedEdgeCount() > 0; }
+
+		node_index_t FirstSelected() const;
 
 		inline size_t SelectedNodeCount() const { return m_NodeMask.count_set_bits(); }
 

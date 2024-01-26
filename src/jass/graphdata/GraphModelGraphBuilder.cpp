@@ -33,6 +33,15 @@ namespace jass
 	{
 	}
 
+	void CGraphModelGraphBuilder::SetAttribute(const QString& name, const QVariant& value)
+	{
+		auto attribute_index = m_DataModel->FindAttribute(name);
+		if (CGraphModel::NO_ATTRIBUTE != attribute_index)
+		{
+			m_DataModel->SetAttribute(attribute_index, value);
+		}
+	}
+
 	void CGraphModelGraphBuilder::SetNodeCount(size_t count)
 	{
 		ASSERT(m_DataModel->NodeCount() == 0);

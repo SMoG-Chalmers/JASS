@@ -26,6 +26,8 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <mutex>
 
 #include <QtCore/qobject.h>
+#include <QtCore/qvariant.h>
+
 #include "Analysis.h"
 
 namespace jass
@@ -39,7 +41,7 @@ namespace jass
 		CAnalysisWorker();
 		~CAnalysisWorker();
 
-		void BeginAnalysisPass(const CImmutableDirectedGraph& graph, size_t root_node_index, std::span<std::shared_ptr<IAnalysis>> analyses);
+		void BeginAnalysisPass(const CImmutableDirectedGraph& graph, const std::vector<std::pair<QString, QVariant>>& graph_attributes, std::span<std::shared_ptr<IAnalysis>> analyses);
 
 		void CancelPass();
 
@@ -49,7 +51,7 @@ namespace jass
 
 		// IAnalysisContext
 		const CImmutableDirectedGraph& ImmutableDirectedGraph() const override;
-		size_t RootNodeIndex() const override;
+		bool TryGetGraphAttribute(const QString& name, QVariant& out_value) const override;
 		std::vector<float> NewMetricVector() override;
 		void OutputMetric(const QString& name, std::vector<float>&& values) override;
 
@@ -69,7 +71,7 @@ namespace jass
 		};
 
 		const CImmutableDirectedGraph* m_Graph = nullptr;
-		size_t m_RootNodeIndex = (size_t)-1;
+		const std::vector<std::pair<QString, QVariant>>* m_GraphAttributes = nullptr;
 		std::vector<std::shared_ptr<IAnalysis>> m_Analyses;
 		std::vector<SMetric> m_Metrics;
 		std::future<void> m_AnalysisPassResult;

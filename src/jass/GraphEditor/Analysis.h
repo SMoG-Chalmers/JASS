@@ -20,7 +20,9 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <vector>
-#include <QtCore/qstring.h>
+
+class QString;
+class QVariant;
 
 namespace jass
 {
@@ -38,7 +40,7 @@ namespace jass
 	{
 	public:
 		virtual const CImmutableDirectedGraph& ImmutableDirectedGraph() const = 0;
-		virtual size_t RootNodeIndex() const = 0;
+		virtual bool TryGetGraphAttribute(const QString& name, QVariant& out_value) const = 0;
 		virtual std::vector<float> NewMetricVector() = 0;
 		virtual void OutputMetric(const QString& name, std::vector<float>&& values) = 0;
 	};

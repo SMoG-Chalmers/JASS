@@ -33,6 +33,17 @@ namespace jass
 	{
 	}
 
+	size_t CGraphModelGraphView::AttributeCount() const
+	{
+		return m_DataModel->AttributeCount();
+	}
+
+	void CGraphModelGraphView::GetAttribute(size_t index, QString& out_name, QVariant& out_value) const
+	{
+		out_name = m_DataModel->AttributeName((CGraphModel::attribute_index_t)index);
+		out_value = m_DataModel->AttributeValue((CGraphModel::attribute_index_t)index);
+	}
+
 	size_t CGraphModelGraphView::NodeCount() const
 	{
 		return m_DataModel->NodeCount();

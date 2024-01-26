@@ -27,6 +27,6 @@ namespace jass
 	typedef CNodeAttribute<QPointF> JPosition_NodeAttribute_t;
 	inline JPosition_NodeAttribute_t* TryGetJPositionNodeAttribute(CGraphModel& model)
 	{
-		return model.TryGetNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_X);
+		return model.TryGetNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_POSITION);
 	}
 }

@@ -30,6 +30,8 @@ namespace jass
 	public:
 		typedef std::pair<uint32_t, uint32_t> edge_t;
 
+		virtual size_t AttributeCount() const = 0;
+		virtual void   GetAttribute(size_t index, QString& out_name, QVariant& out_value) const = 0;
 		virtual size_t NodeCount() const = 0;
 		virtual size_t NodeAttributeCount() const = 0;
 		virtual SNodeAttributeDesc NodeAttributeDesc(size_t index) const = 0;

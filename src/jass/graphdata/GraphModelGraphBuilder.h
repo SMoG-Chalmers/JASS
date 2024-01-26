@@ -30,6 +30,7 @@ namespace jass
 		CGraphModelGraphBuilder(CGraphModel& data_model);
 
 		// IGraphBuilder interface
+		void SetAttribute(const QString& name, const QVariant& value) override;
 		void SetNodeCount(size_t count) override;
 		void AddNodeAttribute(const SNodeAttributeDesc& desc, const void* data, size_t size) override;
 		void SetEdges(std::span<const edge_t> edges) override;

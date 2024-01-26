@@ -20,8 +20,10 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include <QtCore/qvariant.h>
 #include <jass/analysis/BfsTraversal.h>
 #include <jass/analysis/ImmutableDirectedGraph.h>
+#include <jass/StandardNodeAttributes.h>
 #include "DepthAnalysis.h"
 
 namespace jass
@@ -48,8 +50,8 @@ namespace jass
 			return;
 		}
 
-		const size_t root_node_index = ctx.RootNodeIndex();
-		if (root_node_index == (size_t)-1)
+		QVariant root_node_index;
+		if (!ctx.TryGetGraphAttribute(GRAPH_ATTTRIBUTE_ROOT_NODE, root_node_index) || root_node_index.toInt() < 0)
 		{
 			// No root node
 			return;
@@ -58,7 +60,7 @@ namespace jass
 		auto depth_values = ctx.NewMetricVector();
 		depth_values.resize(graph.NodeCount(), std::numeric_limits<float>::quiet_NaN());
 
-		m_BfsTraversal->Traverse(ctx.ImmutableDirectedGraph(), root_node_index,
+		m_BfsTraversal->Traverse(ctx.ImmutableDirectedGraph(), root_node_index.toInt(),
 			[&](auto node_handle, auto depth)
 			{
 				const auto node_index = graph.NodeIndex(node_handle);

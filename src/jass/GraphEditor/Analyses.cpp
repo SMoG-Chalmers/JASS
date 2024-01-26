@@ -2,7 +2,9 @@
 
 #include <QtCore/QThread>
 
+#include <jass/graphdata/GraphModelImmutableDirectedGraphAdapter.h>
 #include <jass/Debug.h>
+#include <jass/GraphModel.hpp>
 #include "Analyses.hpp"
 #include "AnalysisWorker.hpp"
 
@@ -101,6 +103,37 @@ namespace jass
 		}
 	}
 
+	void CAnalyses::EnqueueUpdate(const CGraphModel& graph_model)
+	{
+		if (!m_UpdateIsPending)
+		{
+			// Invalidate current metrics
+			for (auto& metric : m_Metrics)
+			{
+				metric.Values.clear();
+			}
+		}
+		m_PendingGraph.CopyView(CGraphModelImmutableDirectedGraphAdapter(graph_model));
+		
+		m_PendingAttributes.resize(graph_model.AttributeCount());
+		for (CGraphModel::attribute_index_t i = 0; i < graph_model.AttributeCount(); ++i)
+		{
+			m_PendingAttributes[i].first = graph_model.AttributeName(i);
+			m_PendingAttributes[i].second = graph_model.AttributeValue(i);
+		}
+
+		m_UpdateIsPending = true;
+
+		if (m_AnalysisPassIsInProgress)
+		{
+			CancelAnalysisPass();
+		}
+		else
+		{
+			StartAnalysisPass();
+		}
+	}
+
 	int CAnalyses::FindMetricIndex(const QString& name) const
 	{
 		for (int index = 0; index < m_Metrics.size(); ++index)
@@ -129,8 +162,9 @@ namespace jass
 		ASSERT(m_UpdateIsPending);
 		m_UpdateIsPending = false;
 		std::swap(m_PendingGraph, m_BusyGraph);
+		std::swap(m_PendingAttributes, m_BusyAttributes);
 
-		m_Worker->BeginAnalysisPass(m_BusyGraph, m_PendingRootNodeIndex, m_Analyses);
+		m_Worker->BeginAnalysisPass(m_BusyGraph, m_BusyAttributes, m_Analyses);
 	}
 }
 

@@ -26,14 +26,14 @@ namespace jass
 	
 	CAnalysisWorker::~CAnalysisWorker() {}
 
-	void CAnalysisWorker::BeginAnalysisPass(const CImmutableDirectedGraph& graph, size_t root_node_index, std::span<std::shared_ptr<IAnalysis>> analyses)
+	void CAnalysisWorker::BeginAnalysisPass(const CImmutableDirectedGraph& graph, const std::vector<std::pair<QString, QVariant>>& graph_attributes, std::span<std::shared_ptr<IAnalysis>> analyses)
 	{
 		ASSERT(!Busy());
 
 		m_Cancelled = false;
 
 		m_Graph = &graph;
-		m_RootNodeIndex = root_node_index;
+		m_GraphAttributes = &graph_attributes;
 
 		m_Analyses.clear();
 		for (auto& analysis : analyses)
@@ -85,9 +85,17 @@ namespace jass
 		return *m_Graph;
 	}
 
-	size_t CAnalysisWorker::RootNodeIndex() const
+	bool CAnalysisWorker::TryGetGraphAttribute(const QString& name, QVariant& out_value) const
 	{
-		return m_RootNodeIndex;
+		for (const auto& a : *m_GraphAttributes)
+		{
+			if (a.first == name)
+			{
+				out_value = a.second;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	std::vector<float> CAnalysisWorker::NewMetricVector()

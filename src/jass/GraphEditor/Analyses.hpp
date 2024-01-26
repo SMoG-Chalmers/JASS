@@ -34,6 +34,7 @@ namespace jass
 {
 	class IAnalysis;
 	class CAnalysisWorker;
+	class CGraphModel;
 
 	class CAnalyses: public QObject
 	{
@@ -52,8 +53,7 @@ namespace jass
 
 		std::span<const float> MetricValues(size_t index) const;
 
-		template <class TGraph>
-		void EnqueueUpdate(const TGraph& graph, size_t root_node_index = (size_t)-1);
+		void EnqueueUpdate(const CGraphModel& graph_model);
 
 		int FindMetricIndex(const QString& name) const;
 
@@ -80,40 +80,15 @@ namespace jass
 		std::unique_ptr<CAnalysisWorker> m_Worker;
 		std::vector<std::shared_ptr<IAnalysis>> m_Analyses;
 		std::vector<SMetric> m_Metrics;
-		size_t m_PendingRootNodeIndex = (size_t)-1;
 		CImmutableDirectedGraph m_PendingGraph;
+		std::vector<std::pair<QString, QVariant>> m_PendingAttributes;
 		CImmutableDirectedGraph m_BusyGraph;
+		std::vector<std::pair<QString, QVariant>> m_BusyAttributes;
 	};
 
 	inline float CAnalyses::MetricValue(size_t metric_index, size_t node_index) const
 	{
 		const auto& metric = m_Metrics[metric_index];
 		return (node_index < metric.Values.size()) ? metric.Values[node_index] : std::numeric_limits<float>::quiet_NaN();
-	}
-
-	template <class TGraph>
-	void CAnalyses::EnqueueUpdate(const TGraph& graph, size_t root_node_index)
-	{
-		if (!m_UpdateIsPending)
-		{
-			// Invalidate current metrics
-			for (auto& metric : m_Metrics)
-			{
-				metric.Values.clear();
-			}
-		}
-
-		m_PendingRootNodeIndex = root_node_index;
-		m_PendingGraph.CopyView(graph);
-		m_UpdateIsPending = true;
-
-		if (m_AnalysisPassIsInProgress)
-		{
-			CancelAnalysisPass();
-		}
-		else
-		{
-			StartAnalysisPass();
-		}
 	}
 }

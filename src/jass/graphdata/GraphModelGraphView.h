@@ -29,6 +29,8 @@ namespace jass
 	public:
 		CGraphModelGraphView(const CGraphModel& data_model);
 
+		size_t AttributeCount() const override;
+		void   GetAttribute(size_t index, QString& out_name, QVariant& out_value) const override;
 		size_t NodeCount() const override;
 		size_t NodeAttributeCount() const override;
 		SNodeAttributeDesc NodeAttributeDesc(size_t index) const override;

@@ -43,9 +43,9 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/commands/CmdFilpNodes.h>
 #include <jass/commands/CmdModifyCategory.h>
 #include <jass/commands/CmdSetBackgroundImage.h>
+#include <jass/commands/CmdSetGraphAttribute.h>
 #include <jass/commands/CmdSetNodeCategory.h>
 #include <jass/graphdata/GraphData.h>
-#include <jass/graphdata/GraphModelImmutableDirectedGraphAdapter.h>
 #include <jass/graphdata/GraphModelSubGraphView.h>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
@@ -56,6 +56,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/ui/CategoryView.hpp>
 #include <jass/ui/MainWindow.hpp>
 #include <jass/ui/SplitWidget.hpp>
+#include <jass/StandardNodeAttributes.h>
 
 #include "tools/EdgeTool.h"
 #include "tools/NodeTool.h"
@@ -117,6 +118,7 @@ namespace jass
 		connect(&DataModel(), &CGraphModel::EdgesAdded,    this, &CJassEditor::UpdateAnalyses);
 		connect(&DataModel(), &CGraphModel::EdgesInserted, this, &CJassEditor::UpdateAnalyses);
 		connect(&DataModel(), &CGraphModel::EdgesRemoved,  this, &CJassEditor::UpdateAnalyses);
+		connect(&DataModel(), &CGraphModel::AttributeChanged, this, &CJassEditor::UpdateAnalyses);
 
 		UpdateAnalyses();
 	}
@@ -140,8 +142,8 @@ namespace jass
 		s_JustifiedSelectionTool.reset(new CSelectionTool);
 
 		s_ActionHandles.SetRoot           = action_manager.NewAction(nullptr, "Set Root",                 ":/set_root.png",        QKeySequence(Qt::CTRL + Qt::Key_R), false, &s_Actions.SetRoot);
-		s_ActionHandles.ShowJustified     = action_manager.NewAction(nullptr, "Show Justified Graph",     ":/show_jgraph.png",     QKeySequence(), false, &s_Actions.ShowJustified);
-		s_ActionHandles.GenerateJustified = action_manager.NewAction(nullptr, "Generate Justified Graph", ":/generate_jgraph.png", QKeySequence(Qt::CTRL + Qt::Key_J), false, &s_Actions.GenerateJustified);
+		s_ActionHandles.ShowJustified     = action_manager.NewAction(nullptr, "Show Justified Graph",     ":/show_jgraph.png",     QKeySequence(Qt::CTRL + Qt::Key_J), false, &s_Actions.ShowJustified);
+		s_ActionHandles.GenerateJustified = action_manager.NewAction(nullptr, "Generate Justified Graph", ":/generate_jgraph.png", QKeySequence(Qt::CTRL + Qt::Key_G), false, &s_Actions.GenerateJustified);
 
 		s_Actions.ShowJustified->setCheckable(true);
 		s_Actions.ShowJustified->setChecked(false);
@@ -637,8 +639,7 @@ namespace jass
 
 	void CJassEditor::UpdateAnalyses()
 	{
-		const size_t root_node_index = (m_Document.RootNodeIndex() == CGraphModel::NO_NODE) ? (size_t)-1 : (size_t)m_Document.RootNodeIndex();
-		m_Analyses->EnqueueUpdate(CGraphModelImmutableDirectedGraphAdapter(DataModel()), root_node_index);
+		m_Analyses->EnqueueUpdate(DataModel());
 	}
 
 	void CJassEditor::OnRemoveCategories(const QModelIndexList& indexes)
@@ -665,17 +666,19 @@ namespace jass
 	void CJassEditor::SetSelectedNodeAsRoot()
 	{
 		// Get first selected node
-		CGraphModel::node_index_t new_root_node_index = CGraphModel::NO_NODE;
-		SelectionModel().NodeMask().for_each_set_bit([&](auto node_index)
-			{
-				new_root_node_index = (CGraphModel::node_index_t)node_index;
-			});
-		if (CGraphModel::NO_NODE == new_root_node_index || m_Document.RootNodeIndex() == new_root_node_index)
+		const auto new_root_node_index = SelectionModel().FirstSelected();
+		if (CGraphModel::NO_NODE == new_root_node_index)
 		{
 			return;
 		}
-		m_Document.SetRootNodeIndex(new_root_node_index);
-		UpdateAnalyses();
+		const auto attribute_index = DataModel().FindAttribute(GRAPH_ATTTRIBUTE_ROOT_NODE);
+		if (attribute_index == CGraphModel::NO_ATTRIBUTE)
+		{
+			return;
+		}
+		CommandHistory().NewCommand<CCmdSetGraphAttribute>(
+			attribute_index,
+			(int)new_root_node_index);
 	}
 
 	void CJassEditor::GenerateJustifiedGraph()

@@ -116,8 +116,11 @@ namespace jass
 
 	CJassDocument::CJassDocument()
 	{
+		// Standard graph attributes
+		m_GraphModel.AddAttribute(GRAPH_ATTTRIBUTE_ROOT_NODE, -1);
+
 		// Standard node attributes
-		m_GraphModel.AddNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_X);
+		m_GraphModel.AddNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_POSITION);
 
 		connect(&m_Categories, &CCategorySet::CategoriesRemapped, &m_GraphModel, &CGraphModel::OnCatagoriesRemapped);
 	}
@@ -126,10 +129,5 @@ namespace jass
 	{
 		m_ImageData = image_data;
 		m_ImageExtensionNoDot = extension_no_dot;
-	}
-
-	void CJassDocument::SetRootNodeIndex(CGraphModel::node_index_t node_index)
-	{
-		m_RootNodeIndex = node_index;
 	}
 }

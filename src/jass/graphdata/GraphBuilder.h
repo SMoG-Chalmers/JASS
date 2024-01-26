@@ -20,6 +20,10 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <span>
+
+#include <QtCore/qstring.h>
+#include <QtCore/qvariant.h>
+
 #include "GraphDataCommon.h"
 
 namespace jass
@@ -29,6 +33,7 @@ namespace jass
 	public:
 		typedef std::pair<uint32_t, uint32_t> edge_t;
 
+		virtual void SetAttribute(const QString& name, const QVariant& value) = 0;
 		virtual void SetNodeCount(size_t count) = 0;
 		virtual void AddNodeAttribute(const SNodeAttributeDesc& desc, const void* data, size_t size) = 0;
 		virtual void SetEdges(std::span<const edge_t> edges) = 0;
