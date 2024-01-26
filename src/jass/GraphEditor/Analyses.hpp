@@ -53,17 +53,18 @@ namespace jass
 		std::span<const float> MetricValues(size_t index) const;
 
 		template <class TGraph>
-		void EnqueueUpdate(const TGraph& graph);
+		void EnqueueUpdate(const TGraph& graph, size_t root_node_index = (size_t)-1);
+
+		int FindMetricIndex(const QString& name) const;
 
 	Q_SIGNALS:
 		void MetricUpdated(const QString& name, const std::span<const float>& values);
 
 	private Q_SLOTS:
 		void OnMetricDone();
-		void OnAnalysisPassComplete();
+		void OnAnalysisPassComplete(bool cancelled);
 
 	private:
-		int FindMetricIndex(const QString& name) const;
 		void CancelAnalysisPass();
 
 		void StartAnalysisPass();
@@ -79,6 +80,7 @@ namespace jass
 		std::unique_ptr<CAnalysisWorker> m_Worker;
 		std::vector<std::shared_ptr<IAnalysis>> m_Analyses;
 		std::vector<SMetric> m_Metrics;
+		size_t m_PendingRootNodeIndex = (size_t)-1;
 		CImmutableDirectedGraph m_PendingGraph;
 		CImmutableDirectedGraph m_BusyGraph;
 	};
@@ -90,7 +92,7 @@ namespace jass
 	}
 
 	template <class TGraph>
-	void CAnalyses::EnqueueUpdate(const TGraph& graph)
+	void CAnalyses::EnqueueUpdate(const TGraph& graph, size_t root_node_index)
 	{
 		if (!m_UpdateIsPending)
 		{
@@ -101,6 +103,7 @@ namespace jass
 			}
 		}
 
+		m_PendingRootNodeIndex = root_node_index;
 		m_PendingGraph.CopyView(graph);
 		m_UpdateIsPending = true;
 

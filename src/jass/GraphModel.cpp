@@ -40,8 +40,41 @@ namespace jass
 		m_NodeNames.resize(new_node_count);
 		m_NodePositions.resize(new_node_count);
 		m_NodeCategories.resize(new_node_count, NO_CATEGORY);
+		for (auto& node_attribute : m_NodeAttributes)
+		{
+			node_attribute.second->Resize(new_node_count);
+		}
+		
 		m_FirstEdgePerNode.resize(new_node_count + 1, m_FirstEdgePerNode.back());  // has one extra element!
+
 		return (CGraphModel::node_index_t)(new_node_count - count);
+	}
+
+	size_t CGraphModel::NodeAttributeCount() const
+	{
+		return m_NodeAttributes.size();
+	}
+
+	const CNodeAttributeBase& CGraphModel::NodeAttribute(size_t index, QString* out_name) const
+	{
+		const auto& node_attribute = m_NodeAttributes[index];
+		if (out_name)
+		{
+			*out_name = node_attribute.first;
+		}
+		return *node_attribute.second;
+	}
+
+	CNodeAttributeBase* CGraphModel::FindNodeAttribute(const QString& name)
+	{
+		for (auto& node_attribute : m_NodeAttributes)
+		{
+			if (node_attribute.first == name)
+			{
+				return node_attribute.second.get();
+			}
+		}
+		return nullptr;
 	}
 
 	void CGraphModel::BeginModifyNodes()
@@ -82,6 +115,10 @@ namespace jass
 		expand(m_NodePositions, new_node_indices);
 		expand(m_NodeCategories, new_node_indices);
 		expand(m_FirstEdgePerNode, new_node_indices, (node_index_t)-1);
+		for (auto& node_attribute : m_NodeAttributes)
+		{
+			node_attribute.second->Expand(new_node_indices);
+		}
 
 		for (auto& new_node : new_nodes)
 		{
@@ -128,6 +165,10 @@ namespace jass
 		collapse(m_NodePositions, node_indices);
 		collapse(m_NodeCategories, node_indices);
 		collapse(m_FirstEdgePerNode, node_indices);
+		for (auto& node_attribute : m_NodeAttributes)
+		{
+			node_attribute.second->Collapse(node_indices);
+		}
 
 		// Remap
 		{

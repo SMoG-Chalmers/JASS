@@ -89,6 +89,8 @@ namespace jass
 
 		CCategorySet& Categories();
 
+		CAnalyses& Analyses();
+
 		CGraphSelectionModel& SelectionModel();
 
 		inline qapp::CCommandHistory& CommandHistory() { return *m_CommandHistory; }
@@ -107,6 +109,8 @@ namespace jass
 		void OnRemoveCategories(const QModelIndexList& indexes);
 		void OnAddCategory(const QString& name, QRgb color, EShape shape);
 		void OnModifyCategory(int index, const QString& name, QRgb color, EShape shape);
+		void SetSelectedNodeAsRoot();
+		void GenerateJustifiedGraph();
 
 	private:
 		CJassDocument& m_Document;
@@ -157,7 +161,9 @@ namespace jass
 
 		struct SActions
 		{
+			QAction* SetRoot = 0;
 			QAction* ShowJustified = 0;
+			QAction* GenerateJustified = 0;
 			QAction* FlipHorizontal = 0;
 			QAction* FlipVertical = 0;
 			QAction* AddImage = 0;
@@ -167,7 +173,9 @@ namespace jass
 
 		struct SActionHandles
 		{
+			qapp::HAction SetRoot = 0;
 			qapp::HAction ShowJustified = 0;
+			qapp::HAction GenerateJustified = 0;
 			qapp::HAction FlipHorizontal = 0;
 			qapp::HAction FlipVertical = 0;
 			qapp::HAction AddImage = 0;

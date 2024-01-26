@@ -23,8 +23,9 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <QtCore/qvariant.h>
 
 // Standard graph node attribute names
-#define GRAPH_NODE_ATTTRIBUTE_POSITION "position"
-#define GRAPH_NODE_ATTTRIBUTE_CATEGORY "category"
+#define GRAPH_NODE_ATTTRIBUTE_POSITION    "position"
+#define GRAPH_NODE_ATTTRIBUTE_CATEGORY    "category"
+#define GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_X "justified-x"
 
 namespace jass
 {

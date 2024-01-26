@@ -49,6 +49,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/graphdata/GraphModelSubGraphView.h>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
+#include <jass/ui/GraphWidget/JustifiedEdgeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/JustifiedNodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/ImageGraphLayer.hpp>
@@ -64,6 +65,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include "GraphClipboardData.h"
 #include "GraphTool.h"
 #include "JassEditor.hpp"
+#include "JustifiedGraph.h"
 
 #define RES_PATH_PREFIX ":/"
 
@@ -137,7 +139,10 @@ namespace jass
 
 		s_JustifiedSelectionTool.reset(new CSelectionTool);
 
-		s_ActionHandles.ShowJustified = action_manager.NewAction(nullptr, "Show Justified Graph", ":/justified_graph.png", QKeySequence(Qt::CTRL + Qt::Key_J), false, &s_Actions.ShowJustified); 
+		s_ActionHandles.SetRoot           = action_manager.NewAction(nullptr, "Set Root",                 ":/set_root.png",        QKeySequence(Qt::CTRL + Qt::Key_R), false, &s_Actions.SetRoot);
+		s_ActionHandles.ShowJustified     = action_manager.NewAction(nullptr, "Show Justified Graph",     ":/show_jgraph.png",     QKeySequence(), false, &s_Actions.ShowJustified);
+		s_ActionHandles.GenerateJustified = action_manager.NewAction(nullptr, "Generate Justified Graph", ":/generate_jgraph.png", QKeySequence(Qt::CTRL + Qt::Key_J), false, &s_Actions.GenerateJustified);
+
 		s_Actions.ShowJustified->setCheckable(true);
 		s_Actions.ShowJustified->setChecked(false);
 		s_ActionHandles.FlipHorizontal = action_manager.NewAction(nullptr, "Flip Horizontal",         ":/flip_horizontal.png", QKeySequence(Qt::Key_H), false, &s_Actions.FlipHorizontal);
@@ -158,7 +163,9 @@ namespace jass
 		s_Toolbar->addAction(s_Actions.AddImage);
 		s_Toolbar->addAction(s_Actions.RemoveImage);
 		s_Toolbar->addSeparator();
+		s_Toolbar->addAction(s_Actions.SetRoot);
 		s_Toolbar->addAction(s_Actions.ShowJustified);
+		s_Toolbar->addAction(s_Actions.GenerateJustified);
 		s_Toolbar->setVisible(false);
 
 		s_CategoryView = &main_window->CategoryView();
@@ -254,13 +261,18 @@ namespace jass
 		m_JustifiedGraphWidget->EnableTooltips();
 
 		{
-			auto justified_node_layer = std::make_unique<CJustifiedNodeGraphLayer>(*m_JustifiedGraphWidget, *this);
-			m_JustifiedGraphWidget->AppendLayer(std::move(justified_node_layer));
+			auto layer = std::make_unique<CJustifiedEdgeGraphLayer>(*m_JustifiedGraphWidget, DataModel(), SelectionModel());
+			m_JustifiedGraphWidget->AppendLayer(std::move(layer));
 		}
 
 		{
-			auto tool_layer = std::make_unique<CGraphToolLayer>(*m_JustifiedGraphWidget, *this);
-			m_JustifiedGraphWidget->AppendLayer(std::move(tool_layer));
+			auto layer = std::make_unique<CJustifiedNodeGraphLayer>(*m_JustifiedGraphWidget, *this);
+			m_JustifiedGraphWidget->AppendLayer(std::move(layer));
+		}
+
+		{
+			auto layer = std::make_unique<CGraphToolLayer>(*m_JustifiedGraphWidget, *this);
+			m_JustifiedGraphWidget->AppendLayer(std::move(layer));
 		}
 
 		return std::unique_ptr<QWidget>(m_SplitWidget);
@@ -292,6 +304,8 @@ namespace jass
 			ctx.Enable(qapp::s_StandardActionHandles.Duplicate);
 			ctx.Enable(s_ActionHandles.FlipHorizontal);
 			ctx.Enable(s_ActionHandles.FlipVertical);
+			ctx.Enable(s_ActionHandles.SetRoot);
+			ctx.Enable(s_ActionHandles.GenerateJustified);
 		}
 
 		ctx.Enable(s_ActionHandles.AddImage);
@@ -328,6 +342,21 @@ namespace jass
 		else if (action_handle == s_ActionHandles.ShowJustified)
 		{
 			m_JustifiedGraphWidget->setVisible(s_Actions.ShowJustified->isChecked());
+			return true;
+		}
+		else if (action_handle == s_ActionHandles.GenerateJustified)
+		{
+			GenerateJustifiedGraph();
+			if (!m_JustifiedGraphWidget->isVisible())
+			{
+				m_JustifiedGraphWidget->setVisible(true);
+				s_Actions.ShowJustified->setChecked(true);
+			}
+			return true;
+		}
+		else if (action_handle == s_ActionHandles.SetRoot)
+		{
+			SetSelectedNodeAsRoot();
 			return true;
 		}
 		else if (action_handle == s_ActionHandles.FlipHorizontal || action_handle == s_ActionHandles.FlipVertical)
@@ -510,6 +539,11 @@ namespace jass
 		return m_Document.Categories();
 	}
 
+	CAnalyses& CJassEditor::Analyses()
+	{
+		return *m_Analyses;
+	}
+
 	CGraphSelectionModel& CJassEditor::SelectionModel()
 	{
 		return *m_SelectionModel;
@@ -589,6 +623,13 @@ namespace jass
 			}
 			contextMenu.addSeparator();
 			contextMenu.addMenu(category_menu);
+
+			contextMenu.addSeparator();
+
+			if (SelectionModel().SelectedNodeCount() == 1)
+			{
+				contextMenu.addAction(s_Actions.SetRoot);
+			}
 		}
 
 		contextMenu.exec(m_GraphWidget->mapToGlobal(pos));
@@ -596,7 +637,8 @@ namespace jass
 
 	void CJassEditor::UpdateAnalyses()
 	{
-		m_Analyses->EnqueueUpdate(CGraphModelImmutableDirectedGraphAdapter(DataModel()));
+		const size_t root_node_index = (m_Document.RootNodeIndex() == CGraphModel::NO_NODE) ? (size_t)-1 : (size_t)m_Document.RootNodeIndex();
+		m_Analyses->EnqueueUpdate(CGraphModelImmutableDirectedGraphAdapter(DataModel()), root_node_index);
 	}
 
 	void CJassEditor::OnRemoveCategories(const QModelIndexList& indexes)
@@ -618,6 +660,48 @@ namespace jass
 	void CJassEditor::OnModifyCategory(int index, const QString& name, QRgb color, EShape shape)
 	{
 		CommandHistory().NewCommand<CCmdModifyCategory>((size_t)index, name, color, shape);
+	}
+
+	void CJassEditor::SetSelectedNodeAsRoot()
+	{
+		// Get first selected node
+		CGraphModel::node_index_t new_root_node_index = CGraphModel::NO_NODE;
+		SelectionModel().NodeMask().for_each_set_bit([&](auto node_index)
+			{
+				new_root_node_index = (CGraphModel::node_index_t)node_index;
+			});
+		if (CGraphModel::NO_NODE == new_root_node_index || m_Document.RootNodeIndex() == new_root_node_index)
+		{
+			return;
+		}
+		m_Document.SetRootNodeIndex(new_root_node_index);
+		UpdateAnalyses();
+	}
+
+	void CJassEditor::GenerateJustifiedGraph()
+	{
+		auto* jposition_attribute = TryGetJPositionNodeAttribute(DataModel());
+		if (!jposition_attribute)
+		{
+			return;
+		}
+
+		const auto depth_metric_index = m_Analyses->FindMetricIndex("Depth");
+		if (depth_metric_index < 0)
+		{
+			return;
+		}
+
+		std::vector<JPosition_NodeAttribute_t::value_t> jpositions(DataModel().NodeCount());
+
+		jass::GenerateJustifiedGraph(DataModel(), SelectionModel().NodeMask(), m_Analyses->MetricValues(depth_metric_index), jpositions);
+		
+		jposition_attribute->BeginModify();
+		for (size_t node_index = 0; node_index < jpositions.size(); ++node_index)
+		{
+			jposition_attribute->SetValue(node_index, jpositions[node_index]);
+		}
+		jposition_attribute->EndModify();
 	}
 
 	void CJassEditor::OnSelectTool(int tool_index)

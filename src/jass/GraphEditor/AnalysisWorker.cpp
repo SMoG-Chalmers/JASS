@@ -26,13 +26,14 @@ namespace jass
 	
 	CAnalysisWorker::~CAnalysisWorker() {}
 
-	void CAnalysisWorker::BeginAnalysisPass(const CImmutableDirectedGraph& graph, std::span<std::shared_ptr<IAnalysis>> analyses)
+	void CAnalysisWorker::BeginAnalysisPass(const CImmutableDirectedGraph& graph, size_t root_node_index, std::span<std::shared_ptr<IAnalysis>> analyses)
 	{
 		ASSERT(!Busy());
 
 		m_Cancelled = false;
 
 		m_Graph = &graph;
+		m_RootNodeIndex = root_node_index;
 
 		m_Analyses.clear();
 		for (auto& analysis : analyses)
@@ -84,6 +85,11 @@ namespace jass
 		return *m_Graph;
 	}
 
+	size_t CAnalysisWorker::RootNodeIndex() const
+	{
+		return m_RootNodeIndex;
+	}
+
 	std::vector<float> CAnalysisWorker::NewMetricVector()
 	{
 		{
@@ -124,7 +130,7 @@ namespace jass
 
 		m_Graph = nullptr;
 
-		emit AnalysisPassComplete();
+		emit AnalysisPassComplete(m_Cancelled);
 	}
 }
 

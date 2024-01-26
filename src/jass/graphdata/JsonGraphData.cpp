@@ -43,6 +43,16 @@ namespace jass
 				}
 			}
 			break;
+		case (QVariant::Type)qapp::QVariantEx::Float:
+			{
+				std::vector<float> data(graph_view.NodeCount());
+				graph_view.GetNodeAttributeData(node_attribute_index, to_span(data));
+				for (auto value : data)
+				{
+					arr.append(value);
+				}
+			}
+			break;
 		case QVariant::PointF:
 			{
 				std::vector<QPointF> data(graph_view.NodeCount());
@@ -133,6 +143,17 @@ namespace jass
 						data[i] = dataArray[i].toInt();
 					}
 					gbuilder.AddNodeAttribute(desc, data.data(), data.size() * sizeof(uint32_t));
+				}
+				break;
+			case (QVariant::Type)qapp::QVariantEx::Float:
+				{
+					verify_node_attribute_array_size(node_count);
+					std::vector<float> data(node_count);
+					for (int i = 0; i < (int)node_count; ++i)
+					{
+						data[i] = (float)dataArray[i].toDouble();
+					}
+					gbuilder.AddNodeAttribute(desc, data.data(), data.size() * sizeof(float));
 				}
 				break;
 			case QVariant::PointF:

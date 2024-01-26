@@ -19,27 +19,17 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <vector>
-#include <QtCore/qstring.h>
+#include "GraphModel.hpp"
 
 namespace jass
 {
-	class IAnalysisContext;
-	class CImmutableDirectedGraph;
-
-	class IAnalysis
+	CNodeAttributeBase::CNodeAttributeBase(CGraphModel& graph_model, QVariant::Type type)
+		: m_GraphModel(graph_model)
+		, m_Type(type)
 	{
-	public:
-		virtual ~IAnalysis() {}
-		virtual void RunAnalysis(IAnalysisContext& ctx) = 0;
-	};
-
-	class IAnalysisContext
+	}
+	
+	CNodeAttributeBase::~CNodeAttributeBase() 
 	{
-	public:
-		virtual const CImmutableDirectedGraph& ImmutableDirectedGraph() const = 0;
-		virtual size_t RootNodeIndex() const = 0;
-		virtual std::vector<float> NewMetricVector() = 0;
-		virtual void OutputMetric(const QString& name, std::vector<float>&& values) = 0;
-	};
+	}
 }

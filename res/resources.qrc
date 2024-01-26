@@ -13,6 +13,8 @@
   <file alias="add.png"            >../external/fatcow/16x16/add.png</file>
   <file alias="remove.png"         >../external/fatcow/16x16/delete.png</file>
   <file alias="categories.png"     >../external/fatcow/16x16/palette.png</file>
-  <file alias="justified_graph.png">../external/fatcow/16x16/node.png</file>
+  <file alias="set_root.png"       >actions/set_root.png</file>
+  <file alias="show_jgraph.png"    >../external/fatcow/16x16/node.png</file>
+  <file alias="generate_jgraph.png">actions/generate_jgraph.png</file>
 </qresource>
 </RCC>

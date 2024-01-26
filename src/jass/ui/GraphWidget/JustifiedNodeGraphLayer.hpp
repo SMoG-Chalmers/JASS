@@ -21,6 +21,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <vector>
 #include <jass/GraphModel.hpp>
+#include <jass/StandardNodeAttributes.h>
 #include "SpriteGraphLayer.h"
 #include "NodeSpriteSet.h"
 
@@ -31,6 +32,7 @@ namespace qapp
 
 namespace jass
 {
+	class CAnalyses;
 	class CCategorySet;
 	class CJassEditor;
 	class CJassDocument;
@@ -44,6 +46,8 @@ namespace jass
 		// CSpriteGraphLayer overrides
 		QPoint ItemPosition(element_t element) const override;
 		size_t ItemSpriteIndex(element_t element) const override;
+		void   DrawItem(element_t element, QPainter& painter, const QRect& rc) const override;
+
 
 		inline CNodeSpriteSet& Sprites() { return m_Sprites; }
 
@@ -72,7 +76,9 @@ namespace jass
 
 		CGraphModel& m_GraphModel;
 		CGraphSelectionModel& m_SelectionModel;
+		CAnalyses& m_Analyses;
 		qapp::CCommandHistory& m_CommandHistory;
+		JPosition_NodeAttribute_t* m_JPositionNodeAttribute = nullptr;;
 
 		CNodeSpriteSet m_Sprites;
 		bitvec m_SelectionMask;

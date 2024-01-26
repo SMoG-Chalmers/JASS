@@ -21,7 +21,8 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <jass/math/Geometry.h>
 #include <jass/utils/range_utils.h>
-#include <jass/commands/CmdMoveNodes.h>
+#include <jass/commands/CmdSetNodeAttributes.h>
+#include <jass/GraphEditor/Analyses.hpp>
 #include <jass/GraphEditor/JassEditor.hpp>
 
 #include "JustifiedNodeGraphLayer.hpp"
@@ -32,20 +33,31 @@ namespace jass
 		: CSpriteGraphLayer(graphWidget, &m_Sprites)
 		, m_GraphModel(editor.DataModel())
 		, m_SelectionModel(editor.SelectionModel())
+		, m_Analyses(editor.Analyses())
 		, m_CommandHistory(editor.CommandHistory())
 		, m_Sprites(editor.Categories())
 	{
+		m_JPositionNodeAttribute = TryGetJPositionNodeAttribute(m_GraphModel);
 		connect(&m_SelectionModel, &CGraphSelectionModel::SelectionChanged, this, &CJustifiedNodeGraphLayer::OnSelectionChanged);
 		connect(&m_GraphModel, &CGraphModel::NodesRemoved, this, &CJustifiedNodeGraphLayer::OnNodesRemoved);
 		connect(&m_GraphModel, &CGraphModel::NodesInserted, this, &CJustifiedNodeGraphLayer::OnNodesInserted);
 		connect(&m_GraphModel, &CGraphModel::NodesModified, this, &CJustifiedNodeGraphLayer::OnNodesModified);
-
 		RebuildNodes();
 	}
 
 	QPoint CJustifiedNodeGraphLayer::ItemPosition(element_t element) const
 	{
-		return QPointFromRoundedQPointF(GraphWidget().ScreenFromModel(m_GraphModel.NodePosition((CGraphModel::node_index_t)element)));
+		if (m_JPositionNodeAttribute)
+		{
+			auto pos = m_JPositionNodeAttribute->Value(element);
+			if (pos.y() >= 0)
+			{
+				//pos = pos * 50;
+				return QPointFromRoundedQPointF(GraphWidget().ScreenFromModel(pos));
+			}
+		}
+		// Invalid
+		return QPoint(-12345, -12345);
 	}
 
 	size_t CJustifiedNodeGraphLayer::ItemSpriteIndex(element_t element) const
@@ -59,6 +71,15 @@ namespace jass
 		else
 			style = CNodeSpriteSet::EStyle::Normal;
 		return m_Sprites.SpriteIndex(m_GraphModel.NodeCategory(node_index), style);
+	}
+
+	void CJustifiedNodeGraphLayer::DrawItem(element_t element, QPainter& painter, const QRect& rc) const
+	{
+		if (!m_JPositionNodeAttribute || m_JPositionNodeAttribute->Value(element).y() < 0)
+		{
+			return;
+		}
+		CSpriteGraphLayer::DrawItem(element, painter, rc);
 	}
 
 	void CJustifiedNodeGraphLayer::SetHilighted(element_t element, bool hilighted)
@@ -100,7 +121,8 @@ namespace jass
 
 	bool CJustifiedNodeGraphLayer::CanMoveElements() const
 	{
-		return true;
+		ASSERT(m_JPositionNodeAttribute);
+		return nullptr != m_JPositionNodeAttribute;
 	}
 
 	void CJustifiedNodeGraphLayer::BeginMoveElements(const bitvec& element_mask)
@@ -110,42 +132,44 @@ namespace jass
 		m_TempPoints.reserve(m_TempSelectionMask.count_set_bits());
 		element_mask.for_each_set_bit([&](size_t node_index)
 			{
-				m_TempPoints.push_back(m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index));
+				m_TempPoints.push_back(m_JPositionNodeAttribute->Value(node_index));
 			});
 	}
 
 	void CJustifiedNodeGraphLayer::MoveElements(const QPoint& delta)
 	{
-		QPointF delta_move_model = QPointF(delta) * GraphWidget().ScreenToModelScale();
-		delta_move_model.setY(0);
+		ASSERT(m_JPositionNodeAttribute);
 
-		m_GraphModel.BeginModifyNodes();
+		const QPointF delta_move(GraphWidget().ScreenToModelScale() * delta.x(), 0);
+
+		m_JPositionNodeAttribute->BeginModify();
 		m_MoveElementMask.for_each_set_bit([&](size_t node_index)
 			{
-				const auto new_pos = m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index) + delta_move_model;
-				m_GraphModel.SetNodePosition((CGraphModel::node_index_t)node_index, new_pos);
+				m_JPositionNodeAttribute->SetValue(node_index, m_JPositionNodeAttribute->Value(node_index) + delta_move);
 			});
-		m_GraphModel.EndModifyNodes();
+		m_JPositionNodeAttribute->EndModify();
 	}
 
 	void CJustifiedNodeGraphLayer::EndMoveElements(bool apply)
 	{
+		ASSERT(m_JPositionNodeAttribute);
+		
 		{
-			m_GraphModel.BeginModifyNodes();
+			m_JPositionNodeAttribute->BeginModify();
 			size_t n = 0;
 			m_MoveElementMask.for_each_set_bit([&](size_t node_index)
 				{
-					const auto position = m_GraphModel.NodePosition((CGraphModel::node_index_t)node_index);
-					m_GraphModel.SetNodePosition((CGraphModel::node_index_t)node_index, m_TempPoints[n]);
-					m_TempPoints[n] = position;
+					const auto temp = m_JPositionNodeAttribute->Value(node_index);
+					m_JPositionNodeAttribute->SetValue(node_index, m_TempPoints[n]);
+					m_TempPoints[n] = temp;
 					++n;
 				});
-			m_GraphModel.EndModifyNodes();
+			m_JPositionNodeAttribute->EndModify();
 		}
 
 		if (apply)
 		{
-			m_CommandHistory.NewCommand<CCmdMoveNodes>(m_GraphModel, m_MoveElementMask, to_const_span(m_TempPoints));
+			m_CommandHistory.NewCommand<CCmdSetNodeAttributes<JPosition_NodeAttribute_t::value_t>>(m_JPositionNodeAttribute, m_MoveElementMask, to_const_span(m_TempPoints));
 		}
 	}
 

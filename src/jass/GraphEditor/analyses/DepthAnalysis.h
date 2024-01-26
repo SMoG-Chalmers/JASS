@@ -19,27 +19,20 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <vector>
-#include <QtCore/qstring.h>
+#include <memory>
+#include "../Analysis.h"
 
 namespace jass
 {
-	class IAnalysisContext;
-	class CImmutableDirectedGraph;
-
-	class IAnalysis
+	class CDepthAnalysis : public IAnalysis
 	{
 	public:
-		virtual ~IAnalysis() {}
-		virtual void RunAnalysis(IAnalysisContext& ctx) = 0;
-	};
+		CDepthAnalysis();
+		~CDepthAnalysis();
 
-	class IAnalysisContext
-	{
-	public:
-		virtual const CImmutableDirectedGraph& ImmutableDirectedGraph() const = 0;
-		virtual size_t RootNodeIndex() const = 0;
-		virtual std::vector<float> NewMetricVector() = 0;
-		virtual void OutputMetric(const QString& name, std::vector<float>&& values) = 0;
+		void RunAnalysis(IAnalysisContext& ctx) override;
+	private:
+		class CMyBfsTraversal;
+		std::unique_ptr<CMyBfsTraversal> m_BfsTraversal;
 	};
 }

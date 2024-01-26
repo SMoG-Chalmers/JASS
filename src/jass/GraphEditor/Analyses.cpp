@@ -6,6 +6,7 @@
 #include "Analyses.hpp"
 #include "AnalysisWorker.hpp"
 
+#include "analyses/DepthAnalysis.h"
 #include "analyses/IntegrationAnalysis.h"
 
 namespace jass
@@ -16,6 +17,7 @@ namespace jass
 		connect(m_Worker.get(), &CAnalysisWorker::MetricDone, this, &CAnalyses::OnMetricDone, Qt::QueuedConnection);
 		connect(m_Worker.get(), &CAnalysisWorker::AnalysisPassComplete, this, &CAnalyses::OnAnalysisPassComplete, Qt::QueuedConnection);
 
+		AddAnalysis(std::make_shared<CDepthAnalysis>());
 		AddAnalysis(std::make_shared<CIntegrationAnalysis>());
 	}
 
@@ -73,7 +75,7 @@ namespace jass
 		}
 	}
 
-	void CAnalyses::OnAnalysisPassComplete()
+	void CAnalyses::OnAnalysisPassComplete(bool cancelled)
 	{
 		// Make sure we are on correct thread
 		ASSERT(thread() == QThread::currentThread());
@@ -85,6 +87,17 @@ namespace jass
 		{
 			StartAnalysisPass();
 			ASSERT(!m_UpdateIsPending);
+			return;
+		}
+
+		// Remove all metrics that weren't updated, since that means those are no longer applicable.
+		for (size_t metric_index = 0; metric_index < m_Metrics.size(); ++metric_index)
+		{
+			if (m_Metrics[metric_index].Values.empty())
+			{
+				m_Metrics.erase(m_Metrics.begin() + metric_index);
+				--metric_index;
+			}
 		}
 	}
 
@@ -117,7 +130,7 @@ namespace jass
 		m_UpdateIsPending = false;
 		std::swap(m_PendingGraph, m_BusyGraph);
 
-		m_Worker->BeginAnalysisPass(m_BusyGraph, m_Analyses);
+		m_Worker->BeginAnalysisPass(m_BusyGraph, m_PendingRootNodeIndex, m_Analyses);
 	}
 }
 

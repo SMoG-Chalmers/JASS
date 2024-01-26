@@ -36,8 +36,12 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/Debug.h>
 #include <jass/Shape.h>
 
+#include "NodeAttribute.h"
+
 namespace jass
 {
+	class CGraphModel;
+
 	struct SNodeDesc
 	{
 		uint32_t Index;
@@ -67,9 +71,11 @@ namespace jass
 		typedef std::span<const edge_index_t> const_edge_indices_t;
 		typedef std::span<const node_index_t> node_remap_table_t;
 		typedef std::span<const node_pair_t> const_node_pairs_t;
+		typedef void* node_attribute_t;
 
 		static const node_index_t NO_NODE;
 		static const category_index_t NO_CATEGORY;
+		static const node_attribute_t INVALID_NODE_ATTRIBUTE;
 
 		struct SCategory
 		{
@@ -84,6 +90,15 @@ namespace jass
 		inline node_index_t EdgeCount() const { return (node_index_t)m_NeighboursPerNode.size() >> 1; }
 
 		node_index_t AddNodes(size_t count);
+
+		template <class T>
+		CNodeAttribute<T>& AddNodeAttribute(const QString& name);
+
+		size_t NodeAttributeCount() const;
+
+		const CNodeAttributeBase& NodeAttribute(size_t index, QString* out_name = nullptr) const;
+
+		CNodeAttributeBase* FindNodeAttribute(const QString& name);
 
 		void BeginModifyNodes();
 		
@@ -100,7 +115,7 @@ namespace jass
 		inline const QString& NodeName(node_index_t node_index) const;
 
 		inline void SetNodeName(node_index_t node_index, const QString& name);
-
+		
 		inline std::span<const node_index_t> NodeNeighbours(node_index_t node_index) const;
 
 		template <class TLambda> void ForEachEdgeFromNode(node_index_t node_index, TLambda&&) const;
@@ -121,6 +136,13 @@ namespace jass
 
 		inline node_pair_t EdgeNodePair(edge_index_t edge_index) const;
 
+		template <class T>
+		inline CNodeAttribute<T>* TryGetNodeAttribute(const QString& name);
+
+		inline void SetNodeModified(node_index_t node_index) { VerifyModifyingNodes(); m_NodeModificationMask.set(node_index); }
+
+		inline void VerifyModifyingNodes() const { ASSERT(m_NodeModificationCounter > 0); }
+
 	Q_SIGNALS:
 		void NodesInserted(const const_node_indices_t& node_indices, const node_remap_table_t& remap_table);
 		void NodesRemoved(const const_node_indices_t& node_indices, const node_remap_table_t& remap_table);
@@ -138,12 +160,11 @@ namespace jass
 
 		void RebuildNeighbourTables(const std::span<const node_pair_t>& edges);
 
-		inline void SetNodeModified(node_index_t node_index) { VerifyModifyingNodes(); m_NodeModificationMask.set(node_index); }
-		inline void VerifyModifyingNodes() const { ASSERT(m_NodeModificationCounter > 0); }
-
 		static void RebuildEdgeMap(edge_map_t& edge_map, const const_node_pairs_t& node_pairs);
 
 		inline static edge_key_t MakeEdgeMapKey(const node_pair_t& node_pair);
+
+		std::vector<std::pair<QString, std::unique_ptr<CNodeAttributeBase>>> m_NodeAttributes;
 
 		std::vector<QString> m_NodeNames;
 		std::vector<position_t> m_NodePositions;
@@ -361,5 +382,42 @@ namespace jass
 		VerifyModifying();
 		m_IsModifying = false;
 		emit SelectionChanged();
+	}
+}
+
+#include "NodeAttributeImpl.h"
+
+namespace jass
+{
+	template <class T>
+	CNodeAttribute<T>& CGraphModel::AddNodeAttribute(const QString& name)
+	{
+		CNodeAttribute<T>* attribute_ptr = nullptr;
+		{
+			auto node_attribute = std::make_unique<CNodeAttribute<T>>(*this);
+			static_cast<CNodeAttributeBase*>(node_attribute.get())->Resize(NodeCount());
+			attribute_ptr = node_attribute.get();
+			m_NodeAttributes.push_back({ name, std::move(node_attribute) });
+		}
+		return *attribute_ptr;
+	}
+
+	template <class T>
+	inline CNodeAttribute<T>* CGraphModel::TryGetNodeAttribute(const QString& name)
+	{
+		for (const auto& node_attribute : m_NodeAttributes)
+		{
+			if (node_attribute.first != name)
+			{
+				continue;
+			}
+			if (node_attribute.second->Type() != qapp::QVariantType<T>())
+			{
+				// TODO: Warn?
+				continue;
+			}
+			return static_cast<CNodeAttribute<T>*>(node_attribute.second.get());
+		}
+		return nullptr;
 	}
 }

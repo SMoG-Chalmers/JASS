@@ -71,10 +71,15 @@ namespace jass
 
 		inline const QString& ImageExtensionNoDot() const { return m_ImageExtensionNoDot; }
 
+		inline CGraphModel::node_index_t RootNodeIndex() const { return m_RootNodeIndex; }
+
+		void SetRootNodeIndex(CGraphModel::node_index_t node_index);
+
 	private:
 		CGraphModel m_GraphModel;
 		QByteArray m_ImageData;
 		QString m_ImageExtensionNoDot;
 		CCategorySet m_Categories;
+		CGraphModel::node_index_t m_RootNodeIndex = CGraphModel::NO_NODE;
 	};
 }

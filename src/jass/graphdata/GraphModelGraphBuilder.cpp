@@ -41,6 +41,17 @@ namespace jass
 
 	void CGraphModelGraphBuilder::AddNodeAttribute(const SNodeAttributeDesc& desc, const void* data, size_t size)
 	{
+		if (auto* node_attribute = m_DataModel->FindNodeAttribute(desc.Name))
+		{
+			if (node_attribute->Type() != desc.Type)
+			{
+				LOG_ERROR("Data type mismatch for node attribute '%s'.", desc.Name.toStdString().c_str());
+				return;
+			}
+			node_attribute->Init(data, size);
+			return;
+		}
+
 		if (desc.Name == GRAPH_NODE_ATTTRIBUTE_POSITION)
 		{
 			const auto* pts = (const QPointF*)data;

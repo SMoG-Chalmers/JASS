@@ -40,34 +40,47 @@ namespace jass
 
 	size_t CGraphModelGraphView::NodeAttributeCount() const
 	{
-		return std::size(s_NodeAttributeDescs);
+		return std::size(s_NodeAttributeDescs) + m_DataModel->NodeAttributeCount();
 	}
 
 	SNodeAttributeDesc CGraphModelGraphView::NodeAttributeDesc(size_t index) const
 	{
-		ASSERT(index < std::size(s_NodeAttributeDescs));
-		return s_NodeAttributeDescs[index];
+		if (index < std::size(s_NodeAttributeDescs))
+		{
+			return s_NodeAttributeDescs[index];
+		}
+		QString name;
+		auto& node_attribute = m_DataModel->NodeAttribute(index - std::size(s_NodeAttributeDescs), &name);
+		return { name, node_attribute.Type() };
 	}
 
 	void CGraphModelGraphView::GetNodeAttributeData(size_t index, void* buffer, size_t size) const
 	{
-		if (0 == index)
+		if (index < std::size(s_NodeAttributeDescs))
 		{
-			ASSERT(NodeCount() * sizeof(QPointF) == size);
-			auto* to = (QPointF*)buffer;
-			for (size_t node_index = 0; node_index < m_DataModel->NodeCount(); ++node_index)
+			if (0 == index)
 			{
-				*to++ = m_DataModel->NodePosition((CGraphModel::node_index_t)node_index);
+				ASSERT(NodeCount() * sizeof(QPointF) == size);
+				auto* to = (QPointF*)buffer;
+				for (size_t node_index = 0; node_index < m_DataModel->NodeCount(); ++node_index)
+				{
+					*to++ = m_DataModel->NodePosition((CGraphModel::node_index_t)node_index);
+				}
+			}
+			else if (1 == index)
+			{
+				ASSERT(NodeCount() * sizeof(uint32_t) == size);
+				auto* to = (uint32_t*)buffer;
+				for (size_t node_index = 0; node_index < m_DataModel->NodeCount(); ++node_index)
+				{
+					*to++ = m_DataModel->NodeCategory((CGraphModel::node_index_t)node_index);
+				}
 			}
 		}
-		else if (1 == index)
+		else
 		{
-			ASSERT(NodeCount() * sizeof(uint32_t) == size);
-			auto* to = (uint32_t*)buffer;
-			for (size_t node_index = 0; node_index < m_DataModel->NodeCount(); ++node_index)
-			{
-				*to++ = m_DataModel->NodeCategory((CGraphModel::node_index_t)node_index);
-			}
+			auto& node_attribute = m_DataModel->NodeAttribute(index - std::size(s_NodeAttributeDescs));
+			node_attribute.Copy(buffer, size);
 		}
 	}
 
