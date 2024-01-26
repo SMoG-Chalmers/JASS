@@ -37,17 +37,17 @@ namespace jass
 			return {};
 		}
 
+		// Build vector of selected node indices
+		// TODO: Can we get rid of this?
+		std::vector<CGraphModel::node_index_t> node_indices;
+		node_indices.reserve(selection_model.SelectedNodeCount());
+		selection_model.NodeMask().for_each_set_bit([&](auto node_index)
+			{
+				node_indices.push_back((CGraphModel::node_index_t)node_index);
+			});
+
 		WriteDeleteGraphEdgesOp(ctx.m_Data, [&](auto&& del)
 			{
-				// Build vector of selected node indices
-				// TODO: Can we get rid of this?
-				std::vector<CGraphModel::node_index_t> node_indices;
-				node_indices.reserve(selection_model.SelectedNodeCount());
-				selection_model.NodeMask().for_each_set_bit([&](auto node_index) 
-					{ 
-						node_indices.push_back((CGraphModel::node_index_t)node_index); 
-					});
-
 				// Build list of edges from selected nodes
 				std::vector<CGraphModel::edge_index_t> edge_indices;
 				for (auto node_index0 : node_indices)
@@ -83,15 +83,7 @@ namespace jass
 				}
 			});
 
-		WriteDeleteGraphNodesOp(ctx.m_Data, [&](auto&& del)
-			{
-				selection_model.NodeMask().for_each_set_bit([&](auto node_index)
-					{
-						const auto category = data_model.NodeCategory((CGraphModel::node_index_t)node_index);
-						const auto pos = data_model.NodePosition((CGraphModel::node_index_t)node_index);
-						del((CGraphModel::node_index_t)node_index, category, pos.x(), pos.y());
-					});
-			});
+		WriteDeleteGraphNodesOp(ctx.m_Data, data_model, node_indices);
 
 		return std::make_optional<CCmdDeleteGraphElements>();
 	}

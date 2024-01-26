@@ -79,7 +79,88 @@ namespace jass
 
 	void DeleteGraphNodesProcessor(qapp::IEditor& editor, qapp::EOperation op, std::istream& in, std::streamsize size)
 	{
-		InsertGraphNodesProcessor(editor, qapp::EOperation_Do == op ? qapp::EOperation_Undo : qapp::EOperation_Do, in, size);
+		auto* jass_editor = dynamic_cast<CJassEditor*>(&editor);
+		ASSERT(jass_editor);
+		auto& data_model = jass_editor->DataModel();
+
+		// Read node indices
+		const auto node_count = qapp::tread<CGraphModel::node_index_t>(in);
+		std::vector<CGraphModel::node_index_t> node_indices(node_count);
+		in.read((char*)node_indices.data(), node_indices.size() * sizeof(CGraphModel::node_index_t));
+
+		if (qapp::EOperation_Do == op)
+		{
+			data_model.RemoveNodes(node_indices);
+		}
+		else
+		{
+			{
+				std::vector<SNodeDesc> node_descs(node_count);
+				size_t n = 0;
+				qapp::for_each_in_stream<CGraphModel::category_index_t>(in, node_count, [&](auto category)
+					{
+						node_descs[n].Index = node_indices[n];
+				node_descs[n].Category = category;
+				++n;
+					});
+				n = 0;
+				qapp::for_each_in_stream<QPointF>(in, node_count, [&](const auto& pos)
+					{
+						node_descs[n++].PositionF = pos;
+					});
+				data_model.InsertNodes(node_descs);
+			}
+			
+			data_model.BeginModifyNodes();
+			for (size_t attribute_index = 0; attribute_index < data_model.NodeAttributeCount(); ++attribute_index)
+			{
+				auto& node_attribute = data_model.NodeAttribute(attribute_index);
+				switch (node_attribute.Type())
+				{
+				case QVariant::PointF:
+					for (const auto node_index : node_indices)
+					{
+						node_attribute.SetValue<QPointF>(node_index, qapp::tread<QPointF>(in));
+					}
+					break;
+				default:
+					throw std::runtime_error("Unsupported node attribute type");
+				}
+			}
+			data_model.EndModifyNodes();
+		}
+	}
+
+	void WriteDeleteGraphNodesOp(std::ostream& out, const CGraphModel& graph_model, const std::span<const CGraphModel::node_index_t>& node_indices)
+	{
+		WriteOperation(out, DeleteGraphNodesProcessor, [&](std::ostream& out)
+			{
+				qapp::twrite(out, (CGraphModel::node_index_t)node_indices.size());
+				out.write((char*)node_indices.data(), node_indices.size() * sizeof(CGraphModel::node_index_t));
+				for (const auto node_index : node_indices)
+				{
+					qapp::twrite(out, graph_model.NodeCategory(node_index));
+				}
+				for (const auto node_index : node_indices)
+				{
+					qapp::twrite(out, graph_model.NodePosition(node_index));
+				}
+				for (size_t attribute_index = 0; attribute_index < graph_model.NodeAttributeCount(); ++attribute_index)
+				{
+					const auto& node_attribute = graph_model.NodeAttribute(attribute_index);
+					switch (node_attribute.Type())
+					{
+					case QVariant::PointF:
+						for (const auto node_index : node_indices)
+						{
+							qapp::twrite(out, node_attribute.Value<QPointF>(node_index));
+						}
+						break;
+					default:
+						throw std::runtime_error("Unsupported node attribute type");
+					}
+				}
+			});
 	}
 
 	void InsertGraphEdgesProcessor(qapp::IEditor& editor, qapp::EOperation op, std::istream& in, std::streamsize size)

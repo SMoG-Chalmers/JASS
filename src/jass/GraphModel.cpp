@@ -102,7 +102,7 @@ namespace jass
 		return m_NodeAttributes.size();
 	}
 
-	const CNodeAttributeBase& CGraphModel::NodeAttribute(size_t index, QString* out_name) const
+	CNodeAttributeBase& CGraphModel::NodeAttribute(size_t index, QString* out_name)
 	{
 		const auto& node_attribute = m_NodeAttributes[index];
 		if (out_name)
@@ -110,6 +110,11 @@ namespace jass
 			*out_name = node_attribute.first;
 		}
 		return *node_attribute.second;
+	}
+
+	const CNodeAttributeBase& CGraphModel::NodeAttribute(size_t index, QString* out_name) const
+	{
+		return const_cast<CGraphModel*>(this)->NodeAttribute(index, out_name);
 	}
 
 	CNodeAttributeBase* CGraphModel::FindNodeAttribute(const QString& name)

@@ -43,6 +43,12 @@ namespace jass
 
 		virtual void Copy(void* buffer, size_t buffer_size_bytes) const = 0;
 
+		template <class T>
+		inline const T& Value(size_t node_index) const;
+
+		template <class T>
+		inline void SetValue(size_t node_index, const T& value);
+
 	protected:
 		virtual void Resize(size_t count) = 0;
 
@@ -62,9 +68,9 @@ namespace jass
 	public:
 		typedef T value_t;
 
-		inline CNodeAttribute(CGraphModel& graph_model);
+		inline CNodeAttribute(CGraphModel& graph_model, const T& default_value = T());
 
-		inline const T& Value(size_t node_index);
+		inline const T& Value(size_t node_index) const;
 		inline void     SetValue(size_t node_index, const T& value);
 
 		void Init(const void* data, size_t data_size_bytes) override;
@@ -78,5 +84,6 @@ namespace jass
 
 	private:
 		std::vector<T> m_Values;
+		const T m_DefaultValue;
 	};
 }

@@ -42,17 +42,32 @@ namespace jass
 		m_GraphModel.EndModifyNodes();
 	}
 
+	template <class T>
+	inline const T& CNodeAttributeBase::Value(size_t node_index) const
+	{
+		ASSERT(qapp::QVariantType<T>() == m_Type);
+		return static_cast<const CNodeAttribute<T>*>(this)->Value(node_index);
+	}
+
+	template <class T>
+	inline void CNodeAttributeBase::SetValue(size_t node_index, const T& value)
+	{
+		ASSERT(qapp::QVariantType<T>() == m_Type);
+		return static_cast<CNodeAttribute<T>*>(this)->SetValue(node_index, value);
+	}
+
 
 	// CNodeAttribute<T>
 
 	template <class T>
-	inline CNodeAttribute<T>::CNodeAttribute(CGraphModel& graph_model)
+	inline CNodeAttribute<T>::CNodeAttribute(CGraphModel& graph_model, const T& default_value)
 		: CNodeAttributeBase(graph_model, qapp::QVariantType<T>())
+		, m_DefaultValue(default_value)
 	{
 	}
 
 	template <class T>
-	const T& CNodeAttribute<T>::Value(size_t node_index)
+	const T& CNodeAttribute<T>::Value(size_t node_index) const
 	{
 		return m_Values[node_index];
 	}
@@ -81,13 +96,13 @@ namespace jass
 	template <class T>
 	void CNodeAttribute<T>::Resize(size_t count)
 	{
-		m_Values.resize(count);
+		m_Values.resize(count, m_DefaultValue);
 	}
 
 	template <class T>
 	void CNodeAttribute<T>::Expand(const std::span<const node_index_t>& hole_indices)
 	{
-		jass::expand(m_Values, hole_indices);
+		jass::expand(m_Values, hole_indices, m_DefaultValue);
 	}
 
 	template <class T>

@@ -42,6 +42,7 @@ namespace jass
 {
 	class CGraphModel;
 
+	// TODO: Get rid of this
 	struct SNodeDesc
 	{
 		uint32_t Index;
@@ -102,10 +103,11 @@ namespace jass
 		const QVariant& AttributeValue(attribute_index_t index) const;
 
 		template <class T>
-		CNodeAttribute<T>& AddNodeAttribute(const QString& name);
+		CNodeAttribute<T>& AddNodeAttribute(const QString& name, const T& default_value = T());
 
 		size_t NodeAttributeCount() const;
 
+		CNodeAttributeBase& NodeAttribute(size_t index, QString* out_name = nullptr);
 		const CNodeAttributeBase& NodeAttribute(size_t index, QString* out_name = nullptr) const;
 
 		CNodeAttributeBase* FindNodeAttribute(const QString& name);
@@ -130,7 +132,7 @@ namespace jass
 
 		template <class TLambda> void ForEachEdgeFromNode(node_index_t node_index, TLambda&&) const;
 
-		void InsertNodes(const std::span<const SNodeDesc>& nodes);
+		void InsertNodes(const std::span<const SNodeDesc>& nodes);  // TODO: Simply span of indices here instead
 
 		void RemoveNodes(const const_node_indices_t& node_indices);
 
@@ -404,11 +406,11 @@ namespace jass
 namespace jass
 {
 	template <class T>
-	CNodeAttribute<T>& CGraphModel::AddNodeAttribute(const QString& name)
+	CNodeAttribute<T>& CGraphModel::AddNodeAttribute(const QString& name, const T& default_value)
 	{
 		CNodeAttribute<T>* attribute_ptr = nullptr;
 		{
-			auto node_attribute = std::make_unique<CNodeAttribute<T>>(*this);
+			auto node_attribute = std::make_unique<CNodeAttribute<T>>(*this, default_value);
 			static_cast<CNodeAttributeBase*>(node_attribute.get())->Resize(NodeCount());
 			attribute_ptr = node_attribute.get();
 			m_NodeAttributes.push_back({ name, std::move(node_attribute) });

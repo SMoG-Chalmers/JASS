@@ -27,6 +27,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <qapplib/actions/ActionManager.hpp>
 #include <jass/ui/InputEventProcessor.h>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
+#include <jass/GraphModel.hpp>
 #include <jass/Shape.h>
 
 class QActionGroup;
@@ -44,7 +45,6 @@ namespace jass
 	class CAnalyses;
 	class CCategorySet;
 	class CCategoryView;
-	class CGraphModel;
 	class CGraphSelectionModel;
 	class CGraphTool;
 	class CGraphWidget;
@@ -105,6 +105,7 @@ namespace jass
 	private Q_SLOTS:
 		void OnCommandHistoryDirtyChanged(bool dirty);
 		void OnCustomContextMenuRequested(const QPoint& pos);
+		void OnNodesRemapped(const CGraphModel::const_node_indices_t& node_indices, const  CGraphModel::node_remap_table_t& remap_table);
 		void UpdateAnalyses();
 		void OnRemoveCategories(const QModelIndexList& indexes);
 		void OnAddCategory(const QString& name, QRgb color, EShape shape);

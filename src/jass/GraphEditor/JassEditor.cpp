@@ -113,8 +113,8 @@ namespace jass
 	{
 		connect(m_CommandHistory.get(), &qapp::CCommandHistory::DirtyChanged, this, &CJassEditor::OnCommandHistoryDirtyChanged);
 
-		connect(&DataModel(), &CGraphModel::NodesInserted, this, &CJassEditor::UpdateAnalyses);
-		connect(&DataModel(), &CGraphModel::NodesRemoved,  this, &CJassEditor::UpdateAnalyses);
+		connect(&DataModel(), &CGraphModel::NodesInserted, this, &CJassEditor::OnNodesRemapped);
+		connect(&DataModel(), &CGraphModel::NodesRemoved,  this, &CJassEditor::OnNodesRemapped);
 		connect(&DataModel(), &CGraphModel::EdgesAdded,    this, &CJassEditor::UpdateAnalyses);
 		connect(&DataModel(), &CGraphModel::EdgesInserted, this, &CJassEditor::UpdateAnalyses);
 		connect(&DataModel(), &CGraphModel::EdgesRemoved,  this, &CJassEditor::UpdateAnalyses);
@@ -635,6 +635,24 @@ namespace jass
 		}
 
 		contextMenu.exec(m_GraphWidget->mapToGlobal(pos));
+	}
+
+	void CJassEditor::OnNodesRemapped(const CGraphModel::const_node_indices_t& node_indices, const  CGraphModel::node_remap_table_t& remap_table)
+	{
+		const auto root_node_attribute_index = DataModel().FindAttribute(GRAPH_ATTTRIBUTE_ROOT_NODE);
+		if (root_node_attribute_index != CGraphModel::NO_ATTRIBUTE)
+		{
+			const auto root_node_index = DataModel().AttributeValue(root_node_attribute_index).toInt();
+			if (root_node_index >= 0 && root_node_attribute_index < remap_table.size())
+			{
+				const auto new_root_node_index = remap_table[root_node_index];
+				DataModel().SetAttribute(
+					root_node_attribute_index, 
+					(CGraphModel::NO_NODE == new_root_node_index) ? (int)-1 : (int)new_root_node_index);
+			}
+		}
+
+		UpdateAnalyses();
 	}
 
 	void CJassEditor::UpdateAnalyses()

@@ -120,7 +120,7 @@ namespace jass
 		m_GraphModel.AddAttribute(GRAPH_ATTTRIBUTE_ROOT_NODE, -1);
 
 		// Standard node attributes
-		m_GraphModel.AddNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_POSITION);
+		m_GraphModel.AddNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_POSITION, QPointF(0,-1));
 
 		connect(&m_Categories, &CCategorySet::CategoriesRemapped, &m_GraphModel, &CGraphModel::OnCatagoriesRemapped);
 	}

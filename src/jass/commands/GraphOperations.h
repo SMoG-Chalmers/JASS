@@ -56,17 +56,7 @@ namespace jass
 
 	void DeleteGraphNodesProcessor(qapp::IEditor& editor, qapp::EOperation op, std::istream& in, std::streamsize size);
 
-	template <class TLambda>
-	void WriteDeleteGraphNodesOp(std::ostream& out, TLambda&& lambda)
-	{
-		WriteOperation(out, DeleteGraphNodesProcessor, [&](std::ostream& out)
-			{
-				lambda([&](CGraphModel::node_index_t index, CGraphModel::category_index_t category, float x, float y)
-					{
-						qapp::twrite(out, SGraphOpNode({ index, category, x, y }));
-					});
-			});
-	}
+	void WriteDeleteGraphNodesOp(std::ostream& out, const CGraphModel& graph_model, const std::span<const CGraphModel::node_index_t>& node_indices);
 
 
 	// Insert graph edges
