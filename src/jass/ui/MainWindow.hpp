@@ -41,7 +41,7 @@ namespace jass
 	class CCategoryView;
 	struct SToolViewDesc;
 
-	class CMainWindow : public QMainWindow
+	class CMainWindow : public QMainWindow, public qapp::IActionTarget
 	{
 		Q_OBJECT
 	public:
@@ -60,10 +60,13 @@ namespace jass
 	private:
 		QMenu* Menu(const QString& name);
 
-		bool Save(qapp::IEditor& editor);
-		bool SaveAs(qapp::IEditor& editor);
+		void About();
 
 		QDockWidget* AddToolView(QWidget* widget, const SToolViewDesc& desc);
+
+		// qapp::IActionTarget
+		void UpdateActions(qapp::CActionUpdateContext& ctx) override;
+		bool OnAction(qapp::HAction action_handle) override;
 
 		qapp::CDocumentManager& m_DocumentManager;
 		qapp::CWorkbench& m_Workbench;

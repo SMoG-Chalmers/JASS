@@ -26,6 +26,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <QtWidgets/qmenu.h>
 #include <QtWidgets/qmenubar.h>
 
+#include <qapplib/actions/ActionManager.hpp>
 #include <qapplib/Editor.hpp>
 #include <qapplib/Document.hpp>
 
@@ -38,6 +39,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include "../Debug.h"
 
+#include "AboutDialog.h"
 #include "MainWindow.hpp"
 #include "CategoryView.hpp"
 
@@ -106,7 +108,7 @@ namespace jass
 		m_MainToolBar->addAction(qapp::s_StandardActions.About);
 
 		// Actions
-		VERIFY(connect(qapp::s_StandardActions.Open,   SIGNAL(triggered(bool)), SLOT(OnOpen())));
+		VERIFY(connect(qapp::s_StandardActions.Open,  &QAction::triggered, this, &CMainWindow::OnOpen));
 
 		// Status Bar
 		auto* status_bar = statusBar();
@@ -151,6 +153,8 @@ namespace jass
 			desc.m_Area = Qt::RightDockWidgetArea;
 			AddToolView(m_CategoryView, desc);
 		}
+
+		action_manager.AddActionTarget(this, qapp::EActionTargetPrio::MainWindow);
 	}
 
 	CMainWindow::~CMainWindow()
@@ -179,6 +183,12 @@ namespace jass
 		auto* menu = menuBar()->addMenu(prettyName);
 		m_Menus.push_back(std::make_pair(name, menu));
 		return menu;
+	}
+
+	void CMainWindow::About()
+	{
+		CAboutDialog dialog(this);
+		dialog.exec();
 	}
 
 	void CMainWindow::OnOpen()
@@ -213,6 +223,22 @@ namespace jass
 		//	SetInitiallyHidden(dock_widget);
 		dock_widget->setFloating(desc.m_InitiallyFloating);
 		return dock_widget;
+	}
+
+
+	void CMainWindow::UpdateActions(qapp::CActionUpdateContext& ctx)
+	{
+		ctx.Enable(qapp::s_StandardActionHandles.About);
+	}
+
+	bool CMainWindow::OnAction(qapp::HAction action_handle)
+	{
+		if (qapp::s_StandardActionHandles.About == action_handle)
+		{
+			About();
+			return true;
+		}
+		return false;
 	}
 }
 
