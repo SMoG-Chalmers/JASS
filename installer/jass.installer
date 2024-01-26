@@ -18,8 +18,6 @@
 			{ "src" : "$(QTPATH)/plugins/styles/qwindowsvistastyle.dll", "dst" : "styles/" },
 			"$(QTPATH)/bin/Qt5Core.dll",
 			"$(QTPATH)/bin/Qt5Gui.dll",
-			"$(QTPATH)/bin/Qt5Network.dll",
-			"$(QTPATH)/bin/Qt5OpenGL.dll",
 			"$(QTPATH)/bin/Qt5PrintSupport.dll",
 			"$(QTPATH)/bin/Qt5Widgets.dll"
 		],

@@ -14,8 +14,8 @@ ECHO.
 ECHO Copying Qt...
 copy %QTPATH%\bin\Qt5Core*.dll %binpath%\
 copy %QTPATH%\bin\Qt5Gui*.dll  %binpath%\
-copy %QTPATH%\bin\Qt5Network*.dll  %binpath%\
-copy %QTPATH%\bin\Qt5OpenGL*.dll  %binpath%\
+REM copy %QTPATH%\bin\Qt5Network*.dll  %binpath%\
+REM copy %QTPATH%\bin\Qt5OpenGL*.dll  %binpath%\
 copy %QTPATH%\bin\Qt5Widgets*.dll  %binpath%\
 copy %QTPATH%\bin\Qt5PrintSupport*.dll  %binpath%\
 xcopy %QTPATH%\plugins\imageformats\qjpeg*.dll %binpath%\imageformats\
