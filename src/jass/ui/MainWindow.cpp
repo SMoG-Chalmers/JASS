@@ -130,11 +130,21 @@ namespace jass
 
 		// Edit Menu
 		auto* editMenu = Menu("edit");
-		fileMenu->addAction(qapp::s_StandardActions.Cut);
-		fileMenu->addAction(qapp::s_StandardActions.Copy);
-		fileMenu->addAction(qapp::s_StandardActions.Paste);
-		fileMenu->addAction(qapp::s_StandardActions.Duplicate);
-		fileMenu->addAction(qapp::s_StandardActions.Delete);
+		editMenu->addAction(qapp::s_StandardActions.Undo);
+		editMenu->addAction(qapp::s_StandardActions.Redo);
+		editMenu->addSeparator();
+		editMenu->addAction(qapp::s_StandardActions.Cut);
+		editMenu->addAction(qapp::s_StandardActions.Copy);
+		editMenu->addAction(qapp::s_StandardActions.Paste);
+		editMenu->addAction(qapp::s_StandardActions.Duplicate);
+		editMenu->addAction(qapp::s_StandardActions.Delete);
+
+		// View menu
+		m_ViewMenu = Menu("view");
+
+		// Help Menu
+		auto* helpMenu = Menu("help");
+		helpMenu->addAction(qapp::s_StandardActions.About);
 
 		// Workbench widget
 		m_WorkbenchWidget = new qapp::CWorkbenchWidget(this, workbench);
@@ -148,7 +158,7 @@ namespace jass
 			desc.m_Name = "Categories";
 			desc.m_Icon = QIcon(":/categories.png");
 			desc.m_InitiallyVisible = true;
-			desc.m_InitiallyFloating = true;
+			desc.m_InitiallyFloating = false;
 			desc.m_Features = QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable;
 			desc.m_Area = Qt::RightDockWidgetArea;
 			AddToolView(m_CategoryView, desc);
@@ -210,10 +220,10 @@ namespace jass
 		auto* toggle_view_action = dock_widget->toggleViewAction();
 		toggle_view_action->setToolTip(QString("Show/hide %1 view").arg(desc.m_Name.toLower()));
 		toggle_view_action->setIcon(desc.m_Icon);
-		//if (!m_ViewsSeparatorAction)
-		//	m_ViewsSeparatorAction = m_MainToolBar->insertSeparator(m_MainToolBar->actions().back());
-		//m_MainToolBar->insertAction(m_ViewsSeparatorAction, toggle_view_action);
-		//m_ViewMenu->addAction(toggle_view_action);
+		if (!m_ViewsSeparatorAction)
+			m_ViewsSeparatorAction = m_MainToolBar->insertSeparator(m_MainToolBar->actions().back());
+		m_MainToolBar->insertAction(m_ViewsSeparatorAction, toggle_view_action);
+		m_ViewMenu->addAction(toggle_view_action);
 
 		dock_widget->setWindowFlags(Qt::Tool);
 		dock_widget->setWidget(widget);
@@ -229,6 +239,7 @@ namespace jass
 	void CMainWindow::UpdateActions(qapp::CActionUpdateContext& ctx)
 	{
 		ctx.Enable(qapp::s_StandardActionHandles.About);
+		ctx.Enable(qapp::s_StandardActionHandles.Exit);
 	}
 
 	bool CMainWindow::OnAction(qapp::HAction action_handle)
@@ -236,6 +247,11 @@ namespace jass
 		if (qapp::s_StandardActionHandles.About == action_handle)
 		{
 			About();
+			return true;
+		}
+		if (qapp::s_StandardActionHandles.Exit == action_handle)
+		{
+			this->close();
 			return true;
 		}
 		return false;

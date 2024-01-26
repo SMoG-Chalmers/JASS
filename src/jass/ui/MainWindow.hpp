@@ -70,7 +70,9 @@ namespace jass
 
 		qapp::CDocumentManager& m_DocumentManager;
 		qapp::CWorkbench& m_Workbench;
-
+		
+		QAction* m_ViewsSeparatorAction = nullptr;
+		QMenu* m_ViewMenu = nullptr;
 		QToolBar* m_MainToolBar = nullptr;
 		std::vector<std::pair<QString, QMenu*>> m_Menus;
 		qapp::CWorkbenchWidget* m_WorkbenchWidget = nullptr;
