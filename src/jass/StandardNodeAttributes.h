@@ -29,4 +29,9 @@ namespace jass
 	{
 		return model.TryGetNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_POSITION);
 	}
+	inline const JPosition_NodeAttribute_t* TryGetJPositionNodeAttribute(const CGraphModel& model)
+	{
+		return const_cast<CGraphModel&>(model).TryGetNodeAttribute<JPosition_NodeAttribute_t::value_t>(GRAPH_NODE_ATTTRIBUTE_JUSTIFIED_POSITION);
+	}
+
 }
