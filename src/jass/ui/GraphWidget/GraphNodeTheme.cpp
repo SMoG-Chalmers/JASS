@@ -17,46 +17,10 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#pragma once
-
-#include <vector>
-#include <QtCore/qpoint.h>
-#include <QtGui/qpixmap.h>
+#include "GraphNodeTheme.hpp"
 
 namespace jass
 {
-	class CSpriteSet
-	{
-	public:
-		CSpriteSet();
-
-		void Clear();
-
-		inline size_t Count() const { return m_Sprites.size(); }
-
-		inline void Resize(size_t count) { m_Sprites.resize(count); }
-
-		size_t AddSprite(QPixmap&& pixmap, const QPoint& origin);
-
-		void UpdateSprite(size_t index, QPixmap&& pixmap, const QPoint& origin);
-
-		void RemoveSprites(size_t first, size_t count);
-
-		void InsertSprite(size_t index, QPixmap&& pixmap, const QPoint& origin);
-
-		void InsertSprites(size_t index, size_t count);
-
-		QRect SpriteRect(size_t index) const;
-
-		void DrawSprite(size_t index, QPainter& painter, const QPoint& at) const;
-
-	private:
-		struct SSprite
-		{
-			QPixmap Pixmap;
-			QPoint  Origin;
-		};
-
-		std::vector<SSprite> m_Sprites;
-	};
 }
+
+#include <moc_GraphNodeTheme.cpp>

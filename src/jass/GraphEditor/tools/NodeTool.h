@@ -24,9 +24,16 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	class CCategorySpriteSet;
+
 	class CNodeTool : public CGraphTool
 	{
 	public:
+		CNodeTool();
+		~CNodeTool();
+
+		void SetSpriteSet(std::shared_ptr<CCategorySpriteSet> sprites);
+
 		void Activate(const SGraphToolContext& ctx) override;
 		void Deactivate() override;
 		void Paint(QPainter& painter, const QRect& rc) override;
@@ -49,5 +56,6 @@ namespace jass
 		int m_CurrentCategory = 0;
 		bool m_Stamping = false;
 		QPoint m_StampPos;
+		std::shared_ptr<CCategorySpriteSet> m_Sprites;
 	};
 }

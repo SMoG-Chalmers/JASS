@@ -21,8 +21,8 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <vector>
 #include <jass/GraphModel.hpp>
-#include "SpriteGraphLayer.h"
-#include "NodeSpriteSet.h"
+#include "ItemGraphLayer.h"
+#include "GraphNodeTheme.hpp"
 
 namespace qapp
 {
@@ -32,20 +32,28 @@ namespace qapp
 namespace jass
 {
 	class CCategorySet;
+	class CGraphNodeTheme;
 	class CJassEditor;
 	class CJassDocument;
 
-	class CNodeGraphLayer: public QObject, public CSpriteGraphLayer
+	class CNodeGraphLayer: public QObject, public CItemGraphLayer
 	{
 		Q_OBJECT
 	public:
-		CNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor);
+		using EElementStyle = CGraphNodeTheme::EStyle;
 
-		// CSpriteGraphLayer overrides
-		QPoint ItemPosition(element_t element) const override;
-		size_t ItemSpriteIndex(element_t element) const override;
+		CNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor, std::shared_ptr<CGraphNodeTheme>&& theme);
+		~CNodeGraphLayer();
 
-		inline CNodeSpriteSet& Sprites() { return m_Sprites; }
+		void SetTheme(std::shared_ptr<CGraphNodeTheme>&& theme);
+
+		QPoint ElementPosition(element_t element) const;
+
+		EElementStyle ElementStyle(element_t element) const;
+
+		// CItemGraphLayer overrides
+		QRect ItemRect(element_t element) const override;
+		void DrawItem(element_t element, QPainter& painter, const QRect& rc) const override;
 
 		// CGraphLayer overrides
 		void SetHilighted(element_t edge, bool hilighted) override;
@@ -63,8 +71,10 @@ namespace jass
 		void OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices);
 		void OnNodesInserted(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table);
 		void OnNodesModified(const bitvec& node_mask);
+		void OnThemeUpdated();
 
 	private:
+
 		inline bool IsNodeSelected(element_t node_index) const;
 		inline bool IsNodeHilighted(element_t node_index) const;
 
@@ -73,8 +83,9 @@ namespace jass
 		CGraphModel& m_GraphModel;
 		CGraphSelectionModel& m_SelectionModel;
 		qapp::CCommandHistory& m_CommandHistory;
-
-		CNodeSpriteSet m_Sprites;
+		
+		std::shared_ptr<CGraphNodeTheme> m_Theme;
+		
 		bitvec m_SelectionMask;
 		bitvec m_TempSelectionMask;
 		bitvec m_HilightMask;

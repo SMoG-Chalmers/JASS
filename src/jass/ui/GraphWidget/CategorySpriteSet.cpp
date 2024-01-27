@@ -19,14 +19,14 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #include <QtGui/qpainter.h>
 #include <jass/ui/ImageFx.h>
-#include "NodeSpriteSet.h"
+#include "CategorySpriteSet.hpp"
 
 namespace jass
 {
 	static const QRgb COLOR_SELECTED = qRgb(0x0a, 0x84, 0xff);
 	static const QRgb COLOR_HILIGHT = Blend(COLOR_SELECTED, 0xFFFFFFFF, 48);
 
-	struct CNodeSpriteSet::SSpriteDesc
+	struct CCategorySpriteSet::SSpriteDesc
 	{
 		EShape  Shape;
 		float   Radius;
@@ -41,18 +41,18 @@ namespace jass
 		QPoint  Offset = { 0,0 };
 	};
 
-	CNodeSpriteSet::CNodeSpriteSet(const CCategorySet& categories)
+	CCategorySpriteSet::CCategorySpriteSet(const CCategorySet& categories)
 		: m_Categories(categories)
 	{
-		connect(&categories, &CCategorySet::rowsInserted, this, &CNodeSpriteSet::OnCategoriesInserted);
-		connect(&categories, &CCategorySet::rowsRemoved, this, &CNodeSpriteSet::OnCategoriesRemoved);
-		connect(&categories, &CCategorySet::CategoriesRemapped, this, &CNodeSpriteSet::OnCategoriesRemapped);
-		connect(&categories, &CCategorySet::dataChanged, this, &CNodeSpriteSet::OnCategoriesChanged);
+		connect(&categories, &CCategorySet::rowsInserted, this, &CCategorySpriteSet::OnCategoriesInserted);
+		connect(&categories, &CCategorySet::rowsRemoved, this, &CCategorySpriteSet::OnCategoriesRemoved);
+		connect(&categories, &CCategorySet::CategoriesRemapped, this, &CCategorySpriteSet::OnCategoriesRemapped);
+		connect(&categories, &CCategorySet::dataChanged, this, &CCategorySpriteSet::OnCategoriesChanged);
 
 		UpdateSprites();
 	}
 
-	void CNodeSpriteSet::OnCategoriesInserted(const QModelIndex& parent, int first, int last)
+	void CCategorySpriteSet::OnCategoriesInserted(const QModelIndex& parent, int first, int last)
 	{
 		const auto inserted_count = last - first + 1;
 		InsertSprites(first * SPRITE_COUNT_PER_CATEGORY, inserted_count * SPRITE_COUNT_PER_CATEGORY);
@@ -62,26 +62,27 @@ namespace jass
 		}
 	}
 
-	void CNodeSpriteSet::OnCategoriesRemoved(const QModelIndex& parent, int first, int last)
+	void CCategorySpriteSet::OnCategoriesRemoved(const QModelIndex& parent, int first, int last)
 	{
 		const auto removed_count = last - first + 1;
 		RemoveSprites(first * SPRITE_COUNT_PER_CATEGORY, removed_count * SPRITE_COUNT_PER_CATEGORY);
 	}
 
-	void CNodeSpriteSet::OnCategoriesRemapped(const std::span<const size_t>&)
+	void CCategorySpriteSet::OnCategoriesRemapped(const std::span<const size_t>&)
 	{
 		UpdateSprites();
 	}
 
-	void CNodeSpriteSet::OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& /*roles*/)
+	void CCategorySpriteSet::OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& /*roles*/)
 	{
 		for (auto category_index = (size_t)topLeft.row(); category_index <= (size_t)bottomRight.row(); ++category_index)
 		{
 			UpdateSpritesForCategory(category_index);
 		}
+		emit Changed();
 	}
 
-	void CNodeSpriteSet::UpdateSprites()
+	void CCategorySpriteSet::UpdateSprites()
 	{
 		// NOTE: Last one will be "None" (with same index as number of categories)
 		Resize((m_Categories.Size() + 1) * SPRITE_COUNT_PER_CATEGORY);
@@ -92,7 +93,7 @@ namespace jass
 		}
 	}
 
-	void CNodeSpriteSet::UpdateSpritesForCategory(size_t category_index)
+	void CCategorySpriteSet::UpdateSpritesForCategory(size_t category_index)
 	{
 		QPixmap pixmap;
 		QPoint origin;
@@ -123,7 +124,7 @@ namespace jass
 		UpdateSprite(category_index * SPRITE_COUNT_PER_CATEGORY + 2, std::move(pixmap), origin);
 	}
 
-	void CNodeSpriteSet::CreateSprite(const SSpriteDesc& desc, QPixmap& out_pixmap, QPoint& out_origin)
+	void CCategorySpriteSet::CreateSprite(const SSpriteDesc& desc, QPixmap& out_pixmap, QPoint& out_origin)
 	{
 		const auto points = GetShapePoints(desc.Shape);
 
@@ -215,4 +216,4 @@ namespace jass
 	}
 }
 
-#include <moc_NodeSpriteSet.cpp>
+#include <moc_CategorySpriteSet.cpp>

@@ -44,6 +44,7 @@ namespace jass
 {
 	class CAnalyses;
 	class CCategorySet;
+	class CCategorySpriteSet;
 	class CCategoryView;
 	class CGraphSelectionModel;
 	class CGraphTool;
@@ -54,6 +55,7 @@ namespace jass
 	class CMainWindow;
 	class CSelectionTool;
 	class CSplitWidget;
+	class CNodeTool;
 
 	class CJassEditor: public qapp::CEditor, public IGraphWidgetDelegate
 	{
@@ -122,6 +124,7 @@ namespace jass
 		std::unique_ptr<qapp::CCommandHistory> m_CommandHistory;
 		std::unique_ptr<CAnalyses> m_Analyses;
 		CImageGraphLayer* m_ImageLayer = nullptr;
+		std::shared_ptr<CCategorySpriteSet> m_CategorySpriteSet;
 
 		// Common
 		static void OnSelectTool(int tool_index);
@@ -156,6 +159,7 @@ namespace jass
 		static QToolBar* s_Toolbar;
 		static SToolActionHandles s_ToolActionHandles;
 		static std::vector<STool> s_Tools;
+		static CNodeTool* s_NodeTool;
 		static std::unique_ptr<CGraphTool> s_JustifiedSelectionTool;
 		static int s_CurrentTool;
 		static CCategoryView* s_CategoryView;

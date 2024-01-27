@@ -19,44 +19,27 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <vector>
-#include <QtCore/qpoint.h>
-#include <QtGui/qpixmap.h>
+#include "GraphWidget.hpp"
 
 namespace jass
 {
-	class CSpriteSet
+	class CGraphNodeTheme: public QObject
 	{
+		Q_OBJECT
 	public:
-		CSpriteSet();
-
-		void Clear();
-
-		inline size_t Count() const { return m_Sprites.size(); }
-
-		inline void Resize(size_t count) { m_Sprites.resize(count); }
-
-		size_t AddSprite(QPixmap&& pixmap, const QPoint& origin);
-
-		void UpdateSprite(size_t index, QPixmap&& pixmap, const QPoint& origin);
-
-		void RemoveSprites(size_t first, size_t count);
-
-		void InsertSprite(size_t index, QPixmap&& pixmap, const QPoint& origin);
-
-		void InsertSprites(size_t index, size_t count);
-
-		QRect SpriteRect(size_t index) const;
-
-		void DrawSprite(size_t index, QPainter& painter, const QPoint& at) const;
-
-	private:
-		struct SSprite
+		using element_t = CGraphLayer::element_t;
+		enum class EStyle
 		{
-			QPixmap Pixmap;
-			QPoint  Origin;
+			Normal,
+			Selected,
+			Hilighted,
+			_COUNT
 		};
 
-		std::vector<SSprite> m_Sprites;
+		virtual QRect ElementLocalRect(element_t element, EStyle style) const = 0;
+		virtual void  DrawElement(element_t element, EStyle style, const QPoint& pos, QPainter& painter) const = 0;
+
+	Q_SIGNALS:
+		void Updated();
 	};
 }

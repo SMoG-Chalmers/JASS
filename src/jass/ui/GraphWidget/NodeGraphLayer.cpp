@@ -28,13 +28,14 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
-	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor)
-		: CSpriteGraphLayer(graphWidget, &m_Sprites)
+	CNodeGraphLayer::CNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor, std::shared_ptr<CGraphNodeTheme>&& theme)
+		: CItemGraphLayer(graphWidget)
 		, m_GraphModel(editor.DataModel())
 		, m_SelectionModel(editor.SelectionModel())
 		, m_CommandHistory(editor.CommandHistory())
-		, m_Sprites(editor.Categories())
 	{
+		SetTheme(std::move(theme));
+
 		connect(&m_SelectionModel, &CGraphSelectionModel::SelectionChanged, this, &CNodeGraphLayer::OnSelectionChanged);
 		connect(&m_GraphModel, &CGraphModel::NodesRemoved, this, &CNodeGraphLayer::OnNodesRemoved);
 		connect(&m_GraphModel, &CGraphModel::NodesInserted, this, &CNodeGraphLayer::OnNodesInserted);
@@ -43,22 +44,48 @@ namespace jass
 		RebuildNodes();
 	}
 
-	QPoint CNodeGraphLayer::ItemPosition(element_t element) const
+	CNodeGraphLayer::~CNodeGraphLayer()
+	{
+		SetTheme(nullptr);
+	}
+
+	void CNodeGraphLayer::SetTheme(std::shared_ptr<CGraphNodeTheme>&& theme)
+	{
+		if (m_Theme)
+		{
+			m_Theme->disconnect(this);
+		}
+
+		m_Theme = std::move(theme);
+
+		if (m_Theme)
+		{
+			connect(m_Theme.get(), &CGraphNodeTheme::Updated, this, &CNodeGraphLayer::OnThemeUpdated);
+		}
+	}
+
+	QPoint CNodeGraphLayer::ElementPosition(element_t element) const
 	{
 		return QPointFromRoundedQPointF(GraphWidget().ScreenFromModel(m_GraphModel.NodePosition((CGraphModel::node_index_t)element)));
 	}
 
-	size_t CNodeGraphLayer::ItemSpriteIndex(element_t element) const
+	CNodeGraphLayer::EElementStyle CNodeGraphLayer::ElementStyle(element_t element) const
 	{
-		const auto node_index = (CGraphModel::node_index_t)element;
-		CNodeSpriteSet::EStyle style;
 		if (IsNodeHilighted(element))
-			style = CNodeSpriteSet::EStyle::Hilighted;
+			return EElementStyle::Hilighted;
 		else if (IsNodeSelected(element))
-			style = CNodeSpriteSet::EStyle::Selected;
-		else
-			style = CNodeSpriteSet::EStyle::Normal;
-		return m_Sprites.SpriteIndex(m_GraphModel.NodeCategory(node_index), style);
+			return EElementStyle::Selected;
+		return EElementStyle::Normal;
+	}
+
+	QRect CNodeGraphLayer::ItemRect(element_t element) const
+	{
+		return m_Theme->ElementLocalRect(element, ElementStyle(element)).translated(ElementPosition(element));
+	}
+
+	void CNodeGraphLayer::DrawItem(element_t element, QPainter& painter, const QRect& rc) const
+	{
+		m_Theme->DrawElement(element, ElementStyle(element), ElementPosition(element), painter);
 	}
 
 	void CNodeGraphLayer::SetHilighted(element_t element, bool hilighted)
@@ -190,6 +217,11 @@ namespace jass
 		{
 			Update(rcUpdate);
 		}
+	}
+
+	void CNodeGraphLayer::OnThemeUpdated()
+	{
+		Update();
 	}
 
 	void CNodeGraphLayer::RebuildNodes()

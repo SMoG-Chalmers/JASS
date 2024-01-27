@@ -48,12 +48,14 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/commands/CmdSetNodeCategory.h>
 #include <jass/graphdata/GraphData.h>
 #include <jass/graphdata/GraphModelSubGraphView.h>
+#include <jass/ui/GraphWidget/CategorySpriteSet.hpp>
 #include <jass/ui/GraphWidget/GraphWidget.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/JustifiedEdgeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/JustifiedNodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/ImageGraphLayer.hpp>
+#include <jass/ui/GraphWidget/GraphNodeCategoryTheme.hpp>
 #include <jass/ui/CategoryView.hpp>
 #include <jass/ui/MainWindow.hpp>
 #include <jass/ui/SplitWidget.hpp>
@@ -81,6 +83,7 @@ namespace jass
 	QToolBar* CJassEditor::s_Toolbar = nullptr;
 	CJassEditor::SToolActionHandles CJassEditor::s_ToolActionHandles;
 	std::vector<CJassEditor::STool> CJassEditor::s_Tools;
+	CNodeTool* CJassEditor::s_NodeTool = nullptr;
 	std::unique_ptr<CGraphTool> CJassEditor::s_JustifiedSelectionTool;
 	int CJassEditor::s_CurrentTool = 0;
 	CCategoryView* CJassEditor::s_CategoryView = nullptr;
@@ -121,6 +124,8 @@ namespace jass
 		connect(&DataModel(), &CGraphModel::EdgesRemoved,  this, &CJassEditor::UpdateAnalyses);
 		connect(&DataModel(), &CGraphModel::AttributeChanged, this, &CJassEditor::UpdateAnalyses);
 
+		m_CategorySpriteSet = std::make_shared<CCategorySpriteSet>(Categories());
+
 		UpdateAnalyses();
 	}
 	
@@ -136,6 +141,8 @@ namespace jass
 		s_ToolsActionGroup = new QActionGroup(main_window);
 		AddTool(action_manager, std::make_unique<CSelectionTool>(), "Select Tool", QIcon(RES_PATH_PREFIX "selecttool.png"), QKeySequence(Qt::Key_Q), &s_ToolActionHandles.SelectTool);
 		AddTool(action_manager, std::make_unique<CNodeTool>(),      "Node Tool",   QIcon(RES_PATH_PREFIX "nodetool.png"),   QKeySequence(Qt::Key_W), &s_ToolActionHandles.NodeTool);
+		s_NodeTool = dynamic_cast<CNodeTool*>(s_Tools.back().Tool.get());
+		ASSERT(s_NodeTool);
 		AddTool(action_manager, std::make_unique<CEdgeTool>(),      "Edge Tool",   QIcon(RES_PATH_PREFIX "edgetool.png"),   QKeySequence(Qt::Key_E), &s_ToolActionHandles.EdgeTool);
 		s_CurrentTool = 0;
 		s_Tools[s_CurrentTool].Action->setChecked(true);
@@ -232,6 +239,8 @@ namespace jass
 		m_GraphWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 		connect(m_GraphWidget, &CGraphWidget::customContextMenuRequested, this, &CJassEditor::OnCustomContextMenuRequested);
 
+		auto graph_node_theme = std::make_shared<CGraphNodeCategoryTheme>(DataModel(), m_CategorySpriteSet);
+
 		{
 			auto image_layer = std::make_unique<CImageGraphLayer>(*m_GraphWidget);
 			m_ImageLayer = image_layer.get();
@@ -245,7 +254,7 @@ namespace jass
 		}
 
 		{
-			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, *this);
+			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, *this, graph_node_theme);
 			m_GraphWidget->AppendLayer(std::move(node_layer));
 		}
 
@@ -269,7 +278,7 @@ namespace jass
 		}
 
 		{
-			auto layer = std::make_unique<CJustifiedNodeGraphLayer>(*m_JustifiedGraphWidget, *this);
+			auto layer = std::make_unique<CJustifiedNodeGraphLayer>(*m_JustifiedGraphWidget, *this, graph_node_theme);
 			m_JustifiedGraphWidget->AppendLayer(std::move(layer));
 		}
 
@@ -457,6 +466,7 @@ namespace jass
 		s_Toolbar->setVisible(true);
 
 		// Activate graph widget tool
+		s_NodeTool->SetSpriteSet(m_CategorySpriteSet);
 		s_Tools[s_CurrentTool].Tool.get()->Activate({ this, m_GraphWidget });
 		m_GraphWidget->SetInputProcessor(s_Tools[s_CurrentTool].Tool.get());
 

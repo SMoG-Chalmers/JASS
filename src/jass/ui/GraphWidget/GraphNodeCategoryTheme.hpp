@@ -19,48 +19,40 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#include <jass/GraphEditor/CategorySet.hpp>
+#include "GraphNodeTheme.hpp"
 #include "SpriteSet.h"
 
 namespace jass
 {
-	class CCategorySet;
+	class CGraphModel;
+	class CCategorySpriteSet;
 
-	class CNodeSpriteSet: public QObject, public CSpriteSet
+	class CGraphNodeCategoryTheme: public CGraphNodeTheme
 	{
 		Q_OBJECT
 	public:
-		enum class EStyle
-		{
-			Normal,
-			Selected,
-			Hilighted,
-		};
+		CGraphNodeCategoryTheme(CGraphModel& graph_model, std::shared_ptr<CCategorySpriteSet> sprites);
+		~CGraphNodeCategoryTheme();
 
-		CNodeSpriteSet(const CCategorySet& categories);
-
-		inline size_t SpriteIndex(size_t category_index, EStyle style) const;
+		// CGraphNodeTheme overrides
+		QRect ElementLocalRect(element_t element, EStyle style) const override;
+		void  DrawElement(element_t element, EStyle style, const QPoint& pos, QPainter& painter) const override;
 
 	private Q_SLOTS:
-		void OnCategoriesInserted(const QModelIndex& parent, int first, int last);
-		void OnCategoriesRemoved(const QModelIndex& parent, int first, int last);
-		void OnCategoriesRemapped(const std::span<const size_t>&);
-		void OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles);
+		void OnSpritesChanged();
 
 	private:
 		static const uint8_t SPRITE_COUNT_PER_CATEGORY = 3;
 
 		struct SSpriteDesc;
 
+		inline size_t SpriteIndex(size_t category_index, EStyle style) const;
+		
 		void UpdateSprites();
 		void UpdateSpritesForCategory(size_t catgory_index);
 		void CreateSprite(const SSpriteDesc& desc, QPixmap& out_pixmap, QPoint& out_origin);
 
-		const CCategorySet& m_Categories;
+		CGraphModel& m_GraphModel;
+		std::shared_ptr<CCategorySpriteSet> m_Sprites;
 	};
-
-	inline size_t CNodeSpriteSet::SpriteIndex(size_t category_index, EStyle style) const 
-	{
-		return (std::min(category_index, m_Categories.Size()) * SPRITE_COUNT_PER_CATEGORY) + (size_t)style;
-	}
 }

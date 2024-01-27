@@ -29,48 +29,48 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
-	CJustifiedNodeGraphLayer::CJustifiedNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor)
-		: CSpriteGraphLayer(graphWidget, &m_Sprites)
+	CJustifiedNodeGraphLayer::CJustifiedNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor, std::shared_ptr<CGraphNodeTheme>&& theme)
+		: CItemGraphLayer(graphWidget)
 		, m_GraphModel(editor.DataModel())
 		, m_SelectionModel(editor.SelectionModel())
 		, m_Analyses(editor.Analyses())
 		, m_CommandHistory(editor.CommandHistory())
-		, m_Sprites(editor.Categories())
 	{
 		m_JPositionNodeAttribute = TryGetJPositionNodeAttribute(m_GraphModel);
+
+		SetTheme(std::move(theme));
+
 		connect(&m_SelectionModel, &CGraphSelectionModel::SelectionChanged, this, &CJustifiedNodeGraphLayer::OnSelectionChanged);
 		connect(&m_GraphModel, &CGraphModel::NodesRemoved, this, &CJustifiedNodeGraphLayer::OnNodesRemoved);
 		connect(&m_GraphModel, &CGraphModel::NodesInserted, this, &CJustifiedNodeGraphLayer::OnNodesInserted);
 		connect(&m_GraphModel, &CGraphModel::NodesModified, this, &CJustifiedNodeGraphLayer::OnNodesModified);
+
 		RebuildNodes();
 	}
 
-	QPoint CJustifiedNodeGraphLayer::ItemPosition(element_t element) const
+	CJustifiedNodeGraphLayer::~CJustifiedNodeGraphLayer()
 	{
-		if (m_JPositionNodeAttribute)
-		{
-			auto pos = m_JPositionNodeAttribute->Value(element);
-			if (pos.y() >= 0)
-			{
-				//pos = pos * 50;
-				return QPointFromRoundedQPointF(GraphWidget().ScreenFromModel(pos));
-			}
-		}
-		// Invalid
-		return QPoint(-12345, -12345);
+		SetTheme(nullptr);
 	}
 
-	size_t CJustifiedNodeGraphLayer::ItemSpriteIndex(element_t element) const
+	void CJustifiedNodeGraphLayer::SetTheme(std::shared_ptr<CGraphNodeTheme> theme)
 	{
-		const auto node_index = (CGraphModel::node_index_t)element;
-		CNodeSpriteSet::EStyle style;
-		if (IsNodeHilighted(element))
-			style = CNodeSpriteSet::EStyle::Hilighted;
-		else if (IsNodeSelected(element))
-			style = CNodeSpriteSet::EStyle::Selected;
-		else
-			style = CNodeSpriteSet::EStyle::Normal;
-		return m_Sprites.SpriteIndex(m_GraphModel.NodeCategory(node_index), style);
+		if (m_Theme)
+		{
+			m_Theme->disconnect(this);
+		}
+		
+		m_Theme = std::move(theme);
+
+		if (m_Theme)
+		{
+			connect(m_Theme.get(), &CGraphNodeTheme::Updated, this, &CJustifiedNodeGraphLayer::OnThemeUpdated);
+		}
+	}
+
+	QRect CJustifiedNodeGraphLayer::ItemRect(element_t element) const
+	{
+		return m_Theme->ElementLocalRect(element, ElementStyle(element)).translated(ElementPosition(element));
 	}
 
 	void CJustifiedNodeGraphLayer::DrawItem(element_t element, QPainter& painter, const QRect& rc) const
@@ -79,8 +79,9 @@ namespace jass
 		{
 			return;
 		}
-		CSpriteGraphLayer::DrawItem(element, painter, rc);
+		m_Theme->DrawElement(element, ElementStyle(element), ElementPosition(element), painter);
 	}
+
 
 	void CJustifiedNodeGraphLayer::SetHilighted(element_t element, bool hilighted)
 	{
@@ -215,6 +216,35 @@ namespace jass
 		{
 			Update(rcUpdate);
 		}
+	}
+
+	void CJustifiedNodeGraphLayer::OnThemeUpdated()
+	{
+		Update();
+	}
+
+	QPoint CJustifiedNodeGraphLayer::ElementPosition(element_t element) const
+	{
+		if (m_JPositionNodeAttribute)
+		{
+			auto pos = m_JPositionNodeAttribute->Value(element);
+			if (pos.y() >= 0)
+			{
+				//pos = pos * 50;
+				return QPointFromRoundedQPointF(GraphWidget().ScreenFromModel(pos));
+			}
+		}
+		// Invalid
+		return QPoint(-12345, -12345);
+	}
+
+	CJustifiedNodeGraphLayer::EElementStyle CJustifiedNodeGraphLayer::ElementStyle(element_t element) const
+	{
+		if (IsNodeHilighted(element))
+			return EElementStyle::Hilighted;
+		else if (IsNodeSelected(element))
+			return EElementStyle::Selected;
+		return EElementStyle::Normal;
 	}
 
 	void CJustifiedNodeGraphLayer::RebuildNodes()

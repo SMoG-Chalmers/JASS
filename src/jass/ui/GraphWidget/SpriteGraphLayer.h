@@ -17,6 +17,16 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+// DEPRECATED. TODO: Remove this file!
+
 #pragma once
 
 #include "ItemGraphLayer.h"
@@ -26,6 +36,7 @@ class QPainter;
 namespace jass
 {
 	class CSpriteSet;
+
 
 	class CSpriteGraphLayer : public CItemGraphLayer
 	{

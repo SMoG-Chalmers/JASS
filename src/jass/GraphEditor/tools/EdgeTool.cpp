@@ -109,7 +109,7 @@ namespace jass
 
 		if (CGraphLayer::NO_ELEMENT != hit_node)
 		{
-			m_Line.setP2(m_NodeLayer->ItemPosition(hit_node));
+			m_Line.setP2(m_NodeLayer->ElementPosition(hit_node));
 		}
 		else
 		{
@@ -135,7 +135,7 @@ namespace jass
 		{
 			if (CGraphLayer::NO_ELEMENT != m_FromNode)
 			{
-				m_Line = QLineF(m_NodeLayer->ItemPosition(m_FromNode), QPointF(event.pos()));
+				m_Line = QLineF(m_NodeLayer->ElementPosition(m_FromNode), QPointF(event.pos()));
 				if (m_EdgeLayer)
 				{
 					m_EdgeLayer->SetTempLine(m_Line);

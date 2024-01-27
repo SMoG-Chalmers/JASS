@@ -22,8 +22,8 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <vector>
 #include <jass/GraphModel.hpp>
 #include <jass/StandardNodeAttributes.h>
-#include "SpriteGraphLayer.h"
-#include "NodeSpriteSet.h"
+#include "ItemGraphLayer.h"
+#include "GraphNodeTheme.hpp"
 
 namespace qapp
 {
@@ -37,19 +37,18 @@ namespace jass
 	class CJassEditor;
 	class CJassDocument;
 
-	class CJustifiedNodeGraphLayer: public QObject, public CSpriteGraphLayer
+	class CJustifiedNodeGraphLayer: public QObject, public CItemGraphLayer
 	{
 		Q_OBJECT
 	public:
-		CJustifiedNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor);
+		CJustifiedNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor, std::shared_ptr<CGraphNodeTheme>&& theme);
+		~CJustifiedNodeGraphLayer();
 
-		// CSpriteGraphLayer overrides
-		QPoint ItemPosition(element_t element) const override;
-		size_t ItemSpriteIndex(element_t element) const override;
-		void   DrawItem(element_t element, QPainter& painter, const QRect& rc) const override;
+		void SetTheme(std::shared_ptr<CGraphNodeTheme> theme);
 
-
-		inline CNodeSpriteSet& Sprites() { return m_Sprites; }
+		// CItemGraphLayer overrides
+		QRect ItemRect(element_t element) const override;
+		void DrawItem(element_t element, QPainter& painter, const QRect& rc) const override;
 
 		// CGraphLayer overrides
 		void SetHilighted(element_t edge, bool hilighted) override;
@@ -67,8 +66,14 @@ namespace jass
 		void OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices);
 		void OnNodesInserted(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table);
 		void OnNodesModified(const bitvec& node_mask);
+		void OnThemeUpdated();
 
 	private:
+		using EElementStyle = CGraphNodeTheme::EStyle;
+
+		QPoint ElementPosition(element_t element) const;
+		EElementStyle ElementStyle(element_t element) const;
+
 		inline bool IsNodeSelected(element_t node_index) const;
 		inline bool IsNodeHilighted(element_t node_index) const;
 
@@ -80,7 +85,8 @@ namespace jass
 		qapp::CCommandHistory& m_CommandHistory;
 		JPosition_NodeAttribute_t* m_JPositionNodeAttribute = nullptr;;
 
-		CNodeSpriteSet m_Sprites;
+		std::shared_ptr<CGraphNodeTheme> m_Theme;
+
 		bitvec m_SelectionMask;
 		bitvec m_TempSelectionMask;
 		bitvec m_HilightMask;

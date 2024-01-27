@@ -27,12 +27,26 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/GraphEditor/CategorySet.hpp>
 #include <jass/ui/GraphWidget/EdgeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
+#include <jass/ui/GraphWidget/CategorySpriteSet.hpp>
 
 #include "NodeTool.h"
 
 namespace jass
 {
 	const int MOUSE_WHEEL_NOTCH_SIZE = 120;  // Is there no better way of doing this?
+
+	CNodeTool::CNodeTool()
+	{
+	}
+
+	CNodeTool::~CNodeTool()
+	{
+	}
+
+	void CNodeTool::SetSpriteSet(std::shared_ptr<CCategorySpriteSet> sprites)
+	{
+		m_Sprites = std::move(sprites);
+	}
 
 	void CNodeTool::Activate(const SGraphToolContext& ctx)
 	{
@@ -56,12 +70,11 @@ namespace jass
 
 	void CNodeTool::Paint(QPainter& painter, const QRect& rc)
 	{
-		if (m_Stamping && m_NodeLayer)
+		if (m_Stamping && m_NodeLayer && m_Sprites)
 		{
 			painter.setOpacity(.5f);
-			auto& sprites = m_NodeLayer->Sprites();
-			sprites.DrawSprite(
-				sprites.SpriteIndex(m_CurrentCategory, CNodeSpriteSet::EStyle::Normal), 
+			m_Sprites->DrawSprite(
+				m_Sprites->SpriteIndex(m_CurrentCategory, CCategorySpriteSet::EStyle::Normal),
 				painter, 
 				m_StampPos);
 			painter.setOpacity(1);
@@ -179,21 +192,19 @@ namespace jass
 	{
 		m_Stamping = true;
 		m_StampPos = pt;
-		if (m_NodeLayer)
+		if (m_Sprites)
 		{
-			auto& sprites = m_NodeLayer->Sprites();
-			const auto sprite_index = sprites.SpriteIndex(m_CurrentCategory, CNodeSpriteSet::EStyle::Normal);
-			GraphWidget().update(sprites.SpriteRect(sprite_index).translated(pt));
+			const auto sprite_index = m_Sprites->SpriteIndex(m_CurrentCategory, CCategorySpriteSet::EStyle::Normal);
+			GraphWidget().update(m_Sprites->SpriteRect(sprite_index).translated(pt));
 		}
 	}
 
 	void CNodeTool::HideStamp()
 	{
-		if (m_Stamping && m_NodeLayer)
+		if (m_Stamping && m_Sprites)
 		{
-			auto& sprites = m_NodeLayer->Sprites();
-			const auto sprite_index = sprites.SpriteIndex(m_CurrentCategory, CNodeSpriteSet::EStyle::Normal);
-			GraphWidget().update(sprites.SpriteRect(sprite_index).translated(m_StampPos));
+			const auto sprite_index = m_Sprites->SpriteIndex(m_CurrentCategory, CCategorySpriteSet::EStyle::Normal);
+			GraphWidget().update(m_Sprites->SpriteRect(sprite_index).translated(m_StampPos));
 		}
 		m_Stamping = false;
 	}

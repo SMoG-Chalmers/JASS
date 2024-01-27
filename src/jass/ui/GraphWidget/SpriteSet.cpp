@@ -65,7 +65,7 @@ namespace jass
 		return QRect(-sprite.Origin.x(), -sprite.Origin.y(), sprite.Pixmap.width(), sprite.Pixmap.height());
 	}
 
-	void CSpriteSet::DrawSprite(size_t index, QPainter& painter, const QPoint& at)
+	void CSpriteSet::DrawSprite(size_t index, QPainter& painter, const QPoint& at) const
 	{
 		const auto& sprite = m_Sprites[index];
 		painter.drawPixmap(at - sprite.Origin, sprite.Pixmap);
