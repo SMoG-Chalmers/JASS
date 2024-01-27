@@ -17,10 +17,12 @@ You should have received a copy of the GNU Lesser General Public License
 along with JASS. If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <QtCore/qdatetime.h>
 #include <QtCore/qdir.h>
 #include <QtCore/qsettings.h>
 #include <QtCore/qstandardpaths.h>
 #include <QtWidgets/qapplication.h>
+#include <QtWidgets/qmessagebox.h>
 #include <QtWidgets/qstylefactory.h>
 
 #include <qapplib/actions/StandardActions.h>
@@ -59,6 +61,20 @@ namespace jass
 	{
 	}
 
+	static bool CheckExpirationDate()
+	{
+		if (QDate::currentDate() < QDate(2024, 5, 1))
+			return true;
+
+		QMessageBox::information(nullptr, VERC_PROJECT_NAME " " VERC_VERSION,
+			"Your license period for Jass has run out. If\n"
+			"you want to continue using Jass please contact\n"
+			"Ioanna Stavroulaki at gianna.stavroulaki@chalmers.se.\n"
+		);
+
+		return false;
+	}
+
 	int CJass::Run(int argc, char** argv)
 	{
 		qapp::CPagePool::SetDefaultPagePool(&s_PagePool);
@@ -73,6 +89,11 @@ namespace jass
 		// Apply style
 		m_App->setStyle(QStyleFactory::create("Fusion"));
 		
+		if (!CheckExpirationDate())
+		{
+			return 0;
+		}
+
 		// Make sure app data folder exists
 		const auto appDataPath = AppDataPath();
 		QDir appDataDir(appDataPath);
