@@ -41,7 +41,7 @@ namespace jass
 		const float SYMBOL_PADDING = 0;  // 5  // for shadow
 		const float SYMBOL_RADIUS = SYMBOL_SCALE + SYMBOL_LINE_WIDTH * .5f + SYMBOL_LINE_WIDTH2 + SYMBOL_PADDING;
 		const float IMAGE_MARGIN = 10;
-		const float GRAPH_SPACING = 30;  // Spacing between the two graphs
+		const float GRAPH_SPACING = 50;  // Spacing between the two graphs
 
 		const auto& data_model = doc.GraphModel();
 
