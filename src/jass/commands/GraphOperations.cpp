@@ -31,13 +31,10 @@ namespace jass
 
 		const auto count = size / sizeof(SGraphOpNode);
 
+		jass_editor->SelectionModel().BeginModify();
+
 		if (qapp::EOperation_Do == op)
 		{
-			// Deselect all
-			jass_editor->SelectionModel().BeginModify();
-			jass_editor->SelectionModel().DeselectAll();
-			jass_editor->SelectionModel().EndModify();
-
 			std::vector<SNodeDesc> insert_nodes;
 			insert_nodes.reserve(count);
 			qapp::for_each_in_stream<SGraphOpNode>(in, count, [&](const SGraphOpNode& node)
@@ -51,30 +48,24 @@ namespace jass
 			jass_editor->DataModel().InsertNodes(insert_nodes);
 
 			// Select added nodes
-			jass_editor->SelectionModel().BeginModify();
-			jass_editor->SelectionModel().DeselectAllNodes();
+			jass_editor->SelectionModel().DeselectAll();
 			for (const auto& node : insert_nodes)
 			{
 				jass_editor->SelectionModel().SelectNode(node.Index);
 			}
-			jass_editor->SelectionModel().EndModify();
 		}
 		else
 		{
-			// Deselect all
-			jass_editor->SelectionModel().BeginModify();
-			jass_editor->SelectionModel().DeselectAll();
-			jass_editor->SelectionModel().EndModify();
-
 			std::vector<CGraphModel::node_index_t> node_indices;
 			node_indices.reserve(count);
 			qapp::for_each_in_stream<SGraphOpNode>(in, count, [&](const SGraphOpNode& node)
 				{
 					node_indices.push_back(node.Index);
 				});
-			
 			jass_editor->DataModel().RemoveNodes(node_indices);
 		}
+
+		jass_editor->SelectionModel().EndModify();
 	}
 
 	void DeleteGraphNodesProcessor(qapp::IEditor& editor, qapp::EOperation op, std::istream& in, std::streamsize size)
@@ -88,8 +79,11 @@ namespace jass
 		std::vector<CGraphModel::node_index_t> node_indices(node_count);
 		in.read((char*)node_indices.data(), node_indices.size() * sizeof(CGraphModel::node_index_t));
 
+		jass_editor->SelectionModel().BeginModify();
+
 		if (qapp::EOperation_Do == op)
 		{
+			// Remove nodes
 			data_model.RemoveNodes(node_indices);
 		}
 		else
@@ -100,8 +94,8 @@ namespace jass
 				qapp::for_each_in_stream<CGraphModel::category_index_t>(in, node_count, [&](auto category)
 					{
 						node_descs[n].Index = node_indices[n];
-				node_descs[n].Category = category;
-				++n;
+						node_descs[n].Category = category;
+						++n;
 					});
 				n = 0;
 				qapp::for_each_in_stream<QPointF>(in, node_count, [&](const auto& pos)
@@ -128,7 +122,16 @@ namespace jass
 				}
 			}
 			data_model.EndModifyNodes();
+
+			// Select added nodes
+			jass_editor->SelectionModel().DeselectAll();
+			for (const auto& node_index : node_indices)
+			{
+				jass_editor->SelectionModel().SelectNode(node_index);
+			}
 		}
+
+		jass_editor->SelectionModel().EndModify();
 	}
 
 	void WriteDeleteGraphNodesOp(std::ostream& out, const CGraphModel& graph_model, const std::span<const CGraphModel::node_index_t>& node_indices)
@@ -170,6 +173,8 @@ namespace jass
 
 		const auto count = size / sizeof(SEdgeDesc);
 
+		jass_editor->SelectionModel().BeginModify();
+
 		if (qapp::EOperation_Do == op)
 		{
 			std::vector<SEdgeDesc> edges;
@@ -190,6 +195,8 @@ namespace jass
 				});
 			jass_editor->DataModel().RemoveEdges(edge_indices);
 		}
+
+		jass_editor->SelectionModel().EndModify();
 	}
 
 	void DeleteGraphEdgesProcessor(qapp::IEditor& editor, qapp::EOperation op, std::istream& in, std::streamsize size)

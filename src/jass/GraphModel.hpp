@@ -161,7 +161,7 @@ namespace jass
 		void NodesRemoved(const const_node_indices_t& node_indices, const node_remap_table_t& remap_table);
 		void EdgesAdded(size_t count);
 		void EdgesInserted(const const_edge_indices_t& edge_indices, const node_remap_table_t& remap_table);
-		void EdgesRemoved(const const_edge_indices_t& edge_indices);
+		void EdgesRemoved(const const_edge_indices_t& edge_indices, const node_remap_table_t& remap_table);
 		void NodesModified(const bitvec& node_mask);
 
 	public Q_SLOTS:
@@ -306,7 +306,7 @@ namespace jass
 
 		inline bool IsEdgeSelected(size_t index) const { return m_EdgeMask.get(index); }
 
-		inline void BeginModify() { ASSERT(!m_IsModifying);  m_IsModifying = true; }
+		inline void BeginModify() { ++m_ModificationCounter; }
 
 		inline void DeselectAll();
 
@@ -335,15 +335,17 @@ namespace jass
 		void OnNodesInserted(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table);
 		void OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table);
 		void OnEdgesInserted(const CGraphModel::const_edge_indices_t& edge_indices, const CGraphModel::node_remap_table_t& remap_table);
-		void OnEdgesRemoved(const CGraphModel::const_edge_indices_t& edge_indices);
+		void OnEdgesRemoved(const CGraphModel::const_edge_indices_t& edge_indices, const CGraphModel::node_remap_table_t& remap_table);
 
 	private:
-		inline void VerifyModifying() const { ASSERT(m_IsModifying); }
+		void RemapMask(bitvec& mask, const CGraphModel::node_remap_table_t& remap_table, size_t new_size);
+		inline void VerifyModifying() const { ASSERT(m_ModificationCounter > 0); }
 
 		CGraphModel& m_DataModel;
 		bitvec m_NodeMask;
 		bitvec m_EdgeMask;
-		bool m_IsModifying = false;
+		bitvec m_TempMask;
+		int m_ModificationCounter = 0;
 	};
 
 	inline bitvec_set_bit_indices_view<CGraphSelectionModel::node_index_t> CGraphSelectionModel::SelectedNodeIndicesView() const
@@ -396,8 +398,11 @@ namespace jass
 	inline void CGraphSelectionModel::EndModify()
 	{
 		VerifyModifying();
-		m_IsModifying = false;
-		emit SelectionChanged();
+		--m_ModificationCounter;
+		if (0 == m_ModificationCounter)
+		{
+			emit SelectionChanged();
+		}
 	}
 }
 

@@ -84,7 +84,7 @@ namespace jass
 
 	CGraphModel::attribute_index_t CGraphModel::AttributeCount() const
 	{
-		return m_Attributes.size();
+		return (CGraphModel::attribute_index_t)m_Attributes.size();
 	}
 
 	const QString& CGraphModel::AttributeName(CGraphModel::attribute_index_t index) const
@@ -152,6 +152,11 @@ namespace jass
 
 	void CGraphModel::InsertNodes(const std::span<const SNodeDesc>& new_nodes)
 	{
+		if (new_nodes.empty())
+		{
+			return;
+		}
+
 		decltype(m_TempIndices) temp_indices = std::move(m_TempIndices);  // Hold m_TempIndices in this scope, in case it is accessed 
 
 		temp_indices.resize(new_nodes.size() + NodeCount());
@@ -201,6 +206,11 @@ namespace jass
 
 	void CGraphModel::RemoveNodes(const const_node_indices_t& node_indices)
 	{
+		if (node_indices.empty())
+		{
+			return;
+		}
+
 		const auto old_node_count = NodeCount();
 		
 		// Remove edges connected to the nodes
@@ -244,6 +254,11 @@ namespace jass
 
 	void CGraphModel::AddEdges(const std::span<const node_pair_t>& edges)
 	{
+		if (edges.empty())
+		{
+			return;
+		}
+
 		m_Edges.reserve(m_Edges.size() + edges.size());
 		m_Edges.insert(m_Edges.end(), edges.begin(), edges.end());
 
@@ -260,6 +275,11 @@ namespace jass
 
 	void CGraphModel::InsertEdges(const std::span<const SEdgeDesc>& new_edges)
 	{
+		if (new_edges.empty())
+		{
+			return;
+		}
+
 		{
 			// TEMPORARILY append edges to m_Edges to be able to rebuild neighbour tables
 			const auto old_edge_count = EdgeCount();
@@ -286,9 +306,9 @@ namespace jass
 			build_index_expand_table(new_edge_indices, remap_table);
 
 			// Remap edge indices in edge map
-			for (auto it = m_EdgeMap.begin(); m_EdgeMap.end() != it; ++it)
+			for (auto& kvp : m_EdgeMap)
 			{
-				it->second = remap_table[it->second];
+				kvp.second = remap_table[kvp.second];
 			}
 
 			// insert new edges into edge array and edge map
@@ -373,15 +393,15 @@ namespace jass
 		collapse(m_Edges, edge_indices);
 
 		// Remap indices edge map
-		for (auto it : m_EdgeMap)
+		for (auto& kvp : m_EdgeMap)
 		{
-			it.second = remap_table[it.second];
+			kvp.second = remap_table[kvp.second];
 		}
 
 		ASSERT(m_Edges.size() == m_NeighboursPerNode.size() / 2);
 		ASSERT(m_EdgeMap.size() == m_Edges.size());
 
-		emit EdgesRemoved(edge_indices);
+		emit EdgesRemoved(edge_indices, remap_table);
 	}
 
 	void CGraphModel::RebuildEdgeMap(edge_map_t& edge_map, const const_node_pairs_t& node_pairs)
@@ -402,7 +422,7 @@ namespace jass
 			const auto category = NodeCategory(node_index);
 			if (NO_CATEGORY != category)
 			{
-				SetNodeCategory(node_index, remap_table[category]);
+				SetNodeCategory(node_index, (CGraphModel::category_index_t)remap_table[category]);
 			}
 		}
 		EndModifyNodes();
@@ -484,23 +504,47 @@ namespace jass
 
 	void CGraphSelectionModel::OnNodesInserted(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table)
 	{
-		m_NodeMask.resize(m_DataModel.NodeCount());
+		BeginModify();
+		RemapMask(m_NodeMask, remap_table, m_DataModel.NodeCount());
+		EndModify();
 	}
 
 	void CGraphSelectionModel::OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table)
 	{
-		m_NodeMask.resize(m_DataModel.NodeCount());
+		BeginModify();
+		RemapMask(m_NodeMask, remap_table, m_DataModel.NodeCount());
+		EndModify();
 	}
 
 	void CGraphSelectionModel::OnEdgesInserted(const CGraphModel::const_edge_indices_t& edge_indices, const CGraphModel::node_remap_table_t& remap_table)
 	{
-		m_EdgeMask.resize(m_DataModel.EdgeCount());
+		BeginModify();
+		RemapMask(m_EdgeMask, remap_table, m_DataModel.EdgeCount());
+		EndModify();
 	}
 
-	void CGraphSelectionModel::OnEdgesRemoved(const CGraphModel::const_edge_indices_t& edge_indices)
+	void CGraphSelectionModel::OnEdgesRemoved(const CGraphModel::const_edge_indices_t& edge_indices, const CGraphModel::node_remap_table_t& remap_table)
 	{
-		m_EdgeMask.resize(m_DataModel.EdgeCount());
+		BeginModify();
+		RemapMask(m_EdgeMask, remap_table, m_DataModel.EdgeCount());
+		EndModify();
 	}
+
+	void CGraphSelectionModel::RemapMask(bitvec& mask, const CGraphModel::node_remap_table_t& remap_table, size_t new_size)
+	{
+		m_TempMask = mask;
+		mask.resize(new_size);
+		mask.clearAll();
+		m_TempMask.for_each_set_bit([&](size_t old_index)
+			{
+				const auto new_index = remap_table[old_index];
+				if (new_index < mask.size())
+				{
+					mask.set(new_index);
+				}
+			});
+	}
+
 }
 
 #include <moc_GraphModel.cpp>
