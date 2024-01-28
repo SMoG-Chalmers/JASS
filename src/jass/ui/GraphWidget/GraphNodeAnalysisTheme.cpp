@@ -26,6 +26,8 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	const CGraphNodeAnalysisTheme::color_t CGraphNodeAnalysisTheme::NO_COLOR = (CGraphNodeAnalysisTheme::color_t)-1;
+
 	CGraphNodeAnalysisTheme::CGraphNodeAnalysisTheme(const CGraphModel& graph_model, const CAnalyses& analyses, const CCategorySet& categories, const CPaletteSpriteSet& sprites)
 		: m_GraphModel(graph_model)
 		, m_Analyses(analyses)

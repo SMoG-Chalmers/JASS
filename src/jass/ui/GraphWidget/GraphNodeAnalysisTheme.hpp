@@ -53,7 +53,7 @@ namespace jass
 		void UpdateColors(const std::span<const float>& metric_values);
 
 		typedef uint8_t color_t;
-		static const color_t NO_COLOR = (color_t)-1;
+		static const color_t NO_COLOR;
 
 		const CGraphModel& m_GraphModel;
 		const CAnalyses& m_Analyses;
