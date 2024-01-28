@@ -53,7 +53,6 @@ namespace jass
 
 		void UpdateSprites();
 		void UpdateSpritesForCategory(size_t catgory_index);
-		void CreateSprite(const SSpriteDesc& desc, QPixmap& out_pixmap, QPoint& out_origin);
 
 		const CCategorySet& m_Categories;
 	};

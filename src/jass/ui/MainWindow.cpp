@@ -183,15 +183,28 @@ namespace jass
 		restoreState(settings.value("windowState").toByteArray(), JASS_UI_VERSION);
 	}
 
-	QMenu* CMainWindow::Menu(const QString& name)
+	QMenu* CMainWindow::Menu(const QString& name, QAction** out_action)
 	{
 		for (const auto& m : m_Menus)
-			if (name.compare(m.first, Qt::CaseInsensitive) == 0)
-				return m.second;
+		{
+			if (name.compare(m.Name, Qt::CaseInsensitive) == 0)
+			{
+				if (out_action)
+				{
+					*out_action = m.Action;
+				}
+				return m.Menu;
+			}
+		}
 		QString prettyName = QString("&%1").arg(name);
 		prettyName[1] = prettyName.at(1).toUpper();
-		auto* menu = menuBar()->addMenu(prettyName);
-		m_Menus.push_back(std::make_pair(name, menu));
+		auto* menu = new QMenu(prettyName, this);
+		auto* menuAction = menuBar()->addMenu(menu);
+		if (out_action)
+		{
+			*out_action = menuAction;
+		}
+		m_Menus.push_back({ name, menu, menuAction });
 		return menu;
 	}
 

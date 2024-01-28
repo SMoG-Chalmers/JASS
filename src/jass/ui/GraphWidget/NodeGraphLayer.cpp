@@ -62,6 +62,8 @@ namespace jass
 		{
 			connect(m_Theme.get(), &CGraphNodeTheme::Updated, this, &CNodeGraphLayer::OnThemeUpdated);
 		}
+
+		Update();
 	}
 
 	QPoint CNodeGraphLayer::ElementPosition(element_t element) const

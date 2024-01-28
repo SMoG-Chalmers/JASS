@@ -55,7 +55,9 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/ui/GraphWidget/JustifiedNodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/NodeGraphLayer.hpp>
 #include <jass/ui/GraphWidget/ImageGraphLayer.hpp>
+#include <jass/ui/GraphWidget/GraphNodeAnalysisTheme.hpp>
 #include <jass/ui/GraphWidget/GraphNodeCategoryTheme.hpp>
+#include <jass/ui/GraphWidget/PaletteSpriteSet.h>
 #include <jass/ui/CategoryView.hpp>
 #include <jass/ui/MainWindow.hpp>
 #include <jass/ui/SplitWidget.hpp>
@@ -77,6 +79,30 @@ namespace jass
 {
 	static const QString SUPPORTED_IMAGE_EXTENSIONS_NO_DOT[] = { "bmp", "jpeg", "jpg", "png" };
 
+	//static const QRgb SPECTRAL_PALETTE[] =
+	//{
+	//	qRgb(0x00, 0x2E, 0x47), 
+	//	qRgb(0x5D, 0xA2, 0x83), 
+	//	qRgb(0xA6, 0xC4, 0x9C), 
+	//	qRgb(0xEF, 0xE6, 0xB4), 
+	//	qRgb(0xFD, 0xC1, 0x4A), 
+	//	qRgb(0xF5, 0x7E, 0x00), 
+	//	qRgb(0xE0, 0x1F, 0x1F)
+	//};
+	static const QRgb SPECTRAL_PALETTE[] =
+	{
+		qRgb(0x29, 0x39, 0x9a),
+		qRgb(0x00, 0x6d, 0xb8),
+		qRgb(0x01, 0xa4, 0xb8),
+		qRgb(0x0a, 0xa6, 0x66),
+		qRgb(0xa6, 0xd0, 0x4e),
+		qRgb(0xff, 0xf3, 0x01),
+		qRgb(0xfc, 0xb1, 0x16),
+		qRgb(0xf5, 0x80, 0x22),
+		qRgb(0xf4, 0x59, 0x24),
+		qRgb(0xed, 0x1c, 0x28),
+	};
+
 	// Common
 	QActionGroup* CJassEditor::s_ToolsActionGroup = nullptr;
 	qapp::CWorkbench* CJassEditor::s_Workbench = nullptr;
@@ -89,6 +115,10 @@ namespace jass
 	CCategoryView* CJassEditor::s_CategoryView = nullptr;
 	CJassEditor::SActions CJassEditor::s_Actions;
 	CJassEditor::SActionHandles CJassEditor::s_ActionHandles;
+	static std::unique_ptr<CPaletteSpriteSet> s_AnalysisSpriteSet;
+	static QMenu* s_VisualizationMenu = nullptr;
+	static QAction* s_VisualizationMenuAction = nullptr;
+	static std::vector<QAction*> s_VisualizationActions;
 
 	class CGraphToolLayer : public CGraphLayer
 	{
@@ -178,7 +208,24 @@ namespace jass
 		s_Toolbar->addAction(s_Actions.GenerateJustified);
 		s_Toolbar->setVisible(false);
 
+		// Visualization menu
+		s_VisualizationActions.push_back(new QAction("Categories", main_window));
+		s_VisualizationActions.push_back(new QAction("Integration", main_window));
+		s_VisualizationActions.push_back(new QAction("Depth", main_window));
+		s_VisualizationMenu = main_window->Menu("Visualize", &s_VisualizationMenuAction);
+		for (size_t i = 0; i < s_VisualizationActions.size(); ++i)
+		{
+			auto* action = s_VisualizationActions[i];
+			action->setCheckable(true);
+			auto mode = (EVisualizationMode)i;
+			connect(action, &QAction::triggered, [mode]() { CJassEditor::SetVisualizationMode(mode); });
+			s_VisualizationMenu->addAction(action);
+		}
+		s_VisualizationMenuAction->setVisible(false);
+
 		s_CategoryView = &main_window->CategoryView();
+
+		s_AnalysisSpriteSet = std::make_unique<CPaletteSpriteSet>(SPECTRAL_PALETTE, qRgb(0xC0, 0xC0, 0xC0));
 	}
 
 	void CJassEditor::AddTool(qapp::CActionManager& action_manager, std::unique_ptr<CGraphTool> tool, QString title, const QIcon& icon, const QKeySequence& keys, qapp::HAction* ptrOutActionHandle)
@@ -239,7 +286,7 @@ namespace jass
 		m_GraphWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 		connect(m_GraphWidget, &CGraphWidget::customContextMenuRequested, this, &CJassEditor::OnCustomContextMenuRequested);
 
-		auto graph_node_theme = std::make_shared<CGraphNodeCategoryTheme>(DataModel(), m_CategorySpriteSet);
+		auto graph_node_category_theme = std::make_shared<CGraphNodeCategoryTheme>(DataModel(), m_CategorySpriteSet);
 
 		{
 			auto image_layer = std::make_unique<CImageGraphLayer>(*m_GraphWidget);
@@ -254,7 +301,8 @@ namespace jass
 		}
 
 		{
-			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, *this, graph_node_theme);
+			auto node_layer = std::make_unique<CNodeGraphLayer>(*m_GraphWidget, *this, graph_node_category_theme);
+			m_NodeGraphLayer = node_layer.get();
 			m_GraphWidget->AppendLayer(std::move(node_layer));
 		}
 
@@ -278,7 +326,7 @@ namespace jass
 		}
 
 		{
-			auto layer = std::make_unique<CJustifiedNodeGraphLayer>(*m_JustifiedGraphWidget, *this, graph_node_theme);
+			auto layer = std::make_unique<CJustifiedNodeGraphLayer>(*m_JustifiedGraphWidget, *this, graph_node_category_theme);
 			m_JustifiedGraphWidget->AppendLayer(std::move(layer));
 		}
 
@@ -480,10 +528,20 @@ namespace jass
 		connect(s_CategoryView, &CCategoryView::AddCategory, this, &CJassEditor::OnAddCategory);
 		connect(s_CategoryView, &CCategoryView::RemoveCategories, this, &CJassEditor::OnRemoveCategories);
 		connect(s_CategoryView, &CCategoryView::ModifyCategory, this, &CJassEditor::OnModifyCategory);
+
+		// Visualization
+		for (size_t i = 0; i < s_VisualizationActions.size(); ++i)
+		{
+			s_VisualizationActions[i]->setChecked((EVisualizationMode)i == m_VisualizationMode);
+		}
+		s_VisualizationMenuAction->setVisible(true);
 	}
 
 	void CJassEditor::OnDeactivate()
 	{
+		// Visualization
+		s_VisualizationMenuAction->setVisible(false);
+
 		// Disconnect Category view
 		s_CategoryView->disconnect(this);
 		s_CategoryView->SetCategories(nullptr);
@@ -746,6 +804,43 @@ namespace jass
 		}
 
 		CommandHistory().NewCommand<CCmdSetNodeAttributes<JPosition_NodeAttribute_t::value_t>>(jposition_attribute, diff_mask, jpositions);
+	}
+
+	void CJassEditor::SetVisualizationMode(EVisualizationMode mode)
+	{
+		auto* editor = dynamic_cast<CJassEditor*>(s_Workbench->CurrentEditor());
+		if (!editor || editor->m_VisualizationMode == mode)
+		{
+			return;
+		}
+
+		ASSERT(editor->m_NodeGraphLayer);
+
+		switch (mode)
+		{
+		case EVisualizationMode::Categories:
+			editor->m_NodeGraphLayer->SetTheme(std::make_shared<CGraphNodeCategoryTheme>(editor->DataModel(), editor->m_CategorySpriteSet));
+			break;
+		case EVisualizationMode::Integration:
+			{
+				auto analysis_theme = std::make_shared<CGraphNodeAnalysisTheme>(editor->DataModel(), editor->Analyses(), editor->Categories(), *s_AnalysisSpriteSet);
+				analysis_theme->SetMetric("Integration", false);
+				editor->m_NodeGraphLayer->SetTheme(analysis_theme);
+		}
+			break;
+		case EVisualizationMode::Depth:
+			{
+				auto analysis_theme = std::make_shared<CGraphNodeAnalysisTheme>(editor->DataModel(), editor->Analyses(), editor->Categories(), *s_AnalysisSpriteSet);
+				analysis_theme->SetMetric("Depth", true);
+				editor->m_NodeGraphLayer->SetTheme(analysis_theme);
+		}
+			break;
+		}
+
+		s_VisualizationActions[(size_t)editor->m_VisualizationMode]->setChecked(false);
+		s_VisualizationActions[(size_t)mode]->setChecked(true);
+		
+		editor->m_VisualizationMode = mode;
 	}
 
 	void CJassEditor::OnSelectTool(int tool_index)

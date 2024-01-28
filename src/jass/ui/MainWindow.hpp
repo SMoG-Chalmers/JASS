@@ -54,12 +54,18 @@ namespace jass
 
 		CCategoryView& CategoryView() { return *m_CategoryView; }
 
+		QMenu* Menu(const QString& name, QAction** out_action = nullptr);
+
 	private Q_SLOTS:
 		void OnOpen();
 
 	private:
-		QMenu* Menu(const QString& name);
-
+		struct SMenu
+		{
+			QString  Name;
+			QMenu*   Menu = nullptr;
+			QAction* Action = nullptr;
+		};
 		void About();
 
 		QDockWidget* AddToolView(QWidget* widget, const SToolViewDesc& desc);
@@ -74,7 +80,7 @@ namespace jass
 		QAction* m_ViewsSeparatorAction = nullptr;
 		QMenu* m_ViewMenu = nullptr;
 		QToolBar* m_MainToolBar = nullptr;
-		std::vector<std::pair<QString, QMenu*>> m_Menus;
+		std::vector<SMenu> m_Menus;
 		qapp::CWorkbenchWidget* m_WorkbenchWidget = nullptr;
 
 		CCategoryView* m_CategoryView = nullptr;

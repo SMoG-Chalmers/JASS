@@ -53,6 +53,7 @@ namespace jass
 	class CJassEditor;
 	class CImageGraphLayer;
 	class CMainWindow;
+	class CNodeGraphLayer;
 	class CSelectionTool;
 	class CSplitWidget;
 	class CNodeTool;
@@ -116,6 +117,15 @@ namespace jass
 		void GenerateJustifiedGraph();
 
 	private:
+		enum class EVisualizationMode
+		{
+			Categories,
+			Integration,
+			Depth,
+		};
+
+		static void SetVisualizationMode(EVisualizationMode mode);
+
 		CJassDocument& m_Document;
 		CSplitWidget* m_SplitWidget = nullptr;
 		CGraphWidget* m_GraphWidget = nullptr;
@@ -125,6 +135,8 @@ namespace jass
 		std::unique_ptr<CAnalyses> m_Analyses;
 		CImageGraphLayer* m_ImageLayer = nullptr;
 		std::shared_ptr<CCategorySpriteSet> m_CategorySpriteSet;
+		EVisualizationMode m_VisualizationMode = EVisualizationMode::Categories;
+		CNodeGraphLayer* m_NodeGraphLayer = nullptr;
 
 		// Common
 		static void OnSelectTool(int tool_index);
