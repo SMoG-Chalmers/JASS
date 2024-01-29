@@ -26,12 +26,15 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 
 namespace jass
 {
-	class CPaletteSpriteSet
+	class CSettings;
+
+	class CPaletteSpriteSet: public QObject
 	{
+		Q_OBJECT
 	public:
 		using EStyle = CGraphNodeTheme::EStyle;
 
-		CPaletteSpriteSet(const std::span<const QRgb>& palette, QRgb no_color);
+		CPaletteSpriteSet(const std::span<const QRgb>& palette, QRgb no_color, const CSettings& settings);
 
 		inline size_t PaletteSize() const { return m_Palette.size() - 1; }
 
@@ -40,8 +43,16 @@ namespace jass
 		inline QRect Rect(EShape shape, EStyle style) const;
 		void Draw(EShape shape, EStyle style, uint32_t palette_index, const QPoint& pos, QPainter& painter) const;
 
+	Q_SIGNALS:
+		void Changed();
+
+	private Q_SLOTS:
+		void OnSettingChanged(const QString& key, const QVariant& newValue);
+
 	private:
 		static const uint8_t STYLE_COUNT = (uint8_t)EStyle::_COUNT;
+
+		float SpriteScale() const;
 
 		struct SSprite
 		{
@@ -50,14 +61,15 @@ namespace jass
 			QPixmap Pixmap;
 		};
 
+		const CSettings& m_Settings;
 		SSprite m_Sprites[(uint32_t)EShape::_COUNT * STYLE_COUNT];
-
 		std::vector<QRgb> m_Palette;
+
 
 		inline SSprite&       Sprite(EShape shape, EStyle style);
 		inline const SSprite& Sprite(EShape shape, EStyle style) const { return const_cast<CPaletteSpriteSet*>(this)->Sprite(shape, style); }
 
-		static void CreateSprite(EShape shape, EStyle style, const std::span<const QRgb>& palette, SSprite& out_sprite);
+		void CreateSprite(EShape shape, EStyle style, const std::span<const QRgb>& palette, SSprite& out_sprite);
 	};
 
 	inline QRect CPaletteSpriteSet::Rect(EShape shape, EStyle style) const

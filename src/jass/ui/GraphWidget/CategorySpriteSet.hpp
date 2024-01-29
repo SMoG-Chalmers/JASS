@@ -26,6 +26,7 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 namespace jass
 {
 	class CCategorySet;
+	class CSettings;
 
 	class CCategorySpriteSet: public QObject, public CSpriteSet
 	{
@@ -33,7 +34,7 @@ namespace jass
 	public:
 		using EStyle = CGraphNodeTheme::EStyle;
 
-		CCategorySpriteSet(const CCategorySet& categories);
+		CCategorySpriteSet(const CCategorySet& categories, const CSettings& settings);
 
 		inline size_t SpriteIndex(size_t category_index, EStyle style) const;
 
@@ -45,16 +46,19 @@ namespace jass
 		void OnCategoriesRemoved(const QModelIndex& parent, int first, int last);
 		void OnCategoriesRemapped(const std::span<const size_t>&);
 		void OnCategoriesChanged(const QModelIndex& topLeft, const QModelIndex& bottomRight, const QVector<int>& roles);
+		void OnSettingChanged(const QString& key, const QVariant& newValue);
 
 	private:
 		static const uint8_t SPRITE_COUNT_PER_CATEGORY = 3;
 
 		struct SSpriteDesc;
 
+		float SpriteScale() const;
 		void UpdateSprites();
 		void UpdateSpritesForCategory(size_t catgory_index);
 
 		const CCategorySet& m_Categories;
+		const CSettings& m_Settings;
 	};
 
 	inline size_t CCategorySpriteSet::SpriteIndex(size_t category_index, EStyle style) const

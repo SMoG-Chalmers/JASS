@@ -55,6 +55,7 @@ namespace jass
 	class CMainWindow;
 	class CNodeGraphLayer;
 	class CSelectionTool;
+	class CSettings;
 	class CSplitWidget;
 	class CNodeTool;
 
@@ -66,7 +67,7 @@ namespace jass
 		~CJassEditor();
 
 		// Common
-		static void InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* mainWindow);
+		static void InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* mainWindow, CSettings& settings);
 		static void AddTool(qapp::CActionManager& action_manager, std::unique_ptr<CGraphTool> tool, QString title, const QIcon& icon, const QKeySequence& keys, qapp::HAction* ptrOutActionHandle);
 		static void RegisterTool(std::unique_ptr<CGraphTool> tool, QString title, QAction* action);
 
@@ -168,6 +169,7 @@ namespace jass
 		// Common
 
 		static qapp::CWorkbench* s_Workbench;
+		static jass::CSettings* s_Settings;
 		static QActionGroup* s_ToolsActionGroup;
 		static QToolBar* s_Toolbar;
 		static SToolActionHandles s_ToolActionHandles;

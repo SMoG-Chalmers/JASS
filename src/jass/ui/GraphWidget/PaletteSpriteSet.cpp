@@ -19,6 +19,7 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 
 #include <QtGui/qpainter.h>
 #include <jass/Debug.h>
+#include <jass/Settings.hpp>
 #include <jass/ui/ImageFx.h>
 #include "PaletteSpriteSet.h"
 #include "NodeSprite.h"
@@ -28,11 +29,14 @@ namespace jass
 	static const QRgb COLOR_SELECTED = qRgb(0x0a, 0x84, 0xff);
 	static const QRgb COLOR_HILIGHT = Blend(COLOR_SELECTED, 0xFFFFFFFF, 48);
 
-	CPaletteSpriteSet::CPaletteSpriteSet(const std::span<const QRgb>& palette, QRgb no_color)
+	CPaletteSpriteSet::CPaletteSpriteSet(const std::span<const QRgb>& palette, QRgb no_color, const CSettings& settings)
+		: m_Settings(settings)
 	{
 		m_Palette.reserve(palette.size() + 1);
 		m_Palette.insert(m_Palette.begin(), palette.begin(), palette.end());
 		m_Palette.push_back(no_color);
+
+		connect(&settings, &CSettings::Changed, this, &CPaletteSpriteSet::OnSettingChanged);
 	}
 
 	void CPaletteSpriteSet::Draw(EShape shape, EStyle style, uint32_t palette_index, const QPoint& pos, QPainter& painter) const
@@ -42,17 +46,37 @@ namespace jass
 		painter.drawPixmap(pos - sprite.Origin, sprite.Pixmap, QRect(0, sprite.Size.height() * palette_index, sprite.Size.width(), sprite.Size.height()));
 	}
 
+	void CPaletteSpriteSet::OnSettingChanged(const QString& key, const QVariant& newValue)
+	{
+		if (key == CSettings::UI_SCALE)
+		{
+			for (auto& sprite : m_Sprites)
+			{
+				sprite.Pixmap = QPixmap();
+			}
+			emit Changed();
+		}
+	}
+
+	float CPaletteSpriteSet::SpriteScale() const
+	{
+		return .01f * m_Settings.value(CSettings::UI_SCALE, 100).toInt();
+	}
+
 	void CPaletteSpriteSet::CreateSprite(EShape shape, EStyle style, const std::span<const QRgb>& palette, SSprite& out_sprite)
 	{
 		QPixmap pixmap;
 		QPoint origin;
 
+		const auto sprite_scale = SpriteScale();
+
 		SNodeSpriteDesc desc;
-		desc.Radius = 9.5f;
-		desc.OutlineWidth = 3.0f;
+		desc.Radius = (9 * sprite_scale) + .5f;
+		desc.OutlineWidth = std::round(sprite_scale * 3);
 		desc.OutlineWidth2 = 0;
-		desc.ShadowOffset = { 1, 1 };
-		desc.ShadowBlurRadius = 3.0f;
+		const auto shadow_offset = (float)std::max((int)1, (int)std::round(sprite_scale));
+		desc.ShadowOffset = { shadow_offset, shadow_offset };
+		desc.ShadowBlurRadius = std::round(sprite_scale * 3);
 		desc.OutlineColor = qRgb(255, 255, 255);
 		desc.ShadowColor = qRgba(0, 0, 0, 255);
 		desc.Shape = shape;
@@ -65,7 +89,7 @@ namespace jass
 		else if (EStyle::Hilighted == style)
 		{
 			desc.OutlineColor2 = COLOR_HILIGHT;
-			desc.OutlineWidth2 = 4;
+			desc.OutlineWidth2 = std::round(sprite_scale * 4);
 		}
 
 		QPixmap pmTemp;
@@ -101,3 +125,5 @@ namespace jass
 		}
 	}
 }
+
+#include <moc_PaletteSpriteSet.cpp>

@@ -37,6 +37,7 @@ namespace jass
 		VERIFY(connect(&graph_model, &CGraphModel::NodesRemoved,  this, &CGraphNodeAnalysisTheme::OnNodesRemoved));
 		VERIFY(connect(&graph_model, &CGraphModel::NodesInserted, this, &CGraphNodeAnalysisTheme::OnNodesInserted));
 		VERIFY(connect(&analyses,    &CAnalyses::MetricUpdated,   this, &CGraphNodeAnalysisTheme::OnMetricUpdated));
+		VERIFY(connect(&sprites,    &CPaletteSpriteSet::Changed,  this, &CGraphNodeAnalysisTheme::OnSpritesChanged));
 
 		m_NodeColors.resize(graph_model.NodeCount(), NO_COLOR);
 	}
@@ -89,6 +90,11 @@ namespace jass
 		{
 			UpdateColors(values);
 		}
+	}
+
+	void CGraphNodeAnalysisTheme::OnSpritesChanged()
+	{
+		emit Updated();
 	}
 
 	void CGraphNodeAnalysisTheme::UpdateColors(const std::span<const float>& metric_values)

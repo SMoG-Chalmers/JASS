@@ -107,6 +107,7 @@ namespace jass
 	// Common
 	QActionGroup* CJassEditor::s_ToolsActionGroup = nullptr;
 	qapp::CWorkbench* CJassEditor::s_Workbench = nullptr;
+	jass::CSettings* CJassEditor::s_Settings = nullptr;
 	QToolBar* CJassEditor::s_Toolbar = nullptr;
 	CJassEditor::SToolActionHandles CJassEditor::s_ToolActionHandles;
 	std::vector<CJassEditor::STool> CJassEditor::s_Tools;
@@ -155,7 +156,7 @@ namespace jass
 		connect(&DataModel(), &CGraphModel::EdgesRemoved,  this, &CJassEditor::UpdateAnalyses);
 		connect(&DataModel(), &CGraphModel::AttributeChanged, this, &CJassEditor::UpdateAnalyses);
 
-		m_CategorySpriteSet = std::make_shared<CCategorySpriteSet>(Categories());
+		m_CategorySpriteSet = std::make_shared<CCategorySpriteSet>(Categories(), *s_Settings);
 
 		UpdateAnalyses();
 	}
@@ -165,9 +166,10 @@ namespace jass
 
 	}
 
-	void CJassEditor::InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* main_window)
+	void CJassEditor::InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* main_window, CSettings& settings)
 	{
 		s_Workbench = &workbench;
+		s_Settings = &settings;
 
 		s_ToolsActionGroup = new QActionGroup(main_window);
 		AddTool(action_manager, std::make_unique<CSelectionTool>(), "Select Tool", QIcon(RES_PATH_PREFIX "selecttool.png"), QKeySequence(Qt::Key_Q), &s_ToolActionHandles.SelectTool);
@@ -226,7 +228,7 @@ namespace jass
 
 		s_CategoryView = &main_window->CategoryView();
 
-		s_AnalysisSpriteSet = std::make_unique<CPaletteSpriteSet>(SPECTRAL_PALETTE, qRgb(0xC0, 0xC0, 0xC0));
+		s_AnalysisSpriteSet = std::make_unique<CPaletteSpriteSet>(SPECTRAL_PALETTE, qRgb(0xC0, 0xC0, 0xC0), settings);
 	}
 
 	void CJassEditor::AddTool(qapp::CActionManager& action_manager, std::unique_ptr<CGraphTool> tool, QString title, const QIcon& icon, const QKeySequence& keys, qapp::HAction* ptrOutActionHandle)

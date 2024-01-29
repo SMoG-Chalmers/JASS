@@ -19,6 +19,7 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include <vector>
 #include <QtCore/QObject>
 #include <QtWidgets/QMainWindow>
 
@@ -40,12 +41,13 @@ namespace jass
 {
 	class CCategoryView;
 	struct SToolViewDesc;
+	class CSettings;
 
 	class CMainWindow : public QMainWindow, public qapp::IActionTarget
 	{
 		Q_OBJECT
 	public:
-		CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager);
+		CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CSettings& settings);
 		~CMainWindow();
 
 		void SaveLayout(QSettings& settings);
@@ -74,9 +76,14 @@ namespace jass
 		void UpdateActions(qapp::CActionUpdateContext& ctx) override;
 		bool OnAction(qapp::HAction action_handle) override;
 
+		void SetUiScalePercent(int scale_percent);
+
 		qapp::CDocumentManager& m_DocumentManager;
 		qapp::CWorkbench& m_Workbench;
+		CSettings& m_Settings;
 		
+		std::vector<QAction*> m_UiScaleActions;
+
 		QAction* m_ViewsSeparatorAction = nullptr;
 		QMenu* m_ViewMenu = nullptr;
 		QToolBar* m_MainToolBar = nullptr;

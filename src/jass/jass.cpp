@@ -39,6 +39,7 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 #include <jass_version.h>
 #include "jass.h"
 #include "JassDocument.hpp"
+#include "Settings.hpp"
 
 namespace jass
 {
@@ -103,13 +104,14 @@ namespace jass
 			appDataDir.mkpath(".");
 		}
 		
-		QSettings settings(SettingsPath(), QSettings::IniFormat);
+		QSettings qsettings(SettingsPath(), QSettings::IniFormat);
+		CSettings settings(qsettings);
 
 		qapp::CActionManager action_manager;
 		action_manager.Init(*m_App);
 		qapp::InitStandardActions(m_App.get(), action_manager);
 		qapp::CDocumentManager document_manager;
-		qapp::CWorkbench workbench(document_manager, action_manager, settings);
+		qapp::CWorkbench workbench(document_manager, action_manager, qsettings);
 
 		// Register document types
 		document_manager.RegisterDocumentType(CJassDocumentTypeHandler::g_Instance.Description(), CJassDocumentTypeHandler::g_Instance);
@@ -117,11 +119,11 @@ namespace jass
 		QSettings uiSettings(UiSettingsPath(), QSettings::IniFormat);
 
 		// Main Window
-		auto main_window = std::make_unique<CMainWindow>(document_manager, workbench, action_manager);
+		auto main_window = std::make_unique<CMainWindow>(document_manager, workbench, action_manager, settings);
 		
 		main_window->RestoreLayout(uiSettings);
 
-		CJassEditor::InitCommon(workbench, action_manager, main_window.get());
+		CJassEditor::InitCommon(workbench, action_manager, main_window.get(), settings);
 
 		// New document
 		//workbench.New(*document_manager.DocumentTypes().front().Handler);

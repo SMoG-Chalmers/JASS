@@ -48,6 +48,7 @@ namespace jass
 		void OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices);
 		void OnNodesInserted(const CGraphModel::const_node_indices_t& node_indices, const CGraphModel::node_remap_table_t& remap_table);
 		void OnMetricUpdated(const QString& name, const std::span<const float>& values);
+		void OnSpritesChanged();
 
 	private:
 		inline EShape NodeShape(element_t element) const;
