@@ -37,6 +37,7 @@ namespace jass
 		void Activate(const SGraphToolContext& ctx) override;
 		void Deactivate() override;
 		void Paint(QPainter& painter, const QRect& rc) override;
+		void leaveEvent(QEvent& event) override;
 		void mouseMoveEvent(QMouseEvent& event) override;
 		void mousePressEvent(QMouseEvent& event) override;
 		void mouseReleaseEvent(QMouseEvent& event) override;

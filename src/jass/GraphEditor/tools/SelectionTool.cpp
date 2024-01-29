@@ -62,6 +62,11 @@ namespace jass
 		}
 	}
 
+	void CSelectionTool::leaveEvent(QEvent& event)
+	{
+		RemoveHilight();
+	}
+
 	void CSelectionTool::mouseMoveEvent(QMouseEvent& event)
 	{
 		switch (m_State)
