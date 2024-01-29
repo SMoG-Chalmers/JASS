@@ -36,6 +36,8 @@ static const char* s_AuthorsText = R"(
 </center>
 )";
 
+#define SOURCE_URL "https://github.com/martin-fitger/jass"
+
 namespace jass
 {
 	CAboutDialog::CAboutDialog(QWidget* parent)
@@ -59,8 +61,9 @@ namespace jass
 			vlayout->addLayout(hlayout);
 		}
 		vlayout->addWidget(new QLabel("<center><h1>" VERC_PROJECT_NAME "</h1></center>", this));
-		vlayout->addWidget(new QLabel("<center>Version " VERC_VERSION "</center>", this));
-		vlayout->addWidget(new QLabel("<center>GNU General Public Licence</center>", this));
+		vlayout->addWidget(new QLabel("<center><b>Version</b><br/>" VERC_VERSION "</center>", this));
+		vlayout->addWidget(new QLabel("<center><b>License</b><br/>GNU General Public License</center>", this));
+		vlayout->addWidget(new QLabel("<center><b>Source</b><br/><a href=\"" SOURCE_URL "\">" SOURCE_URL "</a></center>", this));
 		vlayout->addWidget(new QLabel(s_AuthorsText, this));
 
 		vlayout->addSpacing(20);
