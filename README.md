@@ -1,20 +1,29 @@
-# JASS
-JASS is a free open source C++ application.
+﻿# JASS
+JASS is a tool for performing graph analysis of spatial networks.
 
 ## License
-Copyright XMN Software AB 2023
+Copyright Ioanna Stavroulaki 2023
 
-JASS is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version. The GNU Lesser General Public License
-is intended to guarantee your freedom to share and change all versions
-of a program--to make sure it remains free software for all its users.
+JASS is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option)
+any later version.
 
-JASS is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU Lesser General Public License for more details.
+JASS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with JASS. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along 
+with JASS. If not, see <https://www.gnu.org/licenses/>.
+
+## Authors
+Spatial Morphology Group (SMoG)-Chalmers University of Technology, 
+KTH School of Architecture, (Ioanna Stavroulaki, Martin Fitger,	Meta
+Berghauser Pont, Daniel Koch, Lena Bergsten, Tommy Färnqvist, Patrik
+Georgii-Hemming, Per Grandien, Christer Olofsson, Mikael Silfver, Erik
+Sjöstedt, Fredrik Stavfors, Marko Tokic)
+
+## Third-Party Libraries
+- Qt Framework (https://www.qt.io/)
+- FatCow icon library (http://www.fatcow.com/free-icons)
