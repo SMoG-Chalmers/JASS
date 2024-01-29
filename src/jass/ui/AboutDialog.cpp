@@ -36,7 +36,7 @@ static const char* s_AuthorsText = R"(
 </center>
 )";
 
-#define SOURCE_URL "https://github.com/martin-fitger/jass"
+#define SOURCE_URL "https://github.com/SMoG-Chalmers/JASS"
 
 namespace jass
 {
