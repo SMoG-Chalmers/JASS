@@ -35,6 +35,8 @@ namespace jass
 
 		inline size_t PaletteSize() const { return m_Palette.size() - 1; }
 
+		inline QRgb Color(uint32_t palette_index) const { return m_Palette[std::min(palette_index, (uint32_t)(m_Palette.size() - 1))]; }
+
 		inline QRect Rect(EShape shape, EStyle style) const;
 		void Draw(EShape shape, EStyle style, uint32_t palette_index, const QPoint& pos, QPainter& painter) const;
 

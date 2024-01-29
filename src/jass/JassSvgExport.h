@@ -24,6 +24,7 @@ class QIODevice;
 namespace jass
 {
 	class CJassDocument;
+	class CGraphNodeTheme;
 
-	void ExportJassToSVG(QIODevice&, const CJassDocument& doc);
+	void ExportJassToSVG(QIODevice&, const CJassDocument& doc, const CGraphNodeTheme* graphNodeTheme);
 }

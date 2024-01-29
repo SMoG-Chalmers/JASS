@@ -38,6 +38,7 @@ namespace jass
 
 		virtual QRect ElementLocalRect(element_t element, EStyle style) const = 0;
 		virtual void  DrawElement(element_t element, EStyle style, const QPoint& pos, QPainter& painter) const = 0;
+		virtual QRgb  ElementColor(element_t element) const = 0;  // Not sure about this one. Currently only needed for SVG export.
 
 	Q_SIGNALS:
 		void Updated();

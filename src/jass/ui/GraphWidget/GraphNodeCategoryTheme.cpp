@@ -18,13 +18,15 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <jass/GraphModel.hpp>
+#include <jass/GraphEditor/CategorySet.hpp>
 #include "GraphNodeCategoryTheme.hpp"
 #include "CategorySpriteSet.hpp"
 
 namespace jass
 {
-	CGraphNodeCategoryTheme::CGraphNodeCategoryTheme(CGraphModel& graph_model, std::shared_ptr<CCategorySpriteSet> sprites)
+	CGraphNodeCategoryTheme::CGraphNodeCategoryTheme(CGraphModel& graph_model, const CCategorySet& categories, std::shared_ptr<CCategorySpriteSet> sprites)
 		: m_GraphModel(graph_model)
+		, m_Categories(categories)
 		, m_Sprites(std::move(sprites))
 	{
 		VERIFY(connect(m_Sprites.get(), &CCategorySpriteSet::Changed, this, &CGraphNodeCategoryTheme::OnSpritesChanged));
@@ -46,6 +48,12 @@ namespace jass
 		const auto category_index = m_GraphModel.NodeCategory((CGraphModel::node_index_t)element);
 		const auto sprite_index = m_Sprites->SpriteIndex(category_index, style);
 		m_Sprites->DrawSprite(sprite_index, painter, pos);
+	}
+
+	QRgb CGraphNodeCategoryTheme::ElementColor(element_t element) const
+	{
+		const auto category_index = m_GraphModel.NodeCategory((CGraphModel::node_index_t)element);
+		return m_Categories.Color(category_index);
 	}
 
 	void CGraphNodeCategoryTheme::OnSpritesChanged()

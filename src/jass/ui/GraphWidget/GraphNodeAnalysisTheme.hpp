@@ -42,6 +42,7 @@ namespace jass
 		// CGraphNodeTheme overrides
 		QRect ElementLocalRect(element_t element, EStyle style) const override;
 		void  DrawElement(element_t element, EStyle style, const QPoint& pos, QPainter& painter) const override;
+		QRgb  ElementColor(element_t element) const override;
 
 	private Q_SLOTS:
 		void OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices);

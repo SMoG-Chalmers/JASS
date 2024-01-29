@@ -62,6 +62,7 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 #include <jass/ui/MainWindow.hpp>
 #include <jass/ui/SplitWidget.hpp>
 #include <jass/StandardNodeAttributes.h>
+#include <jass/JassSvgExport.h>
 
 #include "tools/EdgeTool.h"
 #include "tools/NodeTool.h"
@@ -286,7 +287,7 @@ namespace jass
 		m_GraphWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 		connect(m_GraphWidget, &CGraphWidget::customContextMenuRequested, this, &CJassEditor::OnCustomContextMenuRequested);
 
-		auto graph_node_category_theme = std::make_shared<CGraphNodeCategoryTheme>(DataModel(), m_CategorySpriteSet);
+		auto graph_node_category_theme = std::make_shared<CGraphNodeCategoryTheme>(DataModel(), Categories(), m_CategorySpriteSet);
 
 		{
 			auto image_layer = std::make_unique<CImageGraphLayer>(*m_GraphWidget);
@@ -564,6 +565,11 @@ namespace jass
 		m_CommandHistory->SetCleanAtCurrentPosition();
 	}
 
+	void CJassEditor::Export(QIODevice& out, const qapp::SDocumentTypeDesc& format)
+	{
+		ExportJassToSVG(out, m_Document, m_NodeGraphLayer ? m_NodeGraphLayer->Theme() : nullptr);
+	}
+
 	QString CJassEditor::ToolTipText(CGraphWidget& graph_widget, size_t layer_index, CGraphLayer::element_t element)
 	{
 		auto* layer = &graph_widget.Layer(layer_index);
@@ -819,7 +825,7 @@ namespace jass
 		switch (mode)
 		{
 		case EVisualizationMode::Categories:
-			editor->m_NodeGraphLayer->SetTheme(std::make_shared<CGraphNodeCategoryTheme>(editor->DataModel(), editor->m_CategorySpriteSet));
+			editor->m_NodeGraphLayer->SetTheme(std::make_shared<CGraphNodeCategoryTheme>(editor->DataModel(), editor->Categories(), editor->m_CategorySpriteSet));
 			break;
 		case EVisualizationMode::Integration:
 			{

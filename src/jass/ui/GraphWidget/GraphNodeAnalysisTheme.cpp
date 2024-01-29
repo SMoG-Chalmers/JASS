@@ -68,6 +68,11 @@ namespace jass
 		m_Sprites.Draw(NodeShape(element), style, m_NodeColors[element], pos, painter);
 	}
 
+	QRgb CGraphNodeAnalysisTheme::ElementColor(element_t element) const
+	{
+		return m_Sprites.Color(m_NodeColors[element]);
+	}
+
 	void CGraphNodeAnalysisTheme::OnNodesRemoved(const CGraphModel::const_node_indices_t& node_indices)
 	{
 		collapse(m_NodeColors, node_indices);

@@ -23,7 +23,6 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 #include <jass/GraphEditor/JassEditor.hpp>
 #include "JassDocument.hpp"
 #include "JassFileFormat.h"
-#include "JassSvgExport.h"
 #include "LegacyJassFileFormat.h"
 #include "StandardNodeAttributes.h"
 
@@ -87,12 +86,6 @@ namespace jass
 		if (!jass_doc)
 		{
 			throw std::runtime_error("Unsupported document type");
-		}
-
-		if (&format == &m_SvgDocumentTypeDesc)
-		{
-			ExportJassToSVG(out, *jass_doc);
-			return;
 		}
 
 		SaveJassFile(out, *jass_doc);

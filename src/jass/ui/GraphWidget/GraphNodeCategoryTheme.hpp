@@ -31,12 +31,13 @@ namespace jass
 	{
 		Q_OBJECT
 	public:
-		CGraphNodeCategoryTheme(CGraphModel& graph_model, std::shared_ptr<CCategorySpriteSet> sprites);
+		CGraphNodeCategoryTheme(CGraphModel& graph_model, const CCategorySet& categories, std::shared_ptr<CCategorySpriteSet> sprites);
 		~CGraphNodeCategoryTheme();
 
 		// CGraphNodeTheme overrides
 		QRect ElementLocalRect(element_t element, EStyle style) const override;
 		void  DrawElement(element_t element, EStyle style, const QPoint& pos, QPainter& painter) const override;
+		QRgb  ElementColor(element_t element) const override;
 
 	private Q_SLOTS:
 		void OnSpritesChanged();
@@ -53,6 +54,7 @@ namespace jass
 		void CreateSprite(const SSpriteDesc& desc, QPixmap& out_pixmap, QPoint& out_origin);
 
 		CGraphModel& m_GraphModel;
+		const CCategorySet& m_Categories;
 		std::shared_ptr<CCategorySpriteSet> m_Sprites;
 	};
 }

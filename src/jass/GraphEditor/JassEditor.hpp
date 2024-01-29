@@ -80,6 +80,7 @@ namespace jass
 		void OnActivate() override;
 		void OnDeactivate() override;
 		void OnSaved() override;
+		void Export(QIODevice& out, const qapp::SDocumentTypeDesc& format) override;
 
 		//IGraphWidgetDelegate delegate
 		QString ToolTipText(CGraphWidget& graph_widget, size_t layer_index, CGraphLayer::element_t element) override;

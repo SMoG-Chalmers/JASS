@@ -45,6 +45,7 @@ namespace jass
 		CNodeGraphLayer(CGraphWidget& graphWidget, CJassEditor& editor, std::shared_ptr<CGraphNodeTheme>&& theme);
 		~CNodeGraphLayer();
 
+		const CGraphNodeTheme* Theme() const;
 		void SetTheme(std::shared_ptr<CGraphNodeTheme>&& theme);
 
 		QPoint ElementPosition(element_t element) const;

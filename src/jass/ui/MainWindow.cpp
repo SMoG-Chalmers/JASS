@@ -96,6 +96,7 @@ namespace jass
 #endif
 		m_MainToolBar->addSeparator();
 		m_MainToolBar->addAction(qapp::s_StandardActions.Save);
+		m_MainToolBar->addAction(qapp::s_StandardActions.Export);
 		m_MainToolBar->addSeparator();
 		m_MainToolBar->addAction(qapp::s_StandardActions.Undo);
 		m_MainToolBar->addAction(qapp::s_StandardActions.Redo);

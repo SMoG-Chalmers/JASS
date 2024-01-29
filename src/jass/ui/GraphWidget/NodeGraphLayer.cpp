@@ -49,6 +49,11 @@ namespace jass
 		SetTheme(nullptr);
 	}
 
+	const CGraphNodeTheme* CNodeGraphLayer::Theme() const
+	{
+		return m_Theme.get();
+	}
+
 	void CNodeGraphLayer::SetTheme(std::shared_ptr<CGraphNodeTheme>&& theme)
 	{
 		if (m_Theme)
