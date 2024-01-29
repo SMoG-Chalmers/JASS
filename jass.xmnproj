@@ -4,7 +4,7 @@
 	"project_id": "D552FDF3-76A1-4C88-909B-170F0F4560F3[JASS]",
 	"description": "Tool for spatial analyzing",
 	"company": "Chalmers",
-	"version": "2.0.5",
+	"version": "2.0.7",
 	"project_type": "winapp",
 	"project_guid": "3641AC08-AD94-409D-A153-77DAE068918F",
 	"platforms": [ "x64" ],

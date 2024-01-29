@@ -1,20 +1,20 @@
 /*
-Copyright XMN Software AB 2023
+Copyright Ioanna Stavroulaki 2023
 
-JASS is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
+This file is part of JASS.
+
+JASS is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free
 Software Foundation, either version 3 of the License, or (at your option)
-any later version. The GNU Lesser General Public License is intended to
-guarantee your freedom to share and change all versions of a program --
-to make sure it remains free software for all its users.
+any later version.
 
-JASS is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+JASS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with JASS. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along 
+with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 
@@ -62,6 +62,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/ui/MainWindow.hpp>
 #include <jass/ui/SplitWidget.hpp>
 #include <jass/StandardNodeAttributes.h>
+#include <jass/JassSvgExport.h>
 
 #include "tools/EdgeTool.h"
 #include "tools/NodeTool.h"
@@ -106,6 +107,7 @@ namespace jass
 	// Common
 	QActionGroup* CJassEditor::s_ToolsActionGroup = nullptr;
 	qapp::CWorkbench* CJassEditor::s_Workbench = nullptr;
+	jass::CSettings* CJassEditor::s_Settings = nullptr;
 	QToolBar* CJassEditor::s_Toolbar = nullptr;
 	CJassEditor::SToolActionHandles CJassEditor::s_ToolActionHandles;
 	std::vector<CJassEditor::STool> CJassEditor::s_Tools;
@@ -154,7 +156,7 @@ namespace jass
 		connect(&DataModel(), &CGraphModel::EdgesRemoved,  this, &CJassEditor::UpdateAnalyses);
 		connect(&DataModel(), &CGraphModel::AttributeChanged, this, &CJassEditor::UpdateAnalyses);
 
-		m_CategorySpriteSet = std::make_shared<CCategorySpriteSet>(Categories());
+		m_CategorySpriteSet = std::make_shared<CCategorySpriteSet>(Categories(), *s_Settings);
 
 		UpdateAnalyses();
 	}
@@ -164,9 +166,10 @@ namespace jass
 
 	}
 
-	void CJassEditor::InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* main_window)
+	void CJassEditor::InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* main_window, CSettings& settings)
 	{
 		s_Workbench = &workbench;
+		s_Settings = &settings;
 
 		s_ToolsActionGroup = new QActionGroup(main_window);
 		AddTool(action_manager, std::make_unique<CSelectionTool>(), "Select Tool", QIcon(RES_PATH_PREFIX "selecttool.png"), QKeySequence(Qt::Key_Q), &s_ToolActionHandles.SelectTool);
@@ -225,7 +228,7 @@ namespace jass
 
 		s_CategoryView = &main_window->CategoryView();
 
-		s_AnalysisSpriteSet = std::make_unique<CPaletteSpriteSet>(SPECTRAL_PALETTE, qRgb(0xC0, 0xC0, 0xC0));
+		s_AnalysisSpriteSet = std::make_unique<CPaletteSpriteSet>(SPECTRAL_PALETTE, qRgb(0xC0, 0xC0, 0xC0), settings);
 	}
 
 	void CJassEditor::AddTool(qapp::CActionManager& action_manager, std::unique_ptr<CGraphTool> tool, QString title, const QIcon& icon, const QKeySequence& keys, qapp::HAction* ptrOutActionHandle)
@@ -286,7 +289,7 @@ namespace jass
 		m_GraphWidget->setContextMenuPolicy(Qt::CustomContextMenu);
 		connect(m_GraphWidget, &CGraphWidget::customContextMenuRequested, this, &CJassEditor::OnCustomContextMenuRequested);
 
-		auto graph_node_category_theme = std::make_shared<CGraphNodeCategoryTheme>(DataModel(), m_CategorySpriteSet);
+		auto graph_node_category_theme = std::make_shared<CGraphNodeCategoryTheme>(DataModel(), Categories(), m_CategorySpriteSet);
 
 		{
 			auto image_layer = std::make_unique<CImageGraphLayer>(*m_GraphWidget);
@@ -564,6 +567,11 @@ namespace jass
 		m_CommandHistory->SetCleanAtCurrentPosition();
 	}
 
+	void CJassEditor::Export(QIODevice& out, const qapp::SDocumentTypeDesc& format)
+	{
+		ExportJassToSVG(out, m_Document, m_NodeGraphLayer ? m_NodeGraphLayer->Theme() : nullptr);
+	}
+
 	QString CJassEditor::ToolTipText(CGraphWidget& graph_widget, size_t layer_index, CGraphLayer::element_t element)
 	{
 		auto* layer = &graph_widget.Layer(layer_index);
@@ -819,7 +827,7 @@ namespace jass
 		switch (mode)
 		{
 		case EVisualizationMode::Categories:
-			editor->m_NodeGraphLayer->SetTheme(std::make_shared<CGraphNodeCategoryTheme>(editor->DataModel(), editor->m_CategorySpriteSet));
+			editor->m_NodeGraphLayer->SetTheme(std::make_shared<CGraphNodeCategoryTheme>(editor->DataModel(), editor->Categories(), editor->m_CategorySpriteSet));
 			break;
 		case EVisualizationMode::Integration:
 			{

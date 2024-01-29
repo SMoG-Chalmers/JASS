@@ -17,11 +17,31 @@ You should have received a copy of the GNU General Public License along
 with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include "Settings.hpp"
 
 namespace jass
 {
-	// N  = Number of reached nodes INCLUDING origin node
-	// TD = Total depth
-	float CalculateIntegrationScore(unsigned int N, float TD, float& out_MD, float& out_RA, float& out_RRA);
+	const QString CSettings::UI_SCALE = "ui/scale";
+
+	CSettings::CSettings(QSettings& qsettings)
+		: m_QSettings(qsettings)
+	{
+	}
+
+	void CSettings::setValue(const QString& key, const QVariant& value)
+	{
+		if (value == this->value(key))
+		{
+			return;
+		}
+		m_QSettings.setValue(key, value);
+		emit Changed(key, value);
+	}
+
+	QVariant CSettings::value(const QString& key, const QVariant& defaultValue) const
+	{
+		return m_QSettings.value(key, defaultValue);
+	}
 }
+
+#include <moc_Settings.cpp>

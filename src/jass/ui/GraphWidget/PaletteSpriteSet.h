@@ -1,20 +1,20 @@
 /*
-Copyright XMN Software AB 2023
+Copyright Ioanna Stavroulaki 2023
 
-JASS is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
+This file is part of JASS.
+
+JASS is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free
 Software Foundation, either version 3 of the License, or (at your option)
-any later version. The GNU Lesser General Public License is intended to
-guarantee your freedom to share and change all versions of a program --
-to make sure it remains free software for all its users.
+any later version.
 
-JASS is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+JASS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with JASS. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along 
+with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #pragma once
@@ -26,20 +26,33 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
-	class CPaletteSpriteSet
+	class CSettings;
+
+	class CPaletteSpriteSet: public QObject
 	{
+		Q_OBJECT
 	public:
 		using EStyle = CGraphNodeTheme::EStyle;
 
-		CPaletteSpriteSet(const std::span<const QRgb>& palette, QRgb no_color);
+		CPaletteSpriteSet(const std::span<const QRgb>& palette, QRgb no_color, const CSettings& settings);
 
 		inline size_t PaletteSize() const { return m_Palette.size() - 1; }
+
+		inline QRgb Color(uint32_t palette_index) const { return m_Palette[std::min(palette_index, (uint32_t)(m_Palette.size() - 1))]; }
 
 		inline QRect Rect(EShape shape, EStyle style) const;
 		void Draw(EShape shape, EStyle style, uint32_t palette_index, const QPoint& pos, QPainter& painter) const;
 
+	Q_SIGNALS:
+		void Changed();
+
+	private Q_SLOTS:
+		void OnSettingChanged(const QString& key, const QVariant& newValue);
+
 	private:
 		static const uint8_t STYLE_COUNT = (uint8_t)EStyle::_COUNT;
+
+		float SpriteScale() const;
 
 		struct SSprite
 		{
@@ -48,14 +61,15 @@ namespace jass
 			QPixmap Pixmap;
 		};
 
+		const CSettings& m_Settings;
 		SSprite m_Sprites[(uint32_t)EShape::_COUNT * STYLE_COUNT];
-
 		std::vector<QRgb> m_Palette;
+
 
 		inline SSprite&       Sprite(EShape shape, EStyle style);
 		inline const SSprite& Sprite(EShape shape, EStyle style) const { return const_cast<CPaletteSpriteSet*>(this)->Sprite(shape, style); }
 
-		static void CreateSprite(EShape shape, EStyle style, const std::span<const QRgb>& palette, SSprite& out_sprite);
+		void CreateSprite(EShape shape, EStyle style, const std::span<const QRgb>& palette, SSprite& out_sprite);
 	};
 
 	inline QRect CPaletteSpriteSet::Rect(EShape shape, EStyle style) const

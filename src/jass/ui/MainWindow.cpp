@@ -1,20 +1,20 @@
 /*
-Copyright XMN Software AB 2023
+Copyright Ioanna Stavroulaki 2023
 
-JASS is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
+This file is part of JASS.
+
+JASS is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free
 Software Foundation, either version 3 of the License, or (at your option)
-any later version. The GNU Lesser General Public License is intended to
-guarantee your freedom to share and change all versions of a program --
-to make sure it remains free software for all its users.
+any later version.
 
-JASS is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+JASS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with JASS. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along 
+with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <QtCore/qsettings.h>
@@ -38,6 +38,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <qapplib/WorkbenchWidget.hpp>
 
 #include "../Debug.h"
+#include <jass/Settings.hpp>
 
 #include "AboutDialog.h"
 #include "MainWindow.hpp"
@@ -53,6 +54,14 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 
 namespace jass
 {
+	static const int s_UiScales[] =
+	{
+		100,
+		150,
+		200,
+		300,
+	};
+
 	struct SToolViewDesc
 	{
 		QString m_Name;
@@ -63,9 +72,10 @@ namespace jass
 		Qt::DockWidgetArea m_Area = Qt::RightDockWidgetArea;
 	};
 
-	CMainWindow::CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager)
+	CMainWindow::CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CSettings& settings)
 		: m_DocumentManager(document_manager)
 		, m_Workbench(workbench)
+		, m_Settings(settings)
 	{
 		auto* qapp = QApplication::instance();
 
@@ -80,6 +90,18 @@ namespace jass
 
 		// Recent Files Menu
 		auto* recent_files_menu = new qapp::CRecentFilesMenu(this, document_manager, workbench);
+
+		// UI Scale
+		QMenu* uiScaleMenu = new QMenu("UI Scale", this);
+		for (uint32_t i = 0; i < (uint32_t)std::size(s_UiScales); ++i)
+		{
+			auto* action = new QAction(QString("%1%").arg(s_UiScales[i]), this);
+			action->setCheckable(true);
+			connect(action, &QAction::triggered, [this, i]() { this->SetUiScalePercent(s_UiScales[i]); });
+			m_UiScaleActions.push_back(action);
+			uiScaleMenu->addAction(action);
+		}
+		SetUiScalePercent(m_Settings.value(CSettings::UI_SCALE, 100).toInt());
 
 		// Toolbar
 		m_MainToolBar = addToolBar("Main");
@@ -96,6 +118,7 @@ namespace jass
 #endif
 		m_MainToolBar->addSeparator();
 		m_MainToolBar->addAction(qapp::s_StandardActions.Save);
+		m_MainToolBar->addAction(qapp::s_StandardActions.Export);
 		m_MainToolBar->addSeparator();
 		m_MainToolBar->addAction(qapp::s_StandardActions.Undo);
 		m_MainToolBar->addAction(qapp::s_StandardActions.Redo);
@@ -141,6 +164,8 @@ namespace jass
 
 		// View menu
 		m_ViewMenu = Menu("view");
+		m_ViewMenu->addMenu(uiScaleMenu);
+		m_ViewMenu->addSeparator();
 
 		// Help Menu
 		auto* helpMenu = Menu("help");
@@ -269,6 +294,16 @@ namespace jass
 		}
 		return false;
 	}
+
+	void CMainWindow::SetUiScalePercent(int scale_percent)
+	{
+		for (size_t i = 0; i < m_UiScaleActions.size(); ++i)
+		{
+			m_UiScaleActions[i]->setChecked(scale_percent == s_UiScales[i]);
+		}
+		m_Settings.setValue(CSettings::UI_SCALE, scale_percent);
+	}
+
 }
 
 #include <moc_MainWindow.cpp>

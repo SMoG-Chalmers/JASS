@@ -19,9 +19,25 @@ with JASS. If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 
+#include <QtCore/qsettings.h>
+
 namespace jass
 {
-	// N  = Number of reached nodes INCLUDING origin node
-	// TD = Total depth
-	float CalculateIntegrationScore(unsigned int N, float TD, float& out_MD, float& out_RA, float& out_RRA);
+	class CSettings: public QObject
+	{
+		Q_OBJECT
+	public:
+		static const QString UI_SCALE;
+
+		CSettings(QSettings& qsettings);
+
+		void setValue(const QString& key, const QVariant& value);
+		QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
+
+	Q_SIGNALS:
+		void Changed(const QString& key, const QVariant& newValue);
+
+	private:
+		QSettings& m_QSettings;
+	};
 }

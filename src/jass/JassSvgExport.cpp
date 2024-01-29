@@ -1,20 +1,20 @@
 /*
-Copyright XMN Software AB 2023
+Copyright Ioanna Stavroulaki 2023
 
-JASS is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
+This file is part of JASS.
+
+JASS is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free
 Software Foundation, either version 3 of the License, or (at your option)
-any later version. The GNU Lesser General Public License is intended to
-guarantee your freedom to share and change all versions of a program --
-to make sure it remains free software for all its users.
+any later version.
 
-JASS is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+JASS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with JASS. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along 
+with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #include <QtCore/qiodevice.h>
@@ -22,6 +22,7 @@ along with JASS. If not, see <http://www.gnu.org/licenses/>.
 #include <jass/JassDocument.hpp>
 #include <jass/Shape.h>
 #include <jass/StandardNodeAttributes.h>
+#include <jass/ui/GraphWidget/GraphNodeTheme.hpp>
 #include "JassSvgExport.h"
 
 namespace jass
@@ -33,7 +34,7 @@ namespace jass
 	void CreateSymbol(QIODevice& out, const std::string_view& row_prefix, const char* name, EShape shape, QRgb color, float radius, float scale, float line_width, float line_width2);
 	void CreateShape(QIODevice& out, const std::string_view& row_prefix, const QPointF& pos, EShape shape, QRgb color, float radius, float scale, float line_width, float line_width2);
 
-	void ExportJassToSVG(QIODevice& out, const CJassDocument& doc)
+	void ExportJassToSVG(QIODevice& out, const CJassDocument& doc, const CGraphNodeTheme* graphNodeTheme)
 	{
 		const float SYMBOL_SCALE = 8;
 		const float SYMBOL_LINE_WIDTH = 2;
@@ -136,10 +137,11 @@ namespace jass
 			{
 				const auto pos = data_model.NodePosition(node_index) + symbol_offset;
 				const auto category = (uint32_t)data_model.NodeCategory(node_index);
+				const auto color = graphNodeTheme ? graphNodeTheme->ElementColor(node_index) : categories.Color(category);
 				//char name[16];
 				//snprintf(name, sizeof(name), "cat-%d", category >= categories.Size() ? 0 : category);
 				//qio_fwrite(out, "\t<use xlink:href=\"#%s\" x=\"%.1f\" y=\"%.1f\" />\n", name, pos.x() - SYMBOL_RADIUS, pos.y() - SYMBOL_RADIUS);
-				CreateShape(out, "\t", pos, categories.Shape(category), categories.Color(category), SYMBOL_RADIUS, SYMBOL_SCALE, SYMBOL_LINE_WIDTH, SYMBOL_LINE_WIDTH * .5f);
+				CreateShape(out, "\t", pos, categories.Shape(category), color, SYMBOL_RADIUS, SYMBOL_SCALE, SYMBOL_LINE_WIDTH, SYMBOL_LINE_WIDTH * .5f);
 			}
 		}
 

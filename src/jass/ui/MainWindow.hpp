@@ -1,24 +1,25 @@
 /*
-Copyright XMN Software AB 2023
+Copyright Ioanna Stavroulaki 2023
 
-JASS is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
+This file is part of JASS.
+
+JASS is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free
 Software Foundation, either version 3 of the License, or (at your option)
-any later version. The GNU Lesser General Public License is intended to
-guarantee your freedom to share and change all versions of a program --
-to make sure it remains free software for all its users.
+any later version.
 
-JASS is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+JASS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with JASS. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along 
+with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #pragma once
 
+#include <vector>
 #include <QtCore/QObject>
 #include <QtWidgets/QMainWindow>
 
@@ -40,12 +41,13 @@ namespace jass
 {
 	class CCategoryView;
 	struct SToolViewDesc;
+	class CSettings;
 
 	class CMainWindow : public QMainWindow, public qapp::IActionTarget
 	{
 		Q_OBJECT
 	public:
-		CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager);
+		CMainWindow(qapp::CDocumentManager& document_manager, qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CSettings& settings);
 		~CMainWindow();
 
 		void SaveLayout(QSettings& settings);
@@ -74,9 +76,14 @@ namespace jass
 		void UpdateActions(qapp::CActionUpdateContext& ctx) override;
 		bool OnAction(qapp::HAction action_handle) override;
 
+		void SetUiScalePercent(int scale_percent);
+
 		qapp::CDocumentManager& m_DocumentManager;
 		qapp::CWorkbench& m_Workbench;
+		CSettings& m_Settings;
 		
+		std::vector<QAction*> m_UiScaleActions;
+
 		QAction* m_ViewsSeparatorAction = nullptr;
 		QMenu* m_ViewMenu = nullptr;
 		QToolBar* m_MainToolBar = nullptr;

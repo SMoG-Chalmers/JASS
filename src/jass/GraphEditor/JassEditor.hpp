@@ -1,20 +1,20 @@
 /*
-Copyright XMN Software AB 2023
+Copyright Ioanna Stavroulaki 2023
 
-JASS is free software: you can redistribute it and/or modify it under the
-terms of the GNU Lesser General Public License as published by the Free
+This file is part of JASS.
+
+JASS is free software: you can redistribute it and/or modify it under 
+the terms of the GNU General Public License as published by the Free
 Software Foundation, either version 3 of the License, or (at your option)
-any later version. The GNU Lesser General Public License is intended to
-guarantee your freedom to share and change all versions of a program --
-to make sure it remains free software for all its users.
+any later version.
 
-JASS is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+JASS is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 more details.
 
-You should have received a copy of the GNU Lesser General Public License
-along with JASS. If not, see <http://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License along 
+with JASS. If not, see <https://www.gnu.org/licenses/>.
 */
 
 #pragma once
@@ -55,6 +55,7 @@ namespace jass
 	class CMainWindow;
 	class CNodeGraphLayer;
 	class CSelectionTool;
+	class CSettings;
 	class CSplitWidget;
 	class CNodeTool;
 
@@ -66,7 +67,7 @@ namespace jass
 		~CJassEditor();
 
 		// Common
-		static void InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* mainWindow);
+		static void InitCommon(qapp::CWorkbench& workbench, qapp::CActionManager& action_manager, CMainWindow* mainWindow, CSettings& settings);
 		static void AddTool(qapp::CActionManager& action_manager, std::unique_ptr<CGraphTool> tool, QString title, const QIcon& icon, const QKeySequence& keys, qapp::HAction* ptrOutActionHandle);
 		static void RegisterTool(std::unique_ptr<CGraphTool> tool, QString title, QAction* action);
 
@@ -80,6 +81,7 @@ namespace jass
 		void OnActivate() override;
 		void OnDeactivate() override;
 		void OnSaved() override;
+		void Export(QIODevice& out, const qapp::SDocumentTypeDesc& format) override;
 
 		//IGraphWidgetDelegate delegate
 		QString ToolTipText(CGraphWidget& graph_widget, size_t layer_index, CGraphLayer::element_t element) override;
@@ -167,6 +169,7 @@ namespace jass
 		// Common
 
 		static qapp::CWorkbench* s_Workbench;
+		static jass::CSettings* s_Settings;
 		static QActionGroup* s_ToolsActionGroup;
 		static QToolBar* s_Toolbar;
 		static SToolActionHandles s_ToolActionHandles;
