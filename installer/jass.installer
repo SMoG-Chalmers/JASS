@@ -30,6 +30,10 @@
 		]
 	},
 
+	"sign" : [
+		"../build/vc2022/x64/Release/JASS64_vc2022.exe"
+	],
+
 	"components" : {
 		"main" : {
 			"files" : [ 
