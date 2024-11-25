@@ -1,5 +1,6 @@
 ﻿# JASS
 JASS: Justified Analysis of Spatial Systems
+
 JASS is a user-friendly tool for performing graph analysis of spatial networks. It is used to analyse spatial configurations and relationships in building and urban layouts. Users can upload a simple image of a floorplan or layout, then easily draw and assess spatial configurations, such as the relationships between rooms in a building. The tool generates justified graphs to represent network connections from key locations (e.g., entrances, staircases) and calculate topological distances between them. The network connectivity and centrality are quickly calculated and visualized offering insights of, for instance, potential places of gathering, potential bottlenecks in movement flows, or problems in navigation and wayfinding in a building or urban area.  Ideal for architects and urban designers, JASS makes understanding complex layouts and spatial networks intuitive.
 
 ## License
